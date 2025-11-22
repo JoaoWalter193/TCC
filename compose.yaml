@@ -1,0 +1,43 @@
+services:
+
+  frontend:
+    image: node:20-alpine
+    ports:
+      - "80:4200"
+    command: sh -c "npm install -g @angular/cli@19.2.4 && npm install --legacy-peer-deps && ng serve --host 0.0.0.0 --poll=2000 --port 4200 --disable-host-check"
+    working_dir: /home/app
+    volumes:
+      - ./frontend:/home/app
+      - /home/app/node_modules  
+
+
+
+  clientes:
+    image: maven:3.8.4-openjdk-17-slim
+    command: "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dspring.devtools.restart.enabled=true -Dspring-boot.run.profiles=dev'"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/TCC
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=senha
+    working_dir: /app
+    volumes:
+      - ./backend/clientes_TCC/:/app
+      - ~/.m2:/root/.m2
+    ports:
+      - 8080:8080
+
+
+  postgres:
+    image: postgres:15.5
+    environment:
+      POSTGRES_DB: TCC
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: senha
+    volumes:
+      - ./bancosDeDados/postgres/:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+
+
+
+
