@@ -4,12 +4,16 @@ services:
     image: node:20-alpine
     ports:
       - "80:4200"
-    command: sh -c "npm install -g @angular/cli@19.2.4 && npm install --legacy-peer-deps && ng serve --host 0.0.0.0 --poll=2000 --port 4200 --disable-host-check"
+      - "8100:8100"  # ✅ Porta do Ionic DevApp
+      - "8200:8200"  # ✅ Porta do Capacitor (Android)
+      - "8300:8300"  # ✅ Porta do Capacitor (iOS)
+    command: sh -c "npm install -g @angular/cli@19.2.4 @capacitor/core @capacitor/cli && npm install --legacy-peer-deps && ng serve --host 0.0.0.0 --poll=2000 --port 4200 --disable-host-check"
     working_dir: /home/app
     volumes:
       - ./frontend:/home/app
-      - /home/app/node_modules  
-
+      - /home/app/node_modules
+      - /home/app/android  # ✅ Para build Android
+      - /home/app/ios      # ✅ Para build iOS
 
 
   clientes:
