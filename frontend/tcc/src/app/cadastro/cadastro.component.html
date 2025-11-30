@@ -1,0 +1,139 @@
+<div class="cadastro-container">
+  <h1 class="logo">CuritibAtiva</h1>
+
+  <div class="content">
+
+    <div class="h2">
+      <h2>Cadastre-se</h2>
+      <p>para acessar todas as funcionalidades</p>
+    </div>
+
+    @if (mensagemSucesso) {
+      <div class="alert alert-success">{{ mensagemSucesso }}</div>
+    } @if (mensagemErro) {
+      <div class="alert alert-danger">{{ mensagemErro }}</div>
+    }
+
+    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+      @if (currentStep === 1) {
+
+      <div formGroupName="stepOneGroup">
+        <div class="form-group">
+          <input type="text" id="nome" formControlName="nome" placeholder="Nome" />
+
+          @if (stepOneGroup.get('nome')?.invalid &&
+            stepOneGroup.get('nome')?.touched) {
+
+            <div class="erro">
+              @if (stepOneGroup.get('nome')?.hasError('required')) {
+                <span>O nome é obrigatório.</span>
+              }
+            </div>
+          }
+        </div>
+
+
+        <div class="form-group">
+          <input type="email" id="email" formControlName="email" placeholder="Email" />
+
+          @if (stepOneGroup.get('email')?.invalid &&
+          stepOneGroup.get('email')?.touched) {
+
+          <div class="erro">
+            @if (stepOneGroup.get('email')?.hasError('required')) {
+              <span>O e-mail é obrigatório.</span>
+
+              } @if (stepOneGroup.get('email')?.hasError('email')) {
+              <span>Por favor, informe um endereço de e-mail válido</span>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="cpf" formControlName="cpf" placeholder="CPF" />
+
+          @if (stepOneGroup.get('cpf')?.invalid &&
+            stepOneGroup.get('cpf')?.touched) {
+
+            <div class="erro">
+              @if (stepOneGroup.get('cpf')?.hasError('required')) {
+                <span>O CPF é obrigatório.</span>
+              }
+              @if (stepOneGroup.get('cpf')?.hasError('pattern')) {
+                <span>O CPF deve ter 11 dígitos numéricos.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <button type="button" (click)="goToStepTwo()" [disabled]="carregando || stepOneGroup.invalid">
+          Prosseguir
+        </button>
+      </div>
+
+      }
+
+
+      @if (currentStep === 2) {
+
+        <div formGroupName="stepTwoGroup">
+          <div class="form-group">
+            <input type="password" id="senha" formControlName="senha" placeholder="Senha" />
+
+            @if (stepTwoGroup.get('senha')?.invalid &&
+              stepTwoGroup.get('senha')?.touched) {
+
+              <div class="erro">
+                @if (stepTwoGroup.get('senha')?.hasError('required')) {
+                  <span>A senha é obrigatória.</span>
+                }
+
+                @if (stepTwoGroup.get('senha')?.hasError('minlength')) {
+                  <span>A senha deve ter no mínimo 6 caracteres.</span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <input type="password" id="senhaNovamente" formControlName="senhaNovamente" placeholder="Confirmar senha" />
+
+            @if (stepTwoGroup.get('senhaNovamente')?.invalid &&
+              stepTwoGroup.get('senhaNovamente')?.touched) {
+
+              <div class="erro">
+                @if (stepTwoGroup.get('senhaNovamente')?.hasError('required')) {
+                  <span>A confirmação da senha é obrigatória.</span>
+                }
+              </div>
+            }
+
+            @if (stepTwoGroup.hasError('passwordsMismatch') &&
+              stepTwoGroup.get('senhaNovamente')?.touched) {
+              <div class="erro">As senhas digitadas não coincidem.</div>
+            }
+          </div>
+
+          <button type="button" (click)="goToStepOne()" [disabled]="carregando" class="btn-secondary">
+            Voltar
+          </button>
+
+          <button type="submit" [disabled]="cadastroForm.invalid || carregando" class="btn-primary">
+            @if (carregando) {
+              <span>Cadastrando...</span>
+            } @else {
+              <span>Cadastrar</span>
+            }
+          </button>
+        </div>
+      }
+    </form>
+
+    <hr>
+    <div class="login">
+      <p>Já possui uma conta?</p>
+      <span (click)="goToLogin()">Faça login</span>
+    </div>
+  </div>
+</div>

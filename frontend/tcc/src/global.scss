@@ -34,4 +34,29 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
+.ion-page {
+  align-items: center;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+hr {
+  margin: 1rem;
+  height: 1px;
+  margin-top: 30%;
+  background-color: #c9c9c9;
+}
+
+input.ng-valid.ng-touched {
+  background-color: #ffffff !important;
+}
+
+input {
+  background-color: #ffffff !important;
+}

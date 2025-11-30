@@ -1,0 +1,79 @@
+<div class="login-container">
+  <h1 class="logo">CuritibAtiva</h1>
+
+  <div class="content">
+    <div class="h2">
+      <h2>Entre em sua conta</h2>
+      <p>para acessar todas as funcionalidades</p>
+    </div>
+
+  @if (mensagemErro) {
+  <div class="alert alert-danger">
+    {{ mensagemErro }}
+  </div>
+  }
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
+    <div class="form-group">
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Email"
+      />
+
+      @if (emailControl?.invalid && (emailControl?.dirty ||
+      emailControl?.touched)) {
+      <div class="erro">
+        @if (emailControl?.hasError('required')) {
+        <span>O e-mail é obrigatório.</span>
+        } @else if (emailControl?.hasError('email')) {
+        <span>Por favor, insira um endereço de e-mail válido</span>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <input
+        type="password"
+        id="senha"
+        formControlName="senha"
+        placeholder="Senha"
+      />
+
+      @if (senhaControl?.invalid && (senhaControl?.dirty ||
+      senhaControl?.touched)) {
+      <div class="erro">
+        @if (senhaControl?.hasError('required')) {
+        <span>A senha é obrigatória.</span>
+        } @else if (senhaControl?.hasError('minlength')) {
+        <span>A senha deve ter no mínimo 6 caracteres.</span>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="redefinir-senha">
+      <a (click)="goToRecuperarSenha()">Esqueceu sua senha?</a>
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid || carregando">
+      @if (carregando) {
+      <span>Entrando...</span>
+      } @else {
+      <span>Entrar</span>
+      }
+    </button>
+  </form>
+
+  <div class="cadastro-prompt">
+    <p>Não possui uma conta?</p>
+    <span (click)="goToCadastro()">Cadastrar</span>
+  </div>
+
+  <div class="recuperar-conta">
+    <a (click)="goToReativarConta()">Reativar conta</a>
+  </div>
+</div>
+</div>

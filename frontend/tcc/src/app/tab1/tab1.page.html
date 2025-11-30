@@ -1,17 +1,130 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="cadastro-container">
+  <div class="h2">
+    <h2>Editar perfil</h2>
+    <p>atualize as suas informações</p>
+  </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if (mensagemSucesso) {
+  <div class="alert alert-success">{{ mensagemSucesso }}</div>
+  } @if (mensagemErro) {
+  <div class="alert alert-danger">{{ mensagemErro }}</div>
+  } @if (carregando) {
+  <div class="loading-spinner">
+    <div class="spinner-icon"></div>
+    <span>Carregando...</span>
+  </div>
+  } @if (!carregando && !mostraConfirmacaoDelecao) {
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
-</ion-content>
+  <form #perfilForm="ngForm" (ngSubmit)="salvarAlteracoes()">
+    <div class="form-group">
+      <input
+        id="nome"
+        type="text"
+        name="nome"
+        [(ngModel)]="dadosFormulario.nome"
+        required
+        placeholder="Nome"
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        id="email"
+        type="email"
+        name="email"
+        [(ngModel)]="dadosFormulario.email"
+        required
+        placeholder="Email"
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        id="cpf"
+        type="text"
+        [value]="perfilAtual.cpf"
+        readonly
+        class="text-gray-500 readonly-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        id="senhaAntiga"
+        type="password"
+        name="senhaAntiga"
+        [(ngModel)]="dadosFormulario.senhaAntiga"
+        [required]="estaTentandoMudarSenha()"
+        placeholder="Senha atual"
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        id="senhaNova"
+        type="password"
+        name="senhaNova"
+        [(ngModel)]="dadosFormulario.senhaNova"
+        minlength="6"
+        placeholder="Nova senha"
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        id="senhaNovaNovamente"
+        type="password"
+        name="senhaNovaNovamente"
+        [(ngModel)]="dadosFormulario.senhaNovaNovamente"
+        placeholder="Confirmar senha"
+      />
+    </div>
+
+    @if (senhasNaoConferem()) {
+    <div class="erro erro-block">As novas senhas digitadas não coincidem.</div>
+    }
+
+    <button
+      type="submit"
+      class="btn-primary"
+      [disabled]="perfilForm.invalid || carregando || senhasNaoConferem()"
+    >
+      Editar
+    </button>
+
+    <hr />
+    <a class="excluir-conta" (click)="iniciarDelecao()"> Excluir conta </a>
+  </form>
+
+  } @else if (mostraConfirmacaoDelecao) {
+
+  <div class="modal-overlay">
+    <div class="confirmar-exclusao">
+      <div class="text-confirmar-exclusao">
+        <h4>Excluir conta?</h4>
+        <p>Você deseja realmente excluir a sua conta?</p>
+      </div>
+
+      <div class="btns">
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="cancelarDelecao()"
+          [disabled]="carregando"
+        >
+          Não
+        </button>
+
+        <button
+          type="button"
+          class="btn-confirmar"
+          (click)="confirmarDelecao()"
+          [disabled]="carregando"
+        >
+          Sim
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>
