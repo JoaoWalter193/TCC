@@ -1,2 +1,41 @@
 // For information on how to create your own theme, please refer to:
 // https://ionicframework.com/docs/theming/
+
+:root {
+  --ion-color-primary: #1DA1F2;
+  --ion-color-primary-rgb: 29, 161, 242;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1a8dd6;
+  --ion-color-primary-tint: #35acf5;
+
+  --ion-background-color: #ffffff;
+  --ion-text-color: #121212;
+  --ion-text-color-rgb: 18, 18, 18;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap');
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  color: #121212;
+  margin: 0;
+  padding: 0;
+}
+
+body, p, span, a, ion-input, ion-textarea {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  color: #121212;
+}
+
+ion-label, ion-item {
+  font-family: 'Open Sans', sans-serif;
+  color: #121212;
+}
+
+ion-button {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}

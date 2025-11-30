@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="back-button-container">
+    <a (click)="goToLogin()"><ion-icon name="arrow-back"></ion-icon></a>
+  </div>
+
+  <h1 class="logo">CuritibAtiva</h1>
+
+  <div class="content">
+    <div class="h2">
+      <h2>{{ tituloTela }}</h2>
+      <p class="instrucao">{{ instrucaoTela }}</p>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="enviarAcao()">
+      <div class="form-group">
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Email"
+          [class.is-invalid]="
+            formulario.get('email')?.invalid && formulario.get('email')?.touched
+          "
+        />
+
+        @if (formulario.get('email')?.invalid &&
+        formulario.get('email')?.touched) {
+        <div class="text-danger">
+          Por favor, insira um endereço de email válido
+        </div>
+        }
+      </div>
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+        } @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      <button type="submit" [disabled]="loading || formulario.invalid">
+        @if (loading) {
+        <span>Processando...</span>
+        } @else {
+        <span> Enviar email </span>
+        }
+      </button>
+    </form>
+  </div>
+</div>

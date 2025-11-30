@@ -1,0 +1,254 @@
+$color-primary: #1da1f2;
+$color-text: #333333;
+$color-background: #f4f7f6;
+$color-error: #dc3545;
+$color-success: #28a745;
+$color-medium: #808080;
+
+.cadastro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  min-height: 100vh;
+  background-color: $color-background;
+  color: $color-text;
+  text-align: center;
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+}
+
+.h2 {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  position: relative;
+  z-index: 1001;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-top: 0;
+    color: $color-text;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+}
+
+input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #ffffff;
+  color: $color-text;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+    outline: none;
+  }
+}
+
+input.ng-invalid.ng-touched {
+  border-color: $color-error;
+  background-color: #ffffff;
+}
+
+.readonly-input {
+  background-color: #f0f0f0 !important;
+  color: #888;
+  cursor: default;
+}
+
+.erro {
+  color: $color-error;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.erro-block {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s, opacity 0.3s, color 0.3s;
+  text-transform: uppercase;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #a0c9e7;
+  }
+}
+
+.btn-primary {
+  background-color: $color-primary;
+  color: #ffffff;
+
+  &:hover:not(:disabled) {
+    background-color: #1a8dd6;
+  }
+}
+
+.excluir-conta {
+  display: block;
+  color: $color-error;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 1rem;
+
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+hr {
+  margin-top: 5rem;
+}
+
+.alert {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  text-align: left;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: $color-success;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: $color-error;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  font-size: 0.9rem;
+  color: $color-medium;
+}
+
+.spinner-icon {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid $color-primary;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 5px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmar-exclusao {
+  z-index: 1002;
+  width: 90%;
+  max-width: 350px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.text-confirmar-exclusao {
+  margin-bottom: 20px;
+
+  h4 {
+    font-size: 1.2rem;
+    color: $color-text;
+    margin-top: 0;
+  }
+  p {
+    color: $color-medium;
+    margin-bottom: 0;
+  }
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btns button {
+  background-color: transparent;
+}
+
+.btn-cancelar {
+  color: $color-primary;
+
+  &:hover:not(:disabled) {
+    background-color: #e0e0e0;
+  }
+}
+
+.btn-confirmar {
+  color: $color-error;
+
+  &:hover:not(:disabled) {
+    background-color: darken($color-error, 10%);
+  }
+}

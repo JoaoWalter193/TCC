@@ -1,0 +1,201 @@
+$color-primary: var(--ion-color-primary);
+$color-text: var(--ion-text-color);
+$color-background: var(--ion-background-color);
+$color-error: #dc3545;
+$color-success: #28a745;
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+
+  padding-block: 5%;
+
+  text-align: center;
+  color: $color-text;
+  background-color: #ebebeb;
+}
+
+.content {
+  width: 100%;
+  max-width: 450px;
+  height: 100vh;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+  padding-inline: 2rem;
+}
+
+.ion-page {
+  align-items: center;
+}
+
+.logo {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $color-primary;
+
+  margin-bottom: 3rem;
+  margin-top: 3rem;
+}
+
+.h2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 400px;
+  max-width: 400px;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+
+  p {
+    font-family: "Poppins", sans-serif;
+  }
+}
+
+.alert {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 0.25rem;
+  text-align: left;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: $color-error;
+  border: 1px solid #f5c6cb;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #ffffff;
+  color: $color-text;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+    outline: none;
+  }
+}
+
+input.ng-invalid.ng-touched {
+  border-color: $color-error;
+  background-color: #ffffff;
+}
+
+input.ng-valid.ng-touched {
+  border-color: #ccc;
+  background-color: #ffffff;
+}
+
+.erro {
+  color: $color-error;
+  font-size: 0.85rem;
+  margin-top: 4px;
+
+  span {
+    color: $color-error;
+  }
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 25px;
+  transition: background-color 0.3s, opacity 0.3s;
+  background-color: $color-primary;
+  color: #ffffff;
+
+  span {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #1a8dd6;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.cadastro-prompt {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 25px;
+  font-size: 0.95rem;
+
+  p {
+    margin: 0 0 5px 0;
+    color: $color-text;
+  }
+
+  span {
+    color: $color-primary;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s;
+    margin-left: 0.25rem;
+
+    &:hover {
+      color: #1a8dd6;
+      text-decoration: underline;
+    }
+  }
+}
+
+.redefinir-senha {
+  text-align: end;
+
+  a {
+    font-size: 0.75rem;
+    color: $color-primary;
+    cursor: pointer;
+  }
+}
+
+.recuperar-conta {
+  margin-top: 14rem;
+
+  a {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: $color-primary;
+    cursor: pointer;
+  }
+}

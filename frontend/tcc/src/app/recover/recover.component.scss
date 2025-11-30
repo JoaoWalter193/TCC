@@ -1,0 +1,154 @@
+$color-primary: var(--ion-color-primary, #1d9bf0);
+$color-text: var(--ion-text-color, #333333);
+$color-background: var(--ion-background-color, #f4f5f8);
+$color-error: #dc3545;
+$color-success: #28a745;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+
+  padding-block: 5%;
+
+  text-align: center;
+  color: $color-text;
+  background-color: #ebebeb;
+}
+
+.content {
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+  padding-inline: 2rem;
+}
+
+
+
+.logo {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $color-primary;
+
+  margin-bottom: 3rem;
+  margin-top: 3rem;
+}
+
+.h2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+
+  p {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    margin-top: .25rem;
+    font-weight: 500;
+  }
+}
+
+.back-button-container {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 10;
+}
+
+ion-icon {
+  font-size: 28px;
+  color: var(
+    --ion-color-step-850,
+    #A1A1A1
+  )
+}
+
+.instrucao {
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+  color: $color-text;
+}
+
+.alert {
+  font-weight: 500;
+  text-align: left;
+  font-size: .8rem;
+  margin-top: .5rem;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: $color-error;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+  color: $color-success;
+}
+
+input {
+  width: 100%;
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: $color-text;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    outline: none;
+  }
+}
+
+input.is-invalid {
+  border-color: $color-error !important;
+  background-color: #fffafa;
+}
+
+.text-danger {
+  color: $color-error;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  text-align: left;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 25px;
+  transition: background-color 0.3s, opacity 0.3s;
+  background-color: $color-primary;
+  color: #ffffff;
+
+  span {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary;
+  }
+
+  &:disabled {
+    background-color: $color-primary;
+    opacity: 0.8;
+    cursor: not-allowed;
+  }
+}
