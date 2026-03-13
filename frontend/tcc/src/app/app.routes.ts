@@ -3,6 +3,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+  },
+
+  {
     path: 'cadastro',
     loadComponent: () =>
       import('./cadastro/cadastro.component').then((m) => m.CadastroComponent),
@@ -18,10 +23,5 @@ export const routes: Routes = [
     path: 'recover',
     loadComponent: () =>
       import('./recover/recover.component').then((m) => m.RecoverComponent),
-  },
-
-  {
-    path: '',
-    loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
   },
 ];
