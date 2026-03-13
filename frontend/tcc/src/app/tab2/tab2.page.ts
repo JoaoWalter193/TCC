@@ -9,6 +9,7 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -26,10 +27,14 @@ import { CardComponent } from '../components/card/card.component';
 })
 export class Tab2Page {
   auth = inject(AuthService);
-  constructor() {}
+  router = inject(Router);
   posts = [
     { id: 1, titulo: 'Post 1', texto: 'Conteúdo 1' },
     { id: 2, titulo: 'Post 2', texto: 'Conteúdo 2' },
     { id: 3, titulo: 'Post 3', texto: 'Conteúdo 3' },
   ];
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
 }
