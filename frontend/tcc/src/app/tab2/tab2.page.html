@@ -1,9 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    @if (auth.isLoggedIn()) {
+      <ion-button slot="end" fill="">
+        <ion-icon name="menu-outline"></ion-icon>
+      </ion-button>
+    } @else {
+      <ion-button slot="end" routerLink="/tabs/tab1">Entrar</ion-button>
+    }
   </ion-toolbar>
+  <ion-grid>
+    
+  </ion-grid>
 </ion-header>
 
 <ion-content [fullscreen]="true">
