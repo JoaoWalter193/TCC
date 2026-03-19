@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonToolbar, IonButton, IonIcon, IonCol, IonText } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonButton, IonIcon, IonCol } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -18,8 +18,7 @@ import { Router } from '@angular/router';
     FormsModule,
     IonButton,
     IonIcon,
-    IonCol,
-    IonText
+    IonCol
 ],
 })
 export class Tab5Page {
