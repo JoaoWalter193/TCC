@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    @if (auth.isLoggedIn()) {
+    <ion-button slot="end" fill="">
+      <ion-icon name="menu-outline"></ion-icon>
+    </ion-button>
+    } @else {
+    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
+    }
+  </ion-toolbar>
+  <ion-searchbar placeholder="Buscar"></ion-searchbar>
+  <ion-row class="ion-align-items-center">
+    <ion-icon name="trending-up-outline" size="large" color="primary"></ion-icon>
+    <ion-text color="primary">Em destaque</ion-text>
+  </ion-row>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">tab4</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content>

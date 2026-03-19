@@ -14,8 +14,9 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { importProvidersFrom } from '@angular/core';
+import { importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
 import { authInterceptor } from './app/services/auth.interceptor';
+import { AuthService } from './app/services/auth.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -25,5 +26,9 @@ bootstrapApplication(AppComponent, {
 
     provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom(FormsModule),
+    provideAppInitializer(() => {
+      const auth = inject(AuthService);
+      return auth.checkAuth();
+    }),
   ],
 });
