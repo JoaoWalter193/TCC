@@ -1,17 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    @if (auth.isLoggedIn()) {
+    <ion-button slot="end" fill="">
+      <ion-icon name="menu-outline"></ion-icon>
+    </ion-button>
+    } @else {
+    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
+    }
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if (auth.isLoggedIn()) {
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  } @else {
+  <ion-col>
+    <ion-icon name="cloud-offline-outline"></ion-icon>
+    <p>Conecte-se</p>
+    <p>para se manter informado!</p>
+    <a (click)="navigateToLogin()">Quero me manter informado</a>
+  </ion-col>
+  }
 </ion-content>
