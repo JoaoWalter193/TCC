@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ResponseDTO } from '../models/dto/response-dto';
 import { LoginRequest } from '../models/dto/login-request';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -146,7 +148,8 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('user_info', JSON.stringify(response.usuario));
           }
 
-          this.router.navigate(['/tabs/tab1']);
+          this.auth.checkAuth();
+          this.router.navigate(['/tabs/tab2']);
         } else if (response) {
           this.mensagemErro =
             response.mensagem || 'Resposta de login inválida ou incompleta.';

@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    @if (auth.isLoggedIn()) {
+    <ion-button slot="end" fill="">
+      <ion-icon name="menu-outline"></ion-icon>
+    </ion-button>
+
+    <ion-list>
+      <ion-item>
+        <ion-select aria-label="Dashboard" value="dashboard">
+          <ion-select-option value="dashboard">Dashboard</ion-select-option>
+          <ion-select-option value="my-dashboard">Meus Dashboards</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    } @else {
+    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
+    <ion-text>
+      <h2>Dashboard</h2>
+    </ion-text>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+</ion-content>
