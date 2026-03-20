@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonText, IonRow } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonText, IonRow, IonMenuButton, IonButtons } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -21,7 +21,9 @@ import { Router } from '@angular/router';
     IonIcon,
     IonSearchbar,
     IonText,
-    IonRow
+    IonRow,
+    IonMenuButton,
+    IonButtons
 ],
 })
 export class Tab4Page {
