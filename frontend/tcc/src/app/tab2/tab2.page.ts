@@ -1,12 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  IonHeader,
-  IonToolbar,
-  IonContent,
-  IonGrid,
-  IonButton,
-  IonIcon,
-} from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonContent, IonGrid, IonButton, IonIcon, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
 import { Router } from '@angular/router';
@@ -23,7 +16,9 @@ import { Router } from '@angular/router';
     IonButton,
     IonIcon,
     CardComponent,
-  ],
+    IonButtons,
+    IonMenuButton
+],
 })
 export class Tab2Page {
   auth = inject(AuthService);

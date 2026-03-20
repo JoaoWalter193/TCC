@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonContent, IonIcon, IonCol, IonButton } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonContent, IonIcon, IonCol, IonButton, IonMenuButton, IonButtons } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
-  imports: [IonHeader, IonToolbar, IonContent, IonIcon, IonCol, IonButton],
+  imports: [IonHeader, IonToolbar, IonContent, IonIcon, IonCol, IonButton, IonMenuButton, IonButtons],
 })
 export class Tab3Page {
   auth = inject(AuthService);
