@@ -1,9 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     @if (auth.isLoggedIn()) {
-    <ion-button slot="end" fill="">
-      <ion-icon name="menu-outline"></ion-icon>
-    </ion-button>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     } @else {
     <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
     }
