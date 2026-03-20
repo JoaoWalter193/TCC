@@ -1,7 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonToolbar, IonButton, IonIcon, IonText, IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonButton,
+  IonText,
+  IonList,
+  IonItem,
+  IonSelect,
+  IonSelectOption,
+  MenuController,
+  IonMenuButton,
+  IonButtons,
+} from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -10,7 +23,21 @@ import { Router } from '@angular/router';
   templateUrl: './tab6.page.html',
   styleUrls: ['./tab6.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, IonIcon, IonText, IonList, IonItem, IonSelect, IonSelectOption]
+  imports: [
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    CommonModule,
+    FormsModule,
+    IonButton,
+    IonButtons,
+    IonText,
+    IonList,
+    IonItem,
+    IonSelect,
+    IonSelectOption,
+    IonMenuButton,
+],
 })
 export class Tab6Page {
   auth = inject(AuthService);
@@ -18,5 +45,12 @@ export class Tab6Page {
     this.router.navigate(['/login']);
   }
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private menuCtrl: MenuController,
+  ) {}
+
+  async openMenu() {
+    await this.menuCtrl.open();
+  }
 }
