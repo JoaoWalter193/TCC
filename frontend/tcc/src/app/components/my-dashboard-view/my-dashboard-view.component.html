@@ -1,0 +1,27 @@
+<ion-content [fullscreen]="true">
+
+  @if (auth.isLoggedIn()) {
+
+    <div class="dashboard-container">
+      <h2>Bem-vindo</h2>
+    </div>
+
+  } @else {
+
+    <div class="login-required-container">
+
+      <ion-icon name="bar-chart-outline" size="large"></ion-icon>
+
+      <h2>Meus Dashboards</h2>
+
+      <p>Faça login para acessar seus dashboards personalizados</p>
+
+      <ion-button fill="clear" (click)="navigateToLogin()">
+        Entrar para continuar
+      </ion-button>
+
+    </div>
+
+  }
+
+</ion-content>
