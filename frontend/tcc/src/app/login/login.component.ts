@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { ResponseDTO } from '../models/dto/response-dto';
 import { LoginRequest } from '../models/dto/login-request';
 import { AuthService } from '../services/auth.service';
+import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-login',
@@ -21,8 +22,9 @@ import { AuthService } from '../services/auth.service';
   imports: [
     ReactiveFormsModule,
     CommonModule,
-
-  ],
+    IonButtons,
+    IonBackButton
+],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
