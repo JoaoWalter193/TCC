@@ -6,7 +6,6 @@ import {
   IonHeader,
   IonToolbar,
   IonButton,
-  IonText,
   IonList,
   IonItem,
   IonSelect,
@@ -17,6 +16,8 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { DashboardViewComponent } from "../components/dashboard-view/dashboard-view.component";
+import { MyDashboardViewComponent } from "../components/my-dashboard-view/my-dashboard-view.component";
 
 @Component({
   selector: 'app-tab6',
@@ -31,15 +32,18 @@ import { Router } from '@angular/router';
     FormsModule,
     IonButton,
     IonButtons,
-    IonText,
     IonList,
     IonItem,
     IonSelect,
     IonSelectOption,
     IonMenuButton,
+    DashboardViewComponent,
+    MyDashboardViewComponent
 ],
 })
 export class Tab6Page {
+  modoSelecionado: string = 'dashboard';
+
   auth = inject(AuthService);
   navigateToLogin() {
     this.router.navigate(['/login']);
@@ -52,5 +56,9 @@ export class Tab6Page {
 
   async openMenu() {
     await this.menuCtrl.open();
+  }
+
+  mudarModo(event: CustomEvent) {
+    this.modoSelecionado = event.detail.value;
   }
 }
