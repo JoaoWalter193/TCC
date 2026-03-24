@@ -8,7 +8,8 @@
 
   <ion-list>
     <ion-item>
-      <ion-select aria-label="Dashboard" value="dashboard" cancelText="Cancelar" mode="ios">
+      <ion-select aria-label="Dashboard" value="dashboard" cancelText="Cancelar" mode="ios"
+        (ionChange)="mudarModo($event)">
         <ion-select-option value="dashboard">Dashboard</ion-select-option>
         <ion-select-option value="my-dashboard">Meus Dashboards</ion-select-option>
       </ion-select>
@@ -17,12 +18,30 @@
   } @else {
   <ion-toolbar>
     <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
-    <ion-text>
-      <h2>Dashboard</h2>
-    </ion-text>
+
+    <ion-list>
+      <ion-item>
+        <ion-select aria-label="Dashboard" value="dashboard" cancelText="Cancelar" mode="ios"
+          (ionChange)="mudarModo($event)">
+          <ion-select-option value="dashboard">Dashboard</ion-select-option>
+          <ion-select-option value="my-dashboard">Meus Dashboards</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
   </ion-toolbar>
   }
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  @switch (modoSelecionado) {
+  @case ('dashboard') {
+  <app-dashboard-view></app-dashboard-view>
+  }
+  @case ('my-dashboard') {
+  <app-my-dashboard-view></app-my-dashboard-view>
+  }
+  @default {
+  <app-dashboard-view></app-dashboard-view>
+  }
+  }
 </ion-content>
