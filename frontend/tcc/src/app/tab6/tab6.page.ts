@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -18,6 +18,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { DashboardViewComponent } from "../components/dashboard-view/dashboard-view.component";
 import { MyDashboardViewComponent } from "../components/my-dashboard-view/my-dashboard-view.component";
+import { DashboardMode } from '../services/dashboard-mode';
 
 @Component({
   selector: 'app-tab6',
@@ -41,7 +42,7 @@ import { MyDashboardViewComponent } from "../components/my-dashboard-view/my-das
     MyDashboardViewComponent
 ],
 })
-export class Tab6Page {
+export class Tab6Page implements OnInit {
   modoSelecionado: string = 'dashboard';
 
   auth = inject(AuthService);
@@ -52,8 +53,15 @@ export class Tab6Page {
   constructor(
     private router: Router,
     private menuCtrl: MenuController,
+    private modoService: DashboardMode
   ) {}
-
+  
+  ngOnInit(): void {
+    this.modoService.modoSelecionado$.subscribe(modo => {
+      this.modoSelecionado = modo;
+    })
+  }
+  
   async openMenu() {
     await this.menuCtrl.open();
   }
