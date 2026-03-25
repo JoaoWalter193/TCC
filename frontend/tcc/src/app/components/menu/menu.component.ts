@@ -2,15 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import {
-  IonMenu,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonList,
-  IonItem,
-} from '@ionic/angular/standalone';
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonMenuToggle } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-menu',
@@ -27,6 +19,7 @@ import {
     IonContent,
     IonList,
     IonItem,
-  ],
+    IonMenuToggle
+],
 })
 export class MenuComponent {}

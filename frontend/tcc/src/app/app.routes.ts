@@ -36,4 +36,8 @@ export const routes: Routes = [
     path: 'tab6',
     loadComponent: () => import('./tab6/tab6.page').then( m => m.Tab6Page)
   },
+  {
+    path: 'perfil',
+    loadComponent: () => import('./perfil/perfil.component').then(m => m.PerfilComponent)
+  }
 ];
