@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 
 import { CriarUsuarioDTO } from '../models/dto/criar-usuario-dto';
 import { ResponseDTO } from '../models/dto/response-dto';
+import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
 
 
 export const PasswordsMatchValidator: ValidatorFn = (
@@ -37,7 +38,7 @@ export const PasswordsMatchValidator: ValidatorFn = (
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, IonButtons, IonBackButton],
 })
 export class CadastroComponent implements OnInit {
   cadastroForm!: FormGroup;
