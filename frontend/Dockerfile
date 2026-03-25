@@ -4,13 +4,15 @@ LABEL maintainer="Lucas Trindade"
 
 ARG JAVA_VERSION=17
 ARG NODE_VERSION=20
+ARG UID=1000
+ARG GID=1000
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ANDROID_HOME=/opt/android-sdk
 ENV GRADLE_HOME=/opt/gradle
 
 RUN apt-get update && apt-get install -y \
-    curl git unzip zip openjdk-${JAVA_VERSION}-jdk python3 \
+    curl git unzip zip openjdk-${JAVA_VERSION}-jdk python3 sudo \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y nodejs
 
@@ -33,4 +35,11 @@ ENV PATH="${PATH}:${ANDROID_HOME}/cmdline-tools:${ANDROID_HOME}/platform-tools"
 
 RUN npm install -g @ionic/cli@7 @capacitor/cli@6 concurrently chokidar-cli
 
+RUN groupadd -g ${GID} appgroup && \
+    useradd -m -u ${UID} -g appgroup appuser
+
+RUN mkdir -p /workdir && chown -R appuser:appgroup /workdir
+
 WORKDIR /workdir
+
+USER appuser

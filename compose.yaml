@@ -2,9 +2,17 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        UID: "${UID:-1000}"
+        GID: "${GID:-1000}"
+
     container_name: tcc-frontend
     working_dir: /workdir
-    user: "${UID:-1000}:${GID:-1000}"
+
+    environment:
+      HOME: /tmp
+      npm_config_cache: /tmp/.npm
+
     command: >
       sh -c "
         npm install &&
@@ -19,6 +27,7 @@ services:
 
     volumes:
       - ./frontend/tcc:/workdir
+
     ports:
       - "80:4200"
       - "8100:8100"
@@ -30,11 +39,12 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/TCC
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=senha
+      - MAVEN_CONFIG=/tmp/.m2
     working_dir: /app
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./backend/clientes_TCC/:/app
-      - ~/.m2:/home/app/.m2
+      - ~/.m2:/tmp/.m2
     ports:
       - 8080:8080
 
