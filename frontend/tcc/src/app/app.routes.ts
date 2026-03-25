@@ -47,5 +47,9 @@ export const routes: Routes = [
   {
     path: 'historico',
     loadComponent: () => import('./historico/historico.component').then(m => m.HistoricoComponent)
+  },
+  {
+    path: 'configuracoes',
+    loadComponent: () => import('./configuracoes/configuracoes.component').then(m => m.ConfiguracoesComponent)
   }
 ];
