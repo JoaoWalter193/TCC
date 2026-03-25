@@ -24,20 +24,28 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./recover/recover.component').then((m) => m.RecoverComponent),
   },
-  {
-    path: 'tab4',
-    loadComponent: () => import('./tab4/tab4.page').then( m => m.Tab4Page)
+  {path: 'tabs',
+    children: [
+      {
+        path: 'tab4',
+        loadComponent: () => import('./tab4/tab4.page').then( m => m.Tab4Page)
+      },
+      {
+        path: 'tab5',
+        loadComponent: () => import('./tab5/tab5.page').then( m => m.Tab5Page)
+      },
+      {
+        path: 'tab6',
+        loadComponent: () => import('./tab6/tab6.page').then( m => m.Tab6Page)
+      },
+    ]
+  },
+    {
+      path: 'perfil',
+      loadComponent: () => import('./perfil/perfil.component').then(m => m.PerfilComponent)
   },
   {
-    path: 'tab5',
-    loadComponent: () => import('./tab5/tab5.page').then( m => m.Tab5Page)
-  },
-  {
-    path: 'tab6',
-    loadComponent: () => import('./tab6/tab6.page').then( m => m.Tab6Page)
-  },
-  {
-    path: 'perfil',
-    loadComponent: () => import('./perfil/perfil.component').then(m => m.PerfilComponent)
+    path: 'historico',
+    loadComponent: () => import('./historico/historico.component').then(m => m.HistoricoComponent)
   }
 ];
