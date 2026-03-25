@@ -4,6 +4,7 @@ services:
       context: ./frontend
     container_name: tcc-frontend
     working_dir: /workdir
+    user: "${UID:-1000}:${GID:-1000}"
     command: >
       sh -c "
         npm install &&
@@ -30,6 +31,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=senha
     working_dir: /app
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./backend/clientes_TCC/:/app
       - ~/.m2:/root/.m2
