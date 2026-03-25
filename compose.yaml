@@ -34,7 +34,7 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./backend/clientes_TCC/:/app
-      - ~/.m2:/root/.m2
+      - ~/.m2:/home/app/.m2
     ports:
       - 8080:8080
 
