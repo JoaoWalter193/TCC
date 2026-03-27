@@ -1,5 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonContent, IonGrid, IonButton, IonIcon, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
+import {
+  IonHeader,
+  IonToolbar,
+  IonContent,
+  IonButton,
+  IonButtons,
+  IonMenuButton,
+} from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
 import { Router } from '@angular/router';
@@ -12,17 +19,17 @@ import { Router } from '@angular/router';
     IonHeader,
     IonToolbar,
     IonContent,
-    IonGrid,
     IonButton,
-    IonIcon,
     CardComponent,
     IonButtons,
-    IonMenuButton
-],
+    IonMenuButton,
+  ],
 })
 export class Tab2Page {
   auth = inject(AuthService);
-  router = inject(Router);
+  
+  constructor(private router: Router) {}
+  
   posts = [
     { id: 1, titulo: 'Post 1', texto: 'Conteúdo 1' },
     { id: 2, titulo: 'Post 2', texto: 'Conteúdo 2' },

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { AlterarUsuarioDTO } from '../models/dto/alterar-usuario-dto';
 import { UsuarioDTO } from '../models/dto/usuario-dto';
+import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
 
 interface FormularioPerfil extends AlterarUsuarioDTO {
   senhaNovaNovamente: string;
@@ -15,7 +16,7 @@ interface FormularioPerfil extends AlterarUsuarioDTO {
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, IonButtons, IonBackButton],
   standalone: true,
 })
 export class Tab1Page implements OnInit {

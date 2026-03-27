@@ -1,3 +1,35 @@
-<p>
-  perfil works!
-</p>
+<ion-header mode="ios" collapse="fade">
+  <ion-buttons mode="md">
+    <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+</ion-header>
+
+<ion-content>
+  <div id="top">
+    <h2>Nome</h2>
+    <p>email@exemplo.com</p>
+  </div>
+
+  <div id="content">
+    <div id="info">
+      <div class="info-item">
+        <strong>Favortitos</strong>
+        <p>numero</p>
+      </div>
+
+      <div class="info-item">
+        <strong>Seguindo</strong>
+        <p>numero</p>
+      </div>
+    </div>
+
+    <div id="options">
+      <ion-list>
+        <ion-item href="/historico">Histórico</ion-item>
+        <ion-item (click)="navMeusDashboards()">Meus Dashboards</ion-item>
+        <ion-item href="/configuracoes">Configurações</ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>
