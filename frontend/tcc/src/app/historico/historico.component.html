@@ -1,3 +1,12 @@
-<p>
-  historico works!
-</p>
+<ion-header mode="ios" collapse="fade">
+  <ion-buttons mode="md">
+    <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+</ion-header>
+
+<ion-content>
+  @for (post of postsVisualizados; track post.idVisualizado) {
+    <app-card [post]="post"></app-card>
+  }
+</ion-content>
