@@ -1,3 +1,22 @@
-<p>
-  configuracoes works!
-</p>
+<ion-header mode="ios" collapse="fade">
+  <ion-buttons mode="md">
+    <ion-back-button defaultHref="/perfil"></ion-back-button>
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item href="tabs/tab1">Editar Perfil</ion-item>
+    <ion-item>
+      <ion-toggle [ngModel]="paletteToggle" (ionChange)="toggleChange($event)">Modo escuro</ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-toggle [ngModel]="notifyToggle" (ionChange)="toggleNotify($event)">Notificações</ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <div>
+    <ion-button mode="ios" fill="clear" color="danger">Sair</ion-button>
+  </div>
+</ion-content>
