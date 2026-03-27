@@ -1,14 +1,38 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+  IonContent,
+  IonButtons,
+  IonBackButton,
+  IonMenuButton,
+  IonHeader,
+  IonList,
+  IonItem,
+} from '@ionic/angular/standalone';
+import { DashboardMode } from '../services/dashboard-mode';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss'],
+  imports: [
+    IonContent,
+    IonButtons,
+    IonBackButton,
+    IonMenuButton,
+    IonHeader,
+    IonList,
+    IonItem,
+  ],
 })
-export class PerfilComponent  implements OnInit {
+export class PerfilComponent {
+  constructor(
+    private modoService: DashboardMode,
+    private router: Router,
+  ) {}
 
-  constructor() { }
-
-  ngOnInit() {}
-
+  navMeusDashboards() {
+    this.modoService.setModo('my-dashboard');
+    this.router.navigate(['tabs/tab6']);
+  }
 }
