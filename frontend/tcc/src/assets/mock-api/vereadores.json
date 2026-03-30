@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "nome": "Andressa Bianchessi",
+    "partido": "UNIÃO",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 1",
+    "telefone": "3350-4695",
+    "email": "andressa.oliveira@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 2,
+    "nome": "Angelo Vanhoni",
+    "partido": "PT",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 2",
+    "telefone": "3350-4512",
+    "email": "angelo.vanhoni@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 3,
+    "nome": "Beto Moraes",
+    "partido": "PSD",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 3",
+    "telefone": "3350-4942",
+    "email": "beto.moraes@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 4,
+    "nome": "Bruno Rossi",
+    "partido": "AGIR",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 4",
+    "telefone": "3350-4544",
+    "email": "bruno.rossi@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 5,
+    "nome": "Bruno Secco",
+    "partido": "REPUBLICANOS",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 5",
+    "telefone": "3350-4682",
+    "email": "bruno.souza@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 6,
+    "nome": "Camilla Gonda",
+    "partido": "PSB",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 6",
+    "telefone": "3350-4553",
+    "email": "camilla.gonda@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 7,
+    "nome": "Carlise Kwiatkowski",
+    "partido": "PL",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 7",
+    "telefone": "3350-4573",
+    "email": "carlise.kwiatkowski@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 8,
+    "nome": "Da Costa",
+    "partido": "PODE",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 8",
+    "telefone": "3350-4711",
+    "email": "gustavo.costa@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 9,
+    "nome": "Delegada Tathiana Guzella",
+    "partido": "UNIÃO",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 9",
+    "telefone": "3350-4509",
+    "email": "tathiana.guzella@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 10,
+    "nome": "Eder Borges",
+    "partido": "PL",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 10",
+    "telefone": "3350-4510",
+    "email": "eder.borges@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 11,
+    "nome": "Fernando Klinger",
+    "partido": "PL",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 11",
+    "telefone": "3350-4511",
+    "email": "fernando.klinger@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 12,
+    "nome": "Jasson Goulart",
+    "partido": "REPUBLICANOS",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 12",
+    "telefone": "3350-4512",
+    "email": "jasson.goulart@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 13,
+    "nome": "João Bettega",
+    "partido": "UNIÃO",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 13",
+    "telefone": "3350-4513",
+    "email": "joao.bettega@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 14,
+    "nome": "Laís Leão",
+    "partido": "PDT",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 14",
+    "telefone": "3350-4514",
+    "email": "lais.leao@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 15,
+    "nome": "Lórens Nogueira",
+    "partido": "PP",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 15",
+    "telefone": "3350-4515",
+    "email": "lorens.nogueira@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 16,
+    "nome": "Rafaela Lupion",
+    "partido": "PSD",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 16",
+    "telefone": "3350-4516",
+    "email": "rafaela.lupion@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 17,
+    "nome": "Renan Ceschin",
+    "partido": "PODE",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 17",
+    "telefone": "3350-4517",
+    "email": "renan.ceschin@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 18,
+    "nome": "Rodrigo Marcial",
+    "partido": "NOVO",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 18",
+    "telefone": "3350-4518",
+    "email": "rodrigo.marcial@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 19,
+    "nome": "Tiago Zeglin",
+    "partido": "MDB",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 19",
+    "telefone": "3350-4519",
+    "email": "tiago.zeglin@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  },
+  {
+    "id": 20,
+    "nome": "Toninho da Farmácia",
+    "partido": "PSD",
+    "legislaturas": "2025-2028",
+    "gabinete": "Gabinete 20",
+    "telefone": "3350-4520",
+    "email": "toninho.farmacia@cmc.pr.gov.br",
+    "site": "https://www.curitiba.pr.leg.br",
+    "posts": []
+  }
+]

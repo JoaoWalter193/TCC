@@ -12,6 +12,6 @@
 
 <ion-content [fullscreen]="true">
   @for (post of posts; track post.id) {
-  <app-card [post]="post"></app-card>
+  <app-card [post]="post" [link]="['/proposicao', post.id]"></app-card>
   }
 </ion-content>
