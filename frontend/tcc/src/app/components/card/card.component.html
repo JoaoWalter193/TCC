@@ -1,9 +1,17 @@
-<ion-card>
+<ion-card [routerLink]="link" button="true">
+
   <ion-card-header>
-    <ion-card-title>{{ post.titulo }}</ion-card-title>
+    <ion-card-title>{{ post.ementa }}</ion-card-title>
   </ion-card-header>
 
   <ion-card-content>
-    {{ post.texto }}
+
+    <p><strong>Tipo:</strong> {{ post.tipoProposicao }}</p>
+
+    <p><strong>Tag:</strong> {{ post.tag }}</p>
+
+    <p>{{ post.texto }}</p>
+
   </ion-card-content>
+
 </ion-card>

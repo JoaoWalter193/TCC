@@ -6,7 +6,17 @@
 </ion-header>
 
 <ion-content>
-  @for (post of postsVisualizados; track post.idVisualizado) {
-    <app-card [post]="post"></app-card>
+  @for (visitado of Visitados; track visitado.id) {
+
+  @if (visitado.tipo === 'proposicao') {
+  <app-card [post]="visitado.component" [link]="['/proposicao', visitado.component.id]">
+  </app-card>
+  }
+
+  @else if (visitado.tipo === 'vereador') {
+  <app-card-vereador [post]="visitado.component" [link]="['/vereador', visitado.component.id]">
+  </app-card-vereador>
+  }
+
   }
 </ion-content>
