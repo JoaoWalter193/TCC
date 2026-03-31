@@ -1,17 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/angular/standalone";
-import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
 
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss'],
+  selector: 'app-card-vereador',
+  templateUrl: './card-vereador.component.html',
+  styleUrls: ['./card-vereador.component.scss'],
   imports: [IonCard, IonCardHeader, IonCardTitle, IonCardContent, RouterLink],
 })
-export class CardComponent {
-  @Input() post!: ProposicaoDTO;
+export class CardVereadorComponent  implements OnInit {
+  @Input() post: any;
   @Input() link: any[] = [];
   constructor() { }
+
+  ngOnInit() {}
 
 }
