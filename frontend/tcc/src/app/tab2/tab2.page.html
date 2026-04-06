@@ -1,5 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+
+    @if (tipoFiltroAtivo) {
+    <ion-chip outline="true" color="primary">
+      <ion-label>{{ tipoFiltroAtivo }}</ion-label>
+      <ion-icon name="close" (click)="limparFiltro()"></ion-icon>
+    </ion-chip>
+    }
+
     @if (auth.isLoggedIn()) {
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -7,11 +15,12 @@
     } @else {
     <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
     }
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  @for (post of posts; track post.id) {
-  <app-card [post]="post" [link]="['/proposicao', post.id]"></app-card>
+  @for (post of postsFiltrados; track post.id) {
+  <app-card [post]="post" (tipoFiltrado)="filtrarPorTipo($event)" [link]="['/proposicao', post.id]"></app-card>
   }
 </ion-content>
