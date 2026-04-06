@@ -1,3 +1,89 @@
-<p>
-  post works!
-</p>
+<ion-header>
+  <ion-buttons>
+    <ion-back-button defaultHref="/tabs/tabs2"></ion-back-button>
+
+    @if (auth.isLoggedIn()) {
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    } @else {
+    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
+    }
+  </ion-buttons>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if(post) {
+  <div class="acoes">
+    <p><ion-button fill="clear"><ion-icon name="thumbs-up-outline"></ion-icon></ion-button>0</p>
+    <p><ion-button fill="clear"><ion-icon name="thumbs-down-outline"></ion-icon></ion-button>0</p>
+    <ion-button fill="clear"><ion-icon name="send-outline"></ion-icon></ion-button>
+  </div>
+
+  <div class="bloco">
+    <h2>{{ post.tipoProposicao }}</h2>
+    <p>ID: {{ post.id }}</p>
+    <p>Tag: {{ post.tag }}</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Ementa</h3>
+    <p>{{ post.ementa }}</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Texto da proposição</h3>
+    <p>{{ post.texto }}</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Justificativa</h3>
+    <p>{{ post.justificativa }}</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Estado da proposição</h3>
+
+    @if (post.encerrouTramitacao) {
+    <p>Tramitação encerrada</p>
+    } @else {
+    <p>Em tramitação</p>
+    }
+
+    @if (post.tramiteAlternativo) {
+    <p>Possui trâmite alternativo</p>
+    }
+  </div>
+
+  <div class="bloco">
+    <h3>Emissão</h3>
+    <p>Data de envio: {{ post.dataDeEnvio }}</p>
+    <p>Data efetiva: {{ post.dataEfetivo }}</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Último trâmite</h3>
+    <p>Localização atual: {{ post.localizacao }}</p>
+    <p>Último andamento: {{ post.ultimoTramite }}</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Área temática</h3>
+    <p>{{ post.razao }}</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Proposições semelhantes</h3>
+
+    @if (post.leisSimilares.length > 0) {
+    <ul>
+      @for (lei of post.leisSimilares; track lei) {
+      <li>{{ lei }}</li>
+      }
+    </ul>
+    } @else {
+    <p>Nenhuma proposição semelhante cadastrada.</p>
+    }
+  </div>
+  }
+</ion-content>
