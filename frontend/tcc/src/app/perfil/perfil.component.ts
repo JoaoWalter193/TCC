@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   IonContent,
   IonButtons,
@@ -23,6 +23,7 @@ import { DashboardMode } from '../services/dashboard-mode';
     IonHeader,
     IonList,
     IonItem,
+    RouterLink
   ],
 })
 export class PerfilComponent {
