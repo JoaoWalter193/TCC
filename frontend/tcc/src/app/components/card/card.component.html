@@ -7,8 +7,9 @@
   </ion-card-header>
 
   <ion-card-content>
-
-    <p><strong>Tipo:</strong> {{ post.tipoProposicao }}</p>
+    <ion-chip (click)="filtrarChip($event, post.tipoProposicao)">
+      <ion-label>{{ post.tipoProposicao }}</ion-label>
+    </ion-chip>
 
     <p><strong>Tag:</strong> {{ post.tag }}</p>
 
