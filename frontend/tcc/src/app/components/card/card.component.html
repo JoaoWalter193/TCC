@@ -1,19 +1,53 @@
 <ion-card [routerLink]="link" button="true">
 
   <ion-card-header>
-    <ion-card-title>{{ post.ementa }}</ion-card-title>
 
-    <ion-icon name="star-outline" slot="end"></ion-icon>
+    <div class="header-top">
+      <ion-card-title>{{ post.ementa }}</ion-card-title>
+
+      <ion-icon
+        name="star-outline"
+        (click)="favoritar($event, post)">
+      </ion-icon>
+    </div>
+
+    <div class="subinfo">
+      <span class="vereador">{{ post.vereador }}</span>
+    </div>
+
   </ion-card-header>
 
   <ion-card-content>
-    <ion-chip (click)="filtrarChip($event, post.tipoProposicao)">
-      <ion-label>{{ post.tipoProposicao }}</ion-label>
-    </ion-chip>
 
-    <p><strong>Tag:</strong> {{ post.tag }}</p>
+    <div class="chips-row">
+      <ion-chip (click)="filtrarChip($event, post.tipoProposicao)">
+        <ion-label>{{ post.tipoProposicao }}</ion-label>
+      </ion-chip>
+
+      <ion-chip class="tag-chip">
+        <ion-label>{{ post.tag }}</ion-label>
+      </ion-chip>
+    </div>
 
     <p>{{ post.texto }}</p>
+
+    <div class="acoes">
+
+      <div class="acao">
+        <ion-icon name="thumbs-up-outline"></ion-icon>
+        <span>{{ post.likes }}</span>
+      </div>
+
+      <div class="acao">
+        <ion-icon name="thumbs-down-outline"></ion-icon>
+        <span>{{ post.dislikes }}</span>
+      </div>
+
+      <div class="acao">
+        <ion-icon name="send-outline"></ion-icon>
+      </div>
+
+    </div>
 
   </ion-card-content>
 

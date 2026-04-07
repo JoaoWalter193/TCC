@@ -15,8 +15,8 @@
 <ion-content class="ion-padding">
   @if(post) {
   <div class="acoes">
-    <p><ion-button fill="clear"><ion-icon name="thumbs-up-outline"></ion-icon></ion-button>0</p>
-    <p><ion-button fill="clear"><ion-icon name="thumbs-down-outline"></ion-icon></ion-button>0</p>
+    <p><ion-button fill="clear"><ion-icon name="thumbs-up-outline"></ion-icon></ion-button>{{ post.likes }}</p>
+    <p><ion-button fill="clear"><ion-icon name="thumbs-down-outline"></ion-icon></ion-button>{{ post.dislikes }}</p>
     <ion-button fill="clear"><ion-icon name="send-outline"></ion-icon></ion-button>
   </div>
 
