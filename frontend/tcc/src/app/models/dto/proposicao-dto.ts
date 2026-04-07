@@ -15,5 +15,8 @@ export interface ProposicaoDTO {
     ementa: string;
     texto: string;
     justificativa: string;
+    vereador: string;
+    likes: number;
+    dislikes: number;
     idVisualizado?: number;
 }

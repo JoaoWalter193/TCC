@@ -1,0 +1,38 @@
+ion-content {
+  --background: #ffffff;
+}
+
+ion-toolbar {
+  --background: #ffffff;
+  --border-color: #eef1f4;
+  padding: 4px 8px;
+}
+
+ion-button {
+  --color: #1f5eff;
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+ion-menu-button {
+  color: #1f5eff;
+}
+
+.header-filtro-container {
+  padding: 0 12px 8px 12px;
+  border-bottom: 1px solid #eef1f4;
+  background: #ffffff;
+}
+
+.filtro-header {
+  --background: #f4f8ff;
+  --color: #1f5eff;
+  --border-color: #dce7ff;
+  height: 26px;
+  font-size: 0.75rem;
+  border-radius: 14px;
+}
+
+.filtro-header ion-icon {
+  font-size: 0.85rem;
+}

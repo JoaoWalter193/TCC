@@ -13,7 +13,10 @@
     "leisSimilares": ["Lei 14681/2015"],
     "ementa": "Institui Política Municipal de Educação Inovadora.",
     "texto": "Cursos de programação, IA e robótica.",
-    "justificativa": "Ampliação do acesso tecnológico."
+    "justificativa": "Ampliação do acesso tecnológico.",
+    "vereador": "Angelo Vanhoni",
+    "likes": 18,
+    "dislikes": 2
   },
   {
     "id": 2,
@@ -29,7 +32,10 @@
     "leisSimilares": [],
     "ementa": "Cria salas sensoriais em escolas.",
     "texto": "Ambientes de regulação emocional.",
-    "justificativa": "Apoio neurodesenvolvimento."
+    "justificativa": "Apoio neurodesenvolvimento.",
+    "vereador": "Camilla Gonda",
+    "likes": 26,
+    "dislikes": 3
   },
   {
     "id": 3,
@@ -45,7 +51,10 @@
     "leisSimilares": [],
     "ementa": "Regula uso de vias públicas.",
     "texto": "Disciplinamento de uso urbano.",
-    "justificativa": "Ordenamento urbano."
+    "justificativa": "Ordenamento urbano.",
+    "vereador": "Rodrigo Marcial",
+    "likes": 11,
+    "dislikes": 5
   },
   {
     "id": 4,
@@ -61,7 +70,10 @@
     "leisSimilares": [],
     "ementa": "Novo conselho municipal de segurança.",
     "texto": "Cria órgão consultivo.",
-    "justificativa": "Integração comunitária."
+    "justificativa": "Integração comunitária.",
+    "vereador": "Delegada Tathiana Guzella",
+    "likes": 31,
+    "dislikes": 4
   },
   {
     "id": 5,
@@ -77,7 +89,10 @@
     "leisSimilares": ["Lei 8080/1990"],
     "ementa": "Informação a gestantes.",
     "texto": "Orientação preventiva.",
-    "justificativa": "Fortalecer atenção básica."
+    "justificativa": "Fortalecer atenção básica.",
+    "vereador": "Toninho da Farmácia",
+    "likes": 42,
+    "dislikes": 6
   },
   {
     "id": 6,
@@ -93,7 +108,10 @@
     "leisSimilares": [],
     "ementa": "Amplia bicicletários públicos.",
     "texto": "Instalação em terminais.",
-    "justificativa": "Mobilidade sustentável."
+    "justificativa": "Mobilidade sustentável.",
+    "vereador": "Rafaela Lupion",
+    "likes": 22,
+    "dislikes": 2
   },
   {
     "id": 7,
@@ -109,7 +127,10 @@
     "leisSimilares": [],
     "ementa": "Difusão de Libras em escolas.",
     "texto": "Formação complementar.",
-    "justificativa": "Acessibilidade."
+    "justificativa": "Acessibilidade.",
+    "vereador": "Laís Leão",
+    "likes": 28,
+    "dislikes": 1
   },
   {
     "id": 8,
@@ -125,9 +146,12 @@
     "leisSimilares": [],
     "ementa": "Calendário cultural municipal.",
     "texto": "Eventos descentralizados.",
-    "justificativa": "Valorização regional."
+    "justificativa": "Valorização regional.",
+    "vereador": "Bruno Rossi",
+    "likes": 19,
+    "dislikes": 3
   },
-  {
+    {
     "id": 9,
     "tipoProposicao": "PROJETO_DE_LEI",
     "dataDeEnvio": "2025-06-03T00:00:00",
@@ -141,7 +165,10 @@
     "leisSimilares": [],
     "ementa": "Campanhas de vacinação escolar.",
     "texto": "Parcerias municipais.",
-    "justificativa": "Cobertura vacinal."
+    "justificativa": "Cobertura vacinal.",
+    "vereador": "Toninho da Farmácia",
+    "likes": 37,
+    "dislikes": 4
   },
   {
     "id": 10,
@@ -157,7 +184,10 @@
     "leisSimilares": [],
     "ementa": "Padronização de calçadas.",
     "texto": "Regras técnicas urbanas.",
-    "justificativa": "Segurança pedestre."
+    "justificativa": "Segurança pedestre.",
+    "vereador": "Rodrigo Marcial",
+    "likes": 21,
+    "dislikes": 3
   },
   {
     "id": 11,
@@ -173,7 +203,10 @@
     "leisSimilares": [],
     "ementa": "Revitalização de quadras.",
     "texto": "Equipamentos esportivos.",
-    "justificativa": "Uso comunitário."
+    "justificativa": "Uso comunitário.",
+    "vereador": "Tiago Zeglin",
+    "likes": 15,
+    "dislikes": 2
   },
   {
     "id": 12,
@@ -189,7 +222,10 @@
     "leisSimilares": [],
     "ementa": "Portal ampliado de transparência.",
     "texto": "Novos relatórios públicos.",
-    "justificativa": "Controle social."
+    "justificativa": "Controle social.",
+    "vereador": "Bruno Rossi",
+    "likes": 33,
+    "dislikes": 5
   },
   {
     "id": 13,
@@ -205,7 +241,10 @@
     "leisSimilares": [],
     "ementa": "Pais acessam atas escolares.",
     "texto": "Consulta simplificada.",
-    "justificativa": "Participação familiar."
+    "justificativa": "Participação familiar.",
+    "vereador": "Angelo Vanhoni",
+    "likes": 24,
+    "dislikes": 2
   },
   {
     "id": 14,
@@ -221,7 +260,10 @@
     "leisSimilares": [],
     "ementa": "Expansão coleta seletiva.",
     "texto": "Novos pontos de coleta.",
-    "justificativa": "Sustentabilidade."
+    "justificativa": "Sustentabilidade.",
+    "vereador": "Rafaela Lupion",
+    "likes": 29,
+    "dislikes": 3
   },
   {
     "id": 15,
@@ -237,7 +279,10 @@
     "leisSimilares": [],
     "ementa": "Programa acolhimento psicológico.",
     "texto": "Rede municipal integrada.",
-    "justificativa": "Prevenção."
+    "justificativa": "Prevenção.",
+    "vereador": "Camilla Gonda",
+    "likes": 41,
+    "dislikes": 6
   },
   {
     "id": 16,
@@ -253,7 +298,10 @@
     "leisSimilares": [],
     "ementa": "Painel digital em terminais.",
     "texto": "Tempo real ônibus.",
-    "justificativa": "Melhor informação."
+    "justificativa": "Melhor informação.",
+    "vereador": "Rodrigo Marcial",
+    "likes": 27,
+    "dislikes": 2
   },
   {
     "id": 17,
@@ -269,7 +317,10 @@
     "leisSimilares": [],
     "ementa": "Amplia centros de apoio.",
     "texto": "Atendimento humanizado.",
-    "justificativa": "Proteção social."
+    "justificativa": "Proteção social.",
+    "vereador": "Renan Ceschin",
+    "likes": 34,
+    "dislikes": 7
   },
   {
     "id": 18,
@@ -285,7 +336,10 @@
     "leisSimilares": ["LC 95/1998"],
     "ementa": "Padronização legislativa.",
     "texto": "Normas redacionais.",
-    "justificativa": "Segurança jurídica."
+    "justificativa": "Segurança jurídica.",
+    "vereador": "Bruno Secco",
+    "likes": 17,
+    "dislikes": 1
   },
   {
     "id": 19,
@@ -301,7 +355,10 @@
     "leisSimilares": [],
     "ementa": "Roteiros culturais escolares.",
     "texto": "Visitas guiadas.",
-    "justificativa": "Educação patrimonial."
+    "justificativa": "Educação patrimonial.",
+    "vereador": "Laís Leão",
+    "likes": 23,
+    "dislikes": 2
   },
   {
     "id": 20,
@@ -317,6 +374,9 @@
     "leisSimilares": [],
     "ementa": "Plantio urbano orientado.",
     "texto": "Amplia arborização.",
-    "justificativa": "Conforto térmico."
+    "justificativa": "Conforto térmico.",
+    "vereador": "Rafaela Lupion",
+    "likes": 30,
+    "dislikes": 3
   }
 ]

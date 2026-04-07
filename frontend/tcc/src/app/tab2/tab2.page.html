@@ -1,13 +1,6 @@
 <ion-header [translucent]="true">
+
   <ion-toolbar>
-
-    @if (tipoFiltroAtivo) {
-    <ion-chip outline="true" color="primary">
-      <ion-label>{{ tipoFiltroAtivo }}</ion-label>
-      <ion-icon name="close" (click)="limparFiltro()"></ion-icon>
-    </ion-chip>
-    }
-
     @if (auth.isLoggedIn()) {
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -15,8 +8,17 @@
     } @else {
     <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
     }
-
   </ion-toolbar>
+
+  @if (tipoFiltroAtivo) {
+  <div class="header-filtro-container">
+    <ion-chip class="filtro-header" (click)="limparFiltro()">
+      <ion-label>{{ tipoFiltroAtivo }}</ion-label>
+      <ion-icon name="close"></ion-icon>
+    </ion-chip>
+  </div>
+  }
+
 </ion-header>
 
 <ion-content [fullscreen]="true">
