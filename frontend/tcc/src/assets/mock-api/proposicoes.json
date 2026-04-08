@@ -14,7 +14,17 @@
     "ementa": "Institui Política Municipal de Educação Inovadora.",
     "texto": "Cursos de programação, IA e robótica.",
     "justificativa": "Ampliação do acesso tecnológico.",
-    "vereador": "Angelo Vanhoni",
+    "vereador": {
+      "id": 2,
+      "nome": "Angelo Vanhoni",
+      "partido": "PT",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 2",
+      "telefone": "3350-4512",
+      "email": "angelo.vanhoni@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [1, 13]
+    },
     "likes": 18,
     "dislikes": 2
   },
@@ -33,7 +43,17 @@
     "ementa": "Cria salas sensoriais em escolas.",
     "texto": "Ambientes de regulação emocional.",
     "justificativa": "Apoio neurodesenvolvimento.",
-    "vereador": "Camilla Gonda",
+    "vereador": {
+      "id": 6,
+      "nome": "Camilla Gonda",
+      "partido": "PSB",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 6",
+      "telefone": "3350-4553",
+      "email": "camilla.gonda@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [2, 15]
+    },
     "likes": 26,
     "dislikes": 3
   },
@@ -52,7 +72,17 @@
     "ementa": "Regula uso de vias públicas.",
     "texto": "Disciplinamento de uso urbano.",
     "justificativa": "Ordenamento urbano.",
-    "vereador": "Rodrigo Marcial",
+    "vereador": {
+      "id": 18,
+      "nome": "Rodrigo Marcial",
+      "partido": "NOVO",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 18",
+      "telefone": "3350-4518",
+      "email": "rodrigo.marcial@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [3, 10, 16]
+    },
     "likes": 11,
     "dislikes": 5
   },
@@ -71,7 +101,17 @@
     "ementa": "Novo conselho municipal de segurança.",
     "texto": "Cria órgão consultivo.",
     "justificativa": "Integração comunitária.",
-    "vereador": "Delegada Tathiana Guzella",
+    "vereador": {
+      "id": 9,
+      "nome": "Delegada Tathiana Guzella",
+      "partido": "UNIÃO",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 9",
+      "telefone": "3350-4509",
+      "email": "tathiana.guzella@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [4]
+    },
     "likes": 31,
     "dislikes": 4
   },
@@ -90,7 +130,17 @@
     "ementa": "Informação a gestantes.",
     "texto": "Orientação preventiva.",
     "justificativa": "Fortalecer atenção básica.",
-    "vereador": "Toninho da Farmácia",
+    "vereador": {
+      "id": 20,
+      "nome": "Toninho da Farmácia",
+      "partido": "PSD",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 20",
+      "telefone": "3350-4520",
+      "email": "toninho.farmacia@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [5, 9]
+    },
     "likes": 42,
     "dislikes": 6
   },
@@ -109,7 +159,17 @@
     "ementa": "Amplia bicicletários públicos.",
     "texto": "Instalação em terminais.",
     "justificativa": "Mobilidade sustentável.",
-    "vereador": "Rafaela Lupion",
+    "vereador": {
+      "id": 16,
+      "nome": "Rafaela Lupion",
+      "partido": "PSD",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 16",
+      "telefone": "3350-4516",
+      "email": "rafaela.lupion@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [6, 14, 20]
+    },
     "likes": 22,
     "dislikes": 2
   },
@@ -128,10 +188,21 @@
     "ementa": "Difusão de Libras em escolas.",
     "texto": "Formação complementar.",
     "justificativa": "Acessibilidade.",
-    "vereador": "Laís Leão",
+    "vereador": {
+      "id": 14,
+      "nome": "Laís Leão",
+      "partido": "PDT",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 14",
+      "telefone": "3350-4514",
+      "email": "lais.leao@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [7, 19]
+    },
     "likes": 28,
     "dislikes": 1
   },
+
   {
     "id": 8,
     "tipoProposicao": "PROJETO_DE_LEI",
@@ -147,11 +218,22 @@
     "ementa": "Calendário cultural municipal.",
     "texto": "Eventos descentralizados.",
     "justificativa": "Valorização regional.",
-    "vereador": "Bruno Rossi",
+    "vereador": {
+      "id": 4,
+      "nome": "Bruno Rossi",
+      "partido": "AGIR",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 4",
+      "telefone": "3350-4544",
+      "email": "bruno.rossi@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [8, 12]
+    },
     "likes": 19,
     "dislikes": 3
   },
-    {
+
+  {
     "id": 9,
     "tipoProposicao": "PROJETO_DE_LEI",
     "dataDeEnvio": "2025-06-03T00:00:00",
@@ -166,10 +248,21 @@
     "ementa": "Campanhas de vacinação escolar.",
     "texto": "Parcerias municipais.",
     "justificativa": "Cobertura vacinal.",
-    "vereador": "Toninho da Farmácia",
+    "vereador": {
+      "id": 20,
+      "nome": "Toninho da Farmácia",
+      "partido": "PSD",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 20",
+      "telefone": "3350-4520",
+      "email": "toninho.farmacia@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [5, 9]
+    },
     "likes": 37,
     "dislikes": 4
   },
+
   {
     "id": 10,
     "tipoProposicao": "PROJETO_DE_LEI",
@@ -185,7 +278,17 @@
     "ementa": "Padronização de calçadas.",
     "texto": "Regras técnicas urbanas.",
     "justificativa": "Segurança pedestre.",
-    "vereador": "Rodrigo Marcial",
+    "vereador": {
+      "id": 18,
+      "nome": "Rodrigo Marcial",
+      "partido": "NOVO",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 18",
+      "telefone": "3350-4518",
+      "email": "rodrigo.marcial@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [3, 10, 16]
+    },
     "likes": 21,
     "dislikes": 3
   },
@@ -204,7 +307,17 @@
     "ementa": "Revitalização de quadras.",
     "texto": "Equipamentos esportivos.",
     "justificativa": "Uso comunitário.",
-    "vereador": "Tiago Zeglin",
+    "vereador": {
+      "id": 19,
+      "nome": "Tiago Zeglin",
+      "partido": "MDB",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 19",
+      "telefone": "3350-4519",
+      "email": "tiago.zeglin@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [11]
+    },
     "likes": 15,
     "dislikes": 2
   },
@@ -223,7 +336,17 @@
     "ementa": "Portal ampliado de transparência.",
     "texto": "Novos relatórios públicos.",
     "justificativa": "Controle social.",
-    "vereador": "Bruno Rossi",
+    "vereador": {
+      "id": 4,
+      "nome": "Bruno Rossi",
+      "partido": "AGIR",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 4",
+      "telefone": "3350-4544",
+      "email": "bruno.rossi@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [8, 12]
+    },
     "likes": 33,
     "dislikes": 5
   },
@@ -242,7 +365,17 @@
     "ementa": "Pais acessam atas escolares.",
     "texto": "Consulta simplificada.",
     "justificativa": "Participação familiar.",
-    "vereador": "Angelo Vanhoni",
+    "vereador": {
+      "id": 2,
+      "nome": "Angelo Vanhoni",
+      "partido": "PT",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 2",
+      "telefone": "3350-4512",
+      "email": "angelo.vanhoni@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [1, 13]
+    },
     "likes": 24,
     "dislikes": 2
   },
@@ -261,7 +394,17 @@
     "ementa": "Expansão coleta seletiva.",
     "texto": "Novos pontos de coleta.",
     "justificativa": "Sustentabilidade.",
-    "vereador": "Rafaela Lupion",
+    "vereador": {
+      "id": 16,
+      "nome": "Rafaela Lupion",
+      "partido": "PSD",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 16",
+      "telefone": "3350-4516",
+      "email": "rafaela.lupion@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [6, 14, 20]
+    },
     "likes": 29,
     "dislikes": 3
   },
@@ -280,7 +423,17 @@
     "ementa": "Programa acolhimento psicológico.",
     "texto": "Rede municipal integrada.",
     "justificativa": "Prevenção.",
-    "vereador": "Camilla Gonda",
+    "vereador": {
+      "id": 6,
+      "nome": "Camilla Gonda",
+      "partido": "PSB",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 6",
+      "telefone": "3350-4553",
+      "email": "camilla.gonda@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [2, 15]
+    },
     "likes": 41,
     "dislikes": 6
   },
@@ -299,7 +452,17 @@
     "ementa": "Painel digital em terminais.",
     "texto": "Tempo real ônibus.",
     "justificativa": "Melhor informação.",
-    "vereador": "Rodrigo Marcial",
+    "vereador": {
+      "id": 18,
+      "nome": "Rodrigo Marcial",
+      "partido": "NOVO",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 18",
+      "telefone": "3350-4518",
+      "email": "rodrigo.marcial@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [3, 10, 16]
+    },
     "likes": 27,
     "dislikes": 2
   },
@@ -318,7 +481,17 @@
     "ementa": "Amplia centros de apoio.",
     "texto": "Atendimento humanizado.",
     "justificativa": "Proteção social.",
-    "vereador": "Renan Ceschin",
+    "vereador": {
+      "id": 17,
+      "nome": "Renan Ceschin",
+      "partido": "PODE",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 17",
+      "telefone": "3350-4517",
+      "email": "renan.ceschin@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [17]
+    },
     "likes": 34,
     "dislikes": 7
   },
@@ -337,7 +510,17 @@
     "ementa": "Padronização legislativa.",
     "texto": "Normas redacionais.",
     "justificativa": "Segurança jurídica.",
-    "vereador": "Bruno Secco",
+    "vereador": {
+      "id": 5,
+      "nome": "Bruno Secco",
+      "partido": "REPUBLICANOS",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 5",
+      "telefone": "3350-4682",
+      "email": "bruno.souza@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [18]
+    },
     "likes": 17,
     "dislikes": 1
   },
@@ -356,7 +539,17 @@
     "ementa": "Roteiros culturais escolares.",
     "texto": "Visitas guiadas.",
     "justificativa": "Educação patrimonial.",
-    "vereador": "Laís Leão",
+    "vereador": {
+      "id": 14,
+      "nome": "Laís Leão",
+      "partido": "PDT",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 14",
+      "telefone": "3350-4514",
+      "email": "lais.leao@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [7, 19]
+    },
     "likes": 23,
     "dislikes": 2
   },
@@ -375,7 +568,17 @@
     "ementa": "Plantio urbano orientado.",
     "texto": "Amplia arborização.",
     "justificativa": "Conforto térmico.",
-    "vereador": "Rafaela Lupion",
+    "vereador": {
+      "id": 16,
+      "nome": "Rafaela Lupion",
+      "partido": "PSD",
+      "legislaturas": "2025-2028",
+      "gabinete": "Gabinete 16",
+      "telefone": "3350-4516",
+      "email": "rafaela.lupion@cmc.pr.gov.br",
+      "site": "https://www.curitiba.pr.leg.br",
+      "posts": [6, 14, 20]
+    },
     "likes": 30,
     "dislikes": 3
   }

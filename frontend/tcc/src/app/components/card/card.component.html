@@ -12,7 +12,7 @@
     </div>
 
     <div class="subinfo">
-      <span class="vereador">{{ post.vereador }}</span>
+      <span class="vereador" (click)="verVerador($event, post.vereador.id)">{{ post.vereador.nome }}</span>
     </div>
 
   </ion-card-header>
