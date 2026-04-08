@@ -1,0 +1,112 @@
+ion-card {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #eef1f4;
+  background: #ffffff;
+  transition: background 0.18s ease;
+}
+
+ion-card:active {
+  background: #f8f9fb;
+}
+
+ion-card-header {
+  padding: 14px 16px 6px 16px;
+}
+
+ion-card-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #1c1c1c;
+}
+
+ion-card-content {
+  padding: 0 16px 14px 16px;
+}
+
+ion-chip {
+  --background: #ffc67c;
+  --color: #5c3b00;
+  height: 22px;
+  min-height: 22px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  padding-inline: 4px;
+}
+
+ion-chip ion-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #444;
+  margin-top: 6px;
+}
+
+strong {
+  color: #1f5eff;
+  font-weight: 600;
+}
+
+ion-icon {
+  color: #9a9a9a;
+  font-size: 1.1rem;
+}
+
+.chips-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.tag-chip {
+  --background: #f6f7f8;
+  --color: #666;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.subinfo {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.vereador {
+  font-weight: 500;
+}
+
+.tipo {
+  margin-left: 6px;
+  color: #888;
+}
+
+.acoes {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  padding-top: 10px;
+}
+
+.acao {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.acao ion-icon {
+  font-size: 1rem;
+}
