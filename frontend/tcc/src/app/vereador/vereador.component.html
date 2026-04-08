@@ -1,3 +1,66 @@
-<p>
-  vereador works!
-</p>
+<ion-header class="vereador-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      @if (auth.isLoggedIn()) {
+      <ion-menu-button></ion-menu-button>
+      } @else {
+      <ion-button fill="clear" (click)="navigateToLogin()">Entrar</ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="vereador-content">
+
+  @if (vereador) {
+
+  <div class="vereador-topo">
+    <h2>{{ vereador.nome }}</h2>
+    <p>{{ vereador.partido }}</p>
+  </div>
+
+  <div class="vereador-card">
+
+    <div class="info-item">
+      <strong>Legislaturas</strong>
+      <p>{{ vereador.legislaturas }}</p>
+    </div>
+
+    <div class="info-item">
+      <strong>Gabinete</strong>
+      <p>{{ vereador.gabinete }}</p>
+    </div>
+
+    <div class="info-item">
+      <strong>Telefone</strong>
+      <p>{{ vereador.telefone }}</p>
+    </div>
+
+    <div class="info-item">
+      <strong>Email</strong>
+      <p>{{ vereador.email }}</p>
+    </div>
+
+    <div class="info-item">
+      <strong>Site</strong>
+      <p>{{ vereador.site }}</p>
+    </div>
+
+  </div>
+
+  <div class="secao-posts">
+    <h3>Proposições do vereador</h3>
+  </div>
+
+  @for (post of proposicoes; track post.id) {
+  <app-card [post]="post" [link]="['/proposicao', post.id]">
+  </app-card>
+  }
+
+  }
+
+</ion-content>

@@ -1,0 +1,57 @@
+.config-content {
+  --background: #f8f9fb;
+}
+
+.config-header ion-toolbar {
+  --background: white;
+  --border-color: #e5e7eb;
+}
+
+.config-topo {
+  background: white;
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.config-topo h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.config-topo p {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.config-card {
+  margin: 20px 16px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.config-card ion-item {
+  --padding-start: 18px;
+  --inner-padding-end: 18px;
+  --min-height: 60px;
+  font-size: 0.97rem;
+}
+
+.config-card ion-icon {
+  color: #64748b;
+  margin-right: 12px;
+}
+
+.logout-area {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.logout-area ion-button {
+  font-weight: 600;
+}
