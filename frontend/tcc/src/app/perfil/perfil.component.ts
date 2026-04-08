@@ -1,14 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import {
-  IonContent,
-  IonButtons,
-  IonBackButton,
-  IonMenuButton,
-  IonHeader,
-  IonList,
-  IonItem,
-} from '@ionic/angular/standalone';
+import { IonContent, IonButtons, IonBackButton, IonMenuButton, IonHeader, IonList, IonItem, IonIcon, IonLabel, IonToolbar } from '@ionic/angular/standalone';
 import { DashboardMode } from '../services/dashboard-mode';
 
 @Component({
@@ -23,8 +15,11 @@ import { DashboardMode } from '../services/dashboard-mode';
     IonHeader,
     IonList,
     IonItem,
-    RouterLink
-  ],
+    RouterLink,
+    IonIcon,
+    IonLabel,
+    IonToolbar
+],
 })
 export class PerfilComponent {
   constructor(

@@ -31,6 +31,7 @@ export class CardComponent {
   @Input() post!: ProposicaoDTO;
   @Input() link: any[] = [];
   @Output() tipoFiltrado = new EventEmitter<TipoProposicao>();
+  @Output() verVereador = new EventEmitter<number>();
 
   constructor() {}
 
@@ -43,5 +44,11 @@ export class CardComponent {
   favoritar(event: Event, post: any) {
     event.stopPropagation();
     event.preventDefault();
+  }
+
+  verVerador(event: Event, idVereador: number) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.verVereador.emit(idVereador);
   }
 }
