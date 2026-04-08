@@ -1,25 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header class="search-header">
   <ion-toolbar>
     @if (auth.isLoggedIn()) {
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
     } @else {
-    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
+      <ion-button fill="clear" slot="end" (click)="navigateToLogin()">
+        Entrar
+      </ion-button>
     }
   </ion-toolbar>
-  <ion-searchbar placeholder="Buscar"></ion-searchbar>
-  <ion-row class="ion-align-items-center">
-    <ion-icon name="trending-up-outline" size="large" color="primary"></ion-icon>
-    <ion-text color="primary">Em destaque</ion-text>
-  </ion-row>
+
+  <div class="search-container">
+    <ion-searchbar
+      placeholder="Buscar proposições, vereadores ou tags"
+      animated="true"
+      show-clear-button="focus">
+    </ion-searchbar>
+  </div>
+
+  <div class="trend-section">
+    <div class="trend-title">
+      <ion-icon name="trending-up-outline"></ion-icon>
+      <ion-text color="primary">Em destaque</ion-text>
+    </div>
+  </div>
 </ion-header>
 
+<ion-content>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">tab4</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="highlight-list">
+    @for (post of postsDestaque; track post.id) {
+      <app-card [post]="post" [link]="['/proposicao', post.id]"></app-card>
+    }
+  </div>
+
 </ion-content>

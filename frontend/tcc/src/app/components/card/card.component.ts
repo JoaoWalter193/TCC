@@ -39,4 +39,9 @@ export class CardComponent {
     event.preventDefault();
     this.tipoFiltrado.emit(tipo);
   }
+
+  favoritar(event: Event, post: any) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
 }

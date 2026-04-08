@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { IonHeader, IonButtons, IonBackButton, IonButton, IonMenuButton, IonContent, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonButtons, IonBackButton, IonButton, IonMenuButton, IonContent, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
@@ -16,7 +16,9 @@ import { ProposicaoService } from '../services/proposicao';
     IonButton,
     IonMenuButton,
     IonContent,
-    IonIcon
+    IonIcon,
+    IonTitle,
+    IonToolbar
 ],
 })
 export class PostComponent implements OnInit {

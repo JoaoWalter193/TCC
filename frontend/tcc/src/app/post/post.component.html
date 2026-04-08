@@ -1,26 +1,53 @@
-<ion-header>
-  <ion-buttons>
-    <ion-back-button defaultHref="/tabs/tabs2"></ion-back-button>
+<ion-header class="post-header">
+  <ion-toolbar>
 
-    @if (auth.isLoggedIn()) {
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tabs2"></ion-back-button>
     </ion-buttons>
-    } @else {
-    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
-    }
-  </ion-buttons>
+
+    <ion-buttons slot="end">
+      @if (auth.isLoggedIn()) {
+      <ion-menu-button></ion-menu-button>
+      } @else {
+      <ion-button fill="clear" (click)="navigateToLogin()">Entrar</ion-button>
+      }
+
+    </ion-buttons>
+
+  </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="post-content">
+
   @if(post) {
-  <div class="acoes">
-    <p><ion-button fill="clear"><ion-icon name="thumbs-up-outline"></ion-icon></ion-button>0</p>
-    <p><ion-button fill="clear"><ion-icon name="thumbs-down-outline"></ion-icon></ion-button>0</p>
-    <ion-button fill="clear"><ion-icon name="send-outline"></ion-icon></ion-button>
+
+  <div class="favorito-container">
+    <ion-button fill="clear" class="favorito-btn">
+      <ion-icon name="star-outline"></ion-icon>
+    </ion-button>
   </div>
 
-  <div class="bloco">
+  <div class="acoes">
+    <div class="acao-item">
+      <ion-button fill="clear">
+        <ion-icon name="thumbs-up-outline"></ion-icon>
+      </ion-button>
+      <span>{{ post.likes }}</span>
+    </div>
+
+    <div class="acao-item">
+      <ion-button fill="clear">
+        <ion-icon name="thumbs-down-outline"></ion-icon>
+      </ion-button>
+      <span>{{ post.dislikes }}</span>
+    </div>
+
+    <ion-button fill="clear">
+      <ion-icon name="send-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="bloco principal">
     <h2>{{ post.tipoProposicao }}</h2>
     <p>ID: {{ post.id }}</p>
     <p>Tag: {{ post.tag }}</p>
@@ -85,5 +112,7 @@
     <p>Nenhuma proposição semelhante cadastrada.</p>
     }
   </div>
+
   }
+
 </ion-content>
