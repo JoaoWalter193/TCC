@@ -1,5 +1,3 @@
-import { ProposicaoDTO } from './proposicao-dto';
-
 export interface VereadorDTO {
   id: number;
   nome: string;

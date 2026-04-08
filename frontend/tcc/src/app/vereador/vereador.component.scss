@@ -1,0 +1,67 @@
+.vereador-content {
+  --background: #f8f9fb;
+}
+
+.vereador-header ion-toolbar {
+  --background: white;
+  --border-color: #e5e7eb;
+}
+
+.vereador-topo {
+  background: white;
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.vereador-topo h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.vereador-topo p {
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.vereador-card {
+  margin: 20px 16px;
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.info-item {
+  margin-bottom: 18px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-item strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.info-item p {
+  margin: 0;
+  font-size: 0.96rem;
+  color: #111827;
+}
+
+.secao-posts {
+  margin: 24px 16px 12px;
+}
+
+.secao-posts h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+}

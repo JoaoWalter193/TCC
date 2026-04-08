@@ -23,6 +23,6 @@
 
 <ion-content [fullscreen]="true">
   @for (post of postsFiltrados; track post.id) {
-  <app-card [post]="post" (tipoFiltrado)="filtrarPorTipo($event)" [link]="['/proposicao', post.id]"></app-card>
+  <app-card [post]="post" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
   }
 </ion-content>

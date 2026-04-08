@@ -1,17 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import {
-  IonHeader,
-  IonButtons,
-  IonBackButton,
-  IonMenuButton,
-  IonContent,
-  IonItem,
-  IonList,
-  IonToggle,
-  IonButton,
-} from '@ionic/angular/standalone';
+import { IonHeader, IonButtons, IonBackButton, IonMenuButton, IonContent, IonItem, IonList, IonToggle, IonButton, IonToolbar, IonIcon, IonLabel } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-configuracoes',
@@ -28,8 +18,11 @@ import {
     IonToggle,
     FormsModule,
     IonButton,
-    RouterLink
-  ],
+    RouterLink,
+    IonToolbar,
+    IonIcon,
+    IonLabel
+],
 })
 export class ConfiguracoesComponent implements OnInit {
   paletteToggle: boolean = false;
