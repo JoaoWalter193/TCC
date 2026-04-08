@@ -1,52 +1,77 @@
 .post-content {
   --background: #f8f9fb;
-  padding: 14px;
+  padding: 16px;
 }
 
 .acoes-topo {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
+
+  ion-button {
+    --color: var(--ion-color-medium);
+    margin: 0;
+  }
 }
 
 .acoes-esquerda {
   display: flex;
-  gap: 12px;
+  gap: 14px;
+}
+
+.acao-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ion-color-dark);
+  }
 }
 
 .titulo-area {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .tipo {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
   color: var(--ion-color-medium);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .titulo-area h2 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
+  line-height: 1.25;
   margin: 0 0 6px 0;
+  color: var(--ion-color-dark);
 }
 
 .vereador {
   font-size: 14px;
   color: var(--ion-color-medium);
+  margin: 0;
 }
 
 .favorito-btn {
   --color: #f4b400;
+  margin-top: 2px;
 }
 
 .bloco {
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .cinza {
@@ -60,32 +85,56 @@
 .bloco h3 {
   font-size: 15px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  color: var(--ion-color-dark);
 }
 
 .bloco p {
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
+  margin: 0;
+  color: #2d2d2d;
 }
 
 .datas-grid {
   display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .info-coluna {
   flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .info-coluna h4 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  color: var(--ion-color-dark);
 }
 
 .info-coluna p {
   font-size: 13px;
   color: var(--ion-color-medium);
+  margin-bottom: 4px;
+}
+
+ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.subtag {
+  font-size: 13px;
+  color: var(--ion-color-medium);
+  margin-top: 4px;
 }
