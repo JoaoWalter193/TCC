@@ -1,4 +1,5 @@
 import { TipoProposicao } from "./tipo-proposicao-enum";
+import { VereadorDTO } from "./vereador-dto";
 
 export interface ProposicaoDTO {
     id: number;
@@ -15,7 +16,7 @@ export interface ProposicaoDTO {
     ementa: string;
     texto: string;
     justificativa: string;
-    vereador: string;
+    vereador: VereadorDTO;
     likes: number;
     dislikes: number;
     idVisualizado?: number;

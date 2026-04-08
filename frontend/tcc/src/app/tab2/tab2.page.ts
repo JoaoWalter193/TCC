@@ -61,6 +61,10 @@ export class Tab2Page implements OnInit {
     );
   }
 
+  verVereador(idVereador: number) {
+    this.router.navigate(['/vereador', idVereador]);
+  }
+
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
