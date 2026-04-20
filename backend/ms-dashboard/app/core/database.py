@@ -1,4 +1,15 @@
 import os
-from sqlalchemy import create_all_engines
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-#DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/dashboard_db")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:senha@postgres:5432/TCC")
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

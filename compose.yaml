@@ -57,6 +57,10 @@ services:
     env_file:
       - ./backend/ms-dashboard/.env
     command: uvicorn app.main:app --host 0.0.0.0 --port 8085 --reload
+    environment:
+      - DATABASE_URL=postgresql://postgres:senha@postgres:5432/TCC
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:15.5
