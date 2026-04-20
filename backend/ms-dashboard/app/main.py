@@ -1,7 +1,10 @@
 from fastapi import FastAPI
+from app.api.endpoints import router as api_router
 
-app = FastAPI()
+app = FastAPI(title="Dashboard Microservice")
 
-@app.get("/")
-def read_root():
-    return {"message": "Microsserviço de Dashboard está funcionando!"}
+app.include_router(api_router)
+
+@app.get("/status")
+def health_check():
+    return {"status": "ok"}
