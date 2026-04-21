@@ -5,7 +5,7 @@ from app.services.pandas_engine import processar_ranking_vereadores
 
 router = APIRouter()
 
-@router.get("/dashboard/ranking-vereadores")
+@router.get("/dashboard/default")
 def get_ranking_vereadores():
     dados_processados = processar_ranking_vereadores()
 

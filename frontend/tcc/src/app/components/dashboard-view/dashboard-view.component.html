@@ -1,3 +1,9 @@
-<p>
-  dashboard-view works!
-</p>
+<ion-content class="ion-padding">
+  <ag-grid-angular
+    style="width: 100%; height: 500px;"
+    class="ag-theme-alpine"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [animateRows]="true">
+  </ag-grid-angular>
+</ion-content>
