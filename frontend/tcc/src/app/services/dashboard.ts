@@ -16,4 +16,8 @@ export class Dashboard {
   getDashboardDefault(): Observable<DashboardDataDTO> {
     return this.http.get<DashboardDataDTO>(`${this.apiUrl}/default`);
   }
+
+  montarTabelaDinamica(tipo: string, campos: {name: string, role: string}[], dados: any) {
+    
+  }
 }
