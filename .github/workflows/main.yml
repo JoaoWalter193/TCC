@@ -17,6 +17,10 @@ jobs:
           echo "UID=$(id -u)" >> $GITHUB_ENV
           echo "GID=$(id -g)" >> $GITHUB_ENV
 
+      - name: Copiar env para workspace
+        run : |
+          cp /home/tcc/TCC/backend/ms-dashboard/.env ${{ github.workspace }}/.env
+
       - name: Rebuild and restart containers
         run: |
           docker compose down
