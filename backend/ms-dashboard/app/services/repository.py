@@ -6,8 +6,8 @@ def get_proposicoes_por_vereador():
     SELECT
         v.nome AS vereador,
         COUNT(p.id) as contagem
-    FROM proposicoes p
-    JOIN vereadores v ON p.vereador_id = v.id
+    FROM proposicao p
+    JOIN vereador v ON p.fk_vereador_proposicao = v.id
     GROUP BY v.nome
     """
     return pd.read_sql(query, engine)
