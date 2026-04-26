@@ -34,7 +34,7 @@ public class SecurityConfigurations {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        //Rotas liberadas(Autenticação/Cadastro)
+                        //Rotas liberadas(Autenticação/Cadastro/Vereadores)
                         .requestMatchers(HttpMethod.POST,
                                 "/user",
                                         "/user/login",
@@ -62,7 +62,7 @@ public class SecurityConfigurations {
                                 "/user/**"
                         ).authenticated()
 
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
 
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
