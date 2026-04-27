@@ -88,5 +88,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    //EXCEÇÕES DE VEREADOR
+
+    @ExceptionHandler(VereadorInexistenteException.class)
+    private ResponseEntity<ResponseDTO> erroVereadorInexistente(VereadorInexistenteException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseDTO(HttpStatus.NOT_FOUND.toString(), ex.getMessage())
+        );
+    }
 
 }
