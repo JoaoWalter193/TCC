@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
+//TEM QUE MUDAR O ID INICIAL QUE NN PODE SER O CPF, PODE NÃO MUDAR MAS NN PODE SER A PRIMARY KEY/ID
 public class Usuario {
 
     @Id
