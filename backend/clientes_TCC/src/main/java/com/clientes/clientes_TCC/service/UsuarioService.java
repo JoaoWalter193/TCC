@@ -62,12 +62,13 @@ public class UsuarioService {
                     // lógica de criar a conta com senha Hasheada
                     String senhaHasheada = passwordEncoder.encode(data.senha());
 
-                    Usuario usuarioTemp = new Usuario(data.cpf(),
-                            data.nome(),
-                            data.email(),
-                            senhaHasheada,
-                            true,
-                            null);
+                    Usuario usuarioTemp = new Usuario();
+                    usuarioTemp.setCpf(data.cpf());
+                    usuarioTemp.setNome(data.nome());
+                    usuarioTemp.setEmail(data.email());
+                    usuarioTemp.setSenha(senhaHasheada);
+                    usuarioTemp.setAtivo(true);
+                    usuarioTemp.setDataDelecao(null);
 
                     usuarioRepository.save(usuarioTemp);
                     try {
