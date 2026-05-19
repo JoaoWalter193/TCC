@@ -29,6 +29,11 @@ def get_dashboard_metadata(db: Session):
         }
     return metadata
 
+def aggregate_sunburst_data(df, levels, metric):
+    grouped = df.groupby(levels)[metric].count().reset_index()
+
+    return grouped.to_dict(orient='records')
+
 def processar_ranking_vereadores():
     #df = get_proposicoes_por_vereador()
 

@@ -17,6 +17,10 @@ export class Dashboard {
     return this.http.get<DashboardDataDTO>(`${this.apiUrl}/default`);
   }
 
+  getDashboardMetadata(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/metadata`);
+  }
+
   montarTabelaDinamica(tipo: string, campos: {name: string, role: string}[], dados: any) {
     
   }
