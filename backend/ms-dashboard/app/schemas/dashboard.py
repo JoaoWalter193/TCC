@@ -4,7 +4,7 @@ from typing import Optional, Dict, List, Any
 class ChartRequest(BaseModel):
     title: str
     char_type: str
-    x_axis: str
+    levels: List[str]
     y_axis: str
     operation: str
     filters: Optional[Dict[str, List[str]]] = None
