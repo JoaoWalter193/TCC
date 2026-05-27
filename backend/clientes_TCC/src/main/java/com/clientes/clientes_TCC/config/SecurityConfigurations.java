@@ -48,7 +48,8 @@ public class SecurityConfigurations {
                                         "/swagger-resources/**",
                                         "/webjars/**",
                                         "/configuration/ui",
-                                        "/configuration/security"
+                                        "/configuration/security",
+                                        "/prop"
                         ).permitAll()
 
                         //Rotas que necessitam autenticação

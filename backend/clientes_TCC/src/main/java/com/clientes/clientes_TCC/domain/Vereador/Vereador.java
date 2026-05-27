@@ -20,6 +20,7 @@ import java.util.List;
 public class Vereador {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String nome;
@@ -42,7 +43,7 @@ public class Vereador {
     private Date nascimento;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "verador_cor")
+    @Column(columnDefinition = "vereador_cor")
     private VereadorCor cor;
     private String ocupacao;
 
