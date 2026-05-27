@@ -1,4 +1,4 @@
-package com.clientes.clientes_TCC.domain.Comissao;
+package com.clientes.clientes_TCC.domain.Proposicao;
 
 
 import jakarta.persistence.*;
@@ -7,18 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name="comissao")
-@Entity(name="comissao")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comissao {
+@Entity
+@Table(name = "estadoProposicao")
+public class EstadoProposicao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nomeComissao;
-
+    @Column(nullable = false)
+    private String estado;
 }

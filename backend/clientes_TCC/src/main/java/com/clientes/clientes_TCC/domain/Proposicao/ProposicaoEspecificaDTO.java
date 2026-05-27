@@ -1,0 +1,24 @@
+package com.clientes.clientes_TCC.domain.Proposicao;
+
+import java.time.LocalDateTime;
+
+public record ProposicaoEspecificaDTO(
+        Long codigo,
+        String tipoNome,
+        String vereadorNome,
+        String vereadorPartido,
+        LocalDateTime dataEnvio,
+        LocalDateTime dataEfetivo,
+        String estadoNome,
+        String localizacao,
+        LocalDateTime ultimoTramite,
+        String razao,
+        Boolean tramiteAlternativo,
+        Boolean encerrouTramitacao,
+        String leisSimilares,
+        String ementa,
+        String texto,
+        String justificativa,
+        String tag
+) {
+}

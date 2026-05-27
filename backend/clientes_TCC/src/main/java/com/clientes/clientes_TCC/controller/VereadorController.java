@@ -19,8 +19,9 @@ public class VereadorController {
     @Autowired
     VereadorService vereadorService;
 
-    // NÃO TEMOS NADA PARA ADICONAR AQUI, SERÁ APENAS CONSULTA DE VEREADOR. VAI PUXAR UM VEREADOR ESPECÍFICO OU TODOS
+    // NÃO TEMOS NADA PARA ADICONAR AQUI(POST e coisas assim), SERÁ APENAS CONSULTA DE VEREADOR. VAI PUXAR UM VEREADOR ESPECÍFICO OU TODOS
 
+    //Retorno de todos os vereadores
     @GetMapping
     public ResponseEntity<List<VereadorDTO>> listarVereadores(){
         return vereadorService.listarVereadores();

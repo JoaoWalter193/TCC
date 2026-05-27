@@ -53,15 +53,16 @@ services:
     ports:
       - 8085:8085
     volumes:
-      - ./backend/ms-dashboard:/app
+      - ./backend/ms-dashboard:/code
     command: uvicorn app.main:app --host 0.0.0.0 --port 8085 --reload
     environment:
       - DATABASE_URL=postgresql://postgres:senha@postgres:5432/TCC
+      - GROQ_API_KEY=${GROQ_API_KEY}
     depends_on:
       - postgres
 
   postgres:
-    image: postgres:15.5
+    image: pgvector/pgvector:pg15
     environment:
       POSTGRES_DB: TCC
       POSTGRES_USER: postgres

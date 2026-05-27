@@ -16,7 +16,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VereadorComissao {
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
