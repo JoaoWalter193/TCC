@@ -13,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/prop")
 public class ProposicaoController {
@@ -35,6 +37,13 @@ public class ProposicaoController {
     public ResponseEntity<ProposicaoEspecificaDTO> buscarProposicao(
             @PathVariable Long codigo) {
         return proposicaoService.buscarProposicao(codigo);
+    }
+
+    @GetMapping("/busca")
+    public ResponseEntity<List<ProposicaoListaResponseDTO>> buscarPorSimilaridade(
+            @RequestParam String q,
+            @RequestParam(defaultValue = "10") int limit) {
+        return proposicaoService.buscarPorSimilaridade(q, limit);
     }
 
 }

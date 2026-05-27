@@ -1,3 +1,6 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+
+
 CREATE TABLE usuario (
 id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 cpf VARCHAR(11) UNIQUE,
@@ -87,6 +90,7 @@ CREATE TABLE proposicao (
     texto TEXT NOT NULL,
     justificativa TEXT NOT NULL,
     tag VARCHAR(100) NOT NULL,
+    embedding vector(768),
  
     CONSTRAINT fk_tipo_proposicao
         FOREIGN KEY(tipo_id)
