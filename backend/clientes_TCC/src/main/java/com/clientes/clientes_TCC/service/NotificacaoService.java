@@ -1,0 +1,87 @@
+package com.clientes.clientes_TCC.service;
+
+import com.clientes.clientes_TCC.domain.Notificacao.Notificacao;
+import com.clientes.clientes_TCC.repositories.DispositivoUsuarioRepository;
+import com.clientes.clientes_TCC.repositories.NotificacaoRepository;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class NotificacaoService {
+
+    @Autowired
+    private NotificacaoRepository notificacaoRepository;
+
+    @Autowired
+    private DispositivoUsuarioRepository dispositivoRepository;
+
+    @Autowired
+    private SseService sseService;
+
+    // chamado pelo ProposicaoListenerService
+    public void notificarUsuario(Integer usuarioId, String titulo, String mensagem, Long proposicaoCodigo) {
+        Notificacao notif = new Notificacao();
+        notif.setUsuarioId(usuarioId);
+        notif.setTitulo(titulo);
+        notif.setMensagem(mensagem);
+        notif.setProposicaoCodigo(proposicaoCodigo);
+        notificacaoRepository.save(notif);
+
+        sseService.enviarNotificacao(usuarioId, titulo, mensagem);
+
+        List<String> tokens = dispositivoRepository.findTokensByUsuarioId(usuarioId);
+        for (String token : tokens) {
+            enviarPushAndroid(token, titulo, mensagem);
+        }
+    }
+
+    private void enviarPushAndroid(String fcmToken, String titulo, String mensagem) {
+        try {
+            Message message = Message.builder()
+                    .setNotification(Notification.builder()
+                            .setTitle(titulo)
+                            .setBody(mensagem)
+                            .build())
+                    .setToken(fcmToken)
+                    .build();
+
+            FirebaseMessaging.getInstance().send(message);
+        } catch (Exception e) {
+            System.err.println("Erro ao enviar push: " + e.getMessage());
+        }
+    }
+
+    // chamados pelo NotificacaoController
+    public ResponseEntity<List<Notificacao>> listarNotificacoes(Integer usuarioId) {
+        return ResponseEntity.ok(
+                notificacaoRepository.findByUsuarioIdOrderByCriadaEmDesc(usuarioId)
+        );
+    }
+
+    public ResponseEntity<List<Notificacao>> listarNaoLidas(Integer usuarioId) {
+        return ResponseEntity.ok(
+                notificacaoRepository.findByUsuarioIdAndLidaFalse(usuarioId)
+        );
+    }
+
+    public ResponseEntity<Void> marcarComoLida(Integer id) {
+        notificacaoRepository.findById(id).ifPresent(n -> {
+            n.setLida(true);
+            notificacaoRepository.save(n);
+        });
+        return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<Void> marcarTodasComoLidas(Integer usuarioId) {
+        List<Notificacao> naoLidas = notificacaoRepository.findByUsuarioIdAndLidaFalse(usuarioId);
+        naoLidas.forEach(n -> n.setLida(true));
+        notificacaoRepository.saveAll(naoLidas);
+        return ResponseEntity.noContent().build();
+    }
+}
