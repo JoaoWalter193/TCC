@@ -34,6 +34,8 @@ services:
 
   clientes:
     image: maven:3.8.4-openjdk-17-slim
+    depends_on:
+     - postgres
     command: "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dspring.devtools.restart.enabled=true -Dspring-boot.run.profiles=dev'"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/TCC
