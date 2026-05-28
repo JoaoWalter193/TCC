@@ -7,6 +7,8 @@ import com.clientes.clientes_TCC.repositories.ProposicaoRepository;
 import org.postgresql.PGConnection;
 import org.postgresql.PGNotification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +37,11 @@ public class ProposicaoListenerService {
     @Autowired
     private UsuarioVereadorSeguindoRepository seguindoRepository;
 
-    @PostConstruct
     @Async
+    @EventListener(ApplicationReadyEvent.class)
     public void escutarNotificacoes() {
         try (Connection conn = dataSource.getConnection()) {
+
             Statement stmt = conn.createStatement();
             stmt.execute("LISTEN proposicao_nova");
             stmt.execute("LISTEN proposicao_atualizada");
@@ -46,22 +49,34 @@ public class ProposicaoListenerService {
 
             PGConnection pgConn = conn.unwrap(PGConnection.class);
 
-            while (true) {
-                PGNotification[] notifications = pgConn.getNotifications(5000);
-                if (notifications != null) {
-                    for (PGNotification notification : notifications) {
-                        Long codigo = Long.parseLong(notification.getParameter());
+            while (!Thread.currentThread().isInterrupted()) {
 
-                        if (notification.getName().equals("proposicao_nova")) {
+                PGNotification[] notifications =
+                        pgConn.getNotifications(5000);
+
+                if (notifications != null) {
+
+                    for (PGNotification notification : notifications) {
+
+                        Long codigo =
+                                Long.parseLong(notification.getParameter());
+
+                        if (notification.getName()
+                                .equals("proposicao_nova")) {
+
                             processarProposicaoNova(codigo);
-                        } else if (notification.getName().equals("proposicao_atualizada")) {
+
+                        } else if (notification.getName()
+                                .equals("proposicao_atualizada")) {
+
                             processarProposicaoAtualizada(codigo);
                         }
                     }
                 }
             }
+
         } catch (Exception e) {
-            System.err.println("Erro no listener: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
