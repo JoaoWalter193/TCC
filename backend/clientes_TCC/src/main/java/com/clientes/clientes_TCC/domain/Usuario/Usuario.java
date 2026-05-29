@@ -37,6 +37,7 @@ public class Usuario {
 
     private Boolean ativo;
 
+    @Column(name = "data_delecao", nullable = false)
     private Instant dataDelecao;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
