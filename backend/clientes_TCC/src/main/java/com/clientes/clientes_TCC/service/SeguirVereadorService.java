@@ -2,6 +2,8 @@ package com.clientes.clientes_TCC.service;
 
 import com.clientes.clientes_TCC.domain.Default.ResponseDTO;
 import com.clientes.clientes_TCC.domain.Notificacao.UsuarioVereadorSeguindo;
+import com.clientes.clientes_TCC.domain.Vereador.Vereador;
+import com.clientes.clientes_TCC.domain.Vereador.VereadorSeguindoDTO;
 import com.clientes.clientes_TCC.repositories.UsuarioVereadorSeguindoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,20 @@ public class SeguirVereadorService {
         return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK.toString(), "Deixou de seguir o vereador!"));
     }
 
-    public ResponseEntity<List<Integer>> listarVereadoresSeguidos(Integer usuarioId) {
-        return ResponseEntity.ok(seguindoRepository.findVereadorIdsByUsuarioId(usuarioId));
+    public ResponseEntity<List<VereadorSeguindoDTO>> listarVereadoresSeguidos(Integer usuarioId) {
+        List<Vereador> vereadores = seguindoRepository.findVereadoresByUsuarioId(usuarioId);
+
+        List<VereadorSeguindoDTO> resultado = vereadores.stream()
+                .map(v -> new VereadorSeguindoDTO(
+                        v.getId(),
+                        v.getNome(),
+                        v.getPartido().getNomePartido(),
+                        v.getAtivo().name(),
+                        v.getEmail(),
+                        v.getSite()
+                ))
+                .toList();
+
+        return ResponseEntity.ok(resultado);
     }
 }

@@ -2,6 +2,8 @@ package com.clientes.clientes_TCC.service;
 
 import com.clientes.clientes_TCC.domain.Default.ResponseDTO;
 import com.clientes.clientes_TCC.domain.Notificacao.UsuarioProposicaoFavorita;
+import com.clientes.clientes_TCC.domain.Proposicao.Proposicao;
+import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoListaResponseDTO;
 import com.clientes.clientes_TCC.repositories.UsuarioProposicaoFavoritaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,21 @@ public class FavoritarProposicaoService {
         return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK.toString(), "Proposição desfavoritada com sucesso!"));
     }
 
-    public ResponseEntity<List<Long>> listarProposicoesFavoritadas(Integer usuarioId) {
-        return ResponseEntity.ok(favoritaRepository.findProposicaoCodigosByUsuarioId(usuarioId));
+    public ResponseEntity<List<ProposicaoListaResponseDTO>> listarProposicoesFavoritadas(Integer usuarioId) {
+        List<Proposicao> proposicoes = favoritaRepository.findProposicoesByUsuarioId(usuarioId);
+
+        List<ProposicaoListaResponseDTO> resultado = proposicoes.stream()
+                .map(p -> new ProposicaoListaResponseDTO(
+                        p.getCodigo(),
+                        p.getTipo().getTipo(),
+                        p.getVereador().getNome(),
+                        p.getDataEnvio(),
+                        p.getEmenta(),
+                        p.getTag(),
+                        p.getEstado().getEstado()
+                ))
+                .toList();
+
+        return ResponseEntity.ok(resultado);
     }
 }
