@@ -25,6 +25,9 @@ public class ProposicaoService {
     @Autowired
     private ProposicaoRepository proposicaoRepository;
 
+    @Autowired
+    private HistoricoService historicoService;
+
 
     public ResponseEntity<Page<ProposicaoListaResponseDTO>> listarProposicoes(String tag, Pageable pageable) {
         Page<Proposicao> proposicoes;
@@ -75,6 +78,8 @@ public class ProposicaoService {
                 proposicao.getJustificativa(),
                 proposicao.getTag()
         );
+
+        historicoService.registrarVisualizacao(codigo);
 
         return ResponseEntity.ok(dto);
 

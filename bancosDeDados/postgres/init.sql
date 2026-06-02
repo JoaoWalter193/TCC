@@ -152,6 +152,16 @@ CREATE TABLE dispositivo_usuario (
     CONSTRAINT fk_disp_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
 );
 
+CREATE TABLE historico_proposicao (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    proposicao_codigo BIGINT NOT NULL,
+    visualizado_em TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT fk_hist_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_hist_proposicao FOREIGN KEY(proposicao_codigo) REFERENCES proposicao(codigo)
+);
+
+
 CREATE OR REPLACE FUNCTION notify_proposicao_change()
 RETURNS trigger AS $$
 BEGIN
