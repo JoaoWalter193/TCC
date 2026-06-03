@@ -3,10 +3,12 @@ from typing import Optional, Dict, List, Any
 
 class ChartRequest(BaseModel):
     title: str
-    char_type: str
-    x_axis: str
-    y_axis: str
-    operation: str
+    chart_type: str
+    operation: str = "count"
+    x_axis: Optional[str] = None
+    y_axis: Optional[str] = None
+    levels: Optional[List[str]] = None
+    metric: Optional[str] = None
     filters: Optional[Dict[str, List[str]]] = None
 
 class DashboardCreate(BaseModel):
@@ -22,3 +24,8 @@ class DashboardResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class HierarchyNode(BaseModel):
+    name: str
+    value: Optional[float] = None
+    children: Optional[List['HierarchyNode']] = None
