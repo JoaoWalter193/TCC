@@ -1,22 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { IonContent } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
-import {
-  AllCommunityModule,
-  ModuleRegistry as GridModuleRegistry,
-  ColDef,
-} from 'ag-grid-community';
-import {
-  ModuleRegistry as ChartsModuleRegistry,
-  AllCommunityModule as ChartsAllCommunityModule,
-} from 'ag-charts-community';
+import { ColDef } from 'ag-grid-community';
 import { AgChartsModule } from 'ag-charts-angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { Dashboard } from 'src/app/services/dashboard';
-
-GridModuleRegistry.registerModules([AllCommunityModule]);
-
-ChartsModuleRegistry.registerModules([ChartsAllCommunityModule]);
 
 @Component({
   selector: 'app-dashboard-view',
@@ -28,6 +16,7 @@ export class DashboardViewComponent implements OnInit {
   columnDefs: ColDef[] = [];
   rowData: any[] = [];
   chartOptions: any = { data: [], series: [] };
+  showChart = false;
 
   constructor(private dashboardService: Dashboard) {}
 
@@ -54,6 +43,9 @@ export class DashboardViewComponent implements OnInit {
   }
 
   initChart() {
+    this.showChart = this.chartData.length > 0;
+    if (!this.showChart) return;
+
     this.chartOptions = {
       data: this.chartData,
       series: [
