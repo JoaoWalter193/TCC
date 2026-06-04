@@ -6,7 +6,8 @@ import { CardComponent } from '../components/card/card.component';
 import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
-import { TipoProposicao } from '../models/dto/tipo-proposicao-enum';
+import { VereadorService } from '../services/vereador';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-tab2',
@@ -30,11 +31,12 @@ export class Tab2Page implements OnInit {
 
   posts: ProposicaoDTO[] = [];
   postsFiltrados: ProposicaoDTO[] = [];
-  tipoFiltroAtivo: TipoProposicao | null = null;
+  tipoFiltroAtivo: string | null = null;
 
   constructor(
     private router: Router,
     private proposicaoService: ProposicaoService,
+    private vereadorService: VereadorService,
   ) {}
 
   ngOnInit() {
@@ -42,18 +44,32 @@ export class Tab2Page implements OnInit {
   }
 
   carregarPosts() {
-    this.proposicaoService.listar().subscribe({
-      next: (data) => {
-        this.posts = data;
-        this.postsFiltrados = data;
+    forkJoin([
+      this.proposicaoService.listar(),
+      this.vereadorService.listar()
+    ]).subscribe({
+      next: ([proposicoes, vereadores]) => {
+        const vereadorMap = new Map(
+          vereadores.map(v => [v.nome.toLowerCase(), v.id])
+        );
+
+        this.posts = proposicoes.map(p => ({
+          ...p,
+          vereador: {
+            ...p.vereador,
+            id: vereadorMap.get(p.vereador.nome.toLowerCase()) ?? p.vereador.id
+          }
+        }));
+
+        this.postsFiltrados = [...this.posts];
       },
       error: (err) => {
-        console.error('Erro ao carregar proposições', err);
+        console.error('Erro ao carregar dados', err);
       },
     });
   }
 
-  filtrarPorTipo(tipoProposicao: TipoProposicao) {
+  filtrarPorTipo(tipoProposicao: string) {
     this.tipoFiltroAtivo = tipoProposicao;
 
     this.postsFiltrados = this.posts.filter(

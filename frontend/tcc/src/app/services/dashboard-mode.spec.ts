@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DashboardMode } from '../dashboard-mode';
+import { DashboardMode } from './dashboard-mode';
 
 describe('DashboardMode', () => {
   let service: DashboardMode;

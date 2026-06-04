@@ -143,7 +143,9 @@ export class CadastroComponent implements OnInit {
           console.error('Erro no cadastro:', error);
 
           this.mensagemErro =
-            error.error?.mensagem || 'Erro desconhecido ao cadastrar usuário.';
+            error.error?.message ||
+            error.error?.desc ||
+            'Erro desconhecido ao cadastrar usuário.';
           return of(null);
         })
       )
@@ -151,8 +153,7 @@ export class CadastroComponent implements OnInit {
         this.carregando = false;
 
         if (response) {
-          this.mensagemSucesso =
-            response.mensagem || 'Usuário cadastrado com sucesso!';
+          this.mensagemSucesso = 'Usuário cadastrado com sucesso!';
 
           this.cadastroForm.reset();
           this.currentStep = 1;

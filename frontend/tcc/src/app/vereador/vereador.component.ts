@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VereadorService } from '../services/vereador';
 import { ProposicaoService } from '../services/proposicao';
 import { AuthService } from '../services/auth.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vereador',
@@ -27,6 +29,7 @@ export class VereadorComponent implements OnInit {
   auth = inject(AuthService);
   vereador!: VereadorDTO;
   proposicoes: ProposicaoDTO[] = [];
+  vereadorId!: number;
 
   constructor(
     private router: Router,
@@ -36,30 +39,30 @@ export class VereadorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    this.carregarVereador(id);
-    this.carregarProposicoes(id);
+    this.vereadorId = Number(this.route.snapshot.paramMap.get('id'));
+    this.carregarDados();
   }
 
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
 
-  carregarVereador(id: number) {
-    this.vereadorService.buscarPorId(id).subscribe({
-      next: (data) => {
-        if (data) {
-          this.vereador = data;
+  carregarDados() {
+    forkJoin([
+      this.vereadorService.buscarPorId(this.vereadorId).pipe(catchError(() => of(undefined))),
+      this.proposicaoService.listar().pipe(catchError(() => of([])))
+    ]).subscribe({
+      next: ([vereador, proposicoes]) => {
+        if (vereador) {
+          this.vereador = vereador;
+          const nomeLower = vereador.nome.toLowerCase();
+          this.proposicoes = proposicoes.filter(
+            p => p.vereador.nome.toLowerCase() === nomeLower
+          );
         }
       },
-    });
-  }
-
-  carregarProposicoes(id: number) {
-    this.proposicaoService.listar().subscribe({
-      next: (data) => {
-        this.proposicoes = data.filter((p) => p.vereador.id === id);
+      error: (err) => {
+        console.error('Erro ao carregar dados do vereador', err);
       },
     });
   }
