@@ -51,10 +51,14 @@ app.use(env.bi.prefix, (req, _res, next) => {
 }));
 
 app.use(env.business.prefix, (req, _res, next) => {
-  (req as any).targetUrl = `${env.business.baseUrl}${req.originalUrl}`;
+  const stripped = req.originalUrl.replace(env.business.prefix, "");
+  (req as any).targetUrl = `${env.business.baseUrl}${stripped}`;
   next();
 }, logProxy, proxy(env.business.baseUrl, {
-  proxyReqPathResolver: (req) => req.originalUrl,
+  proxyReqPathResolver: (req) => {
+    const stripped = req.originalUrl.replace(env.business.prefix, "");
+    return stripped;
+  },
   proxyErrorHandler: (err, res, next) => {
     console.error(`[Proxy Error] Business service: ${err.message}`);
     res.status(502).json({ error: "Business service unavailable" });

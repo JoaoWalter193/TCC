@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DashboardDataDTO } from '../models/dto/dashboard-data-dto';
 import { DashboardMetadata } from '../models/dto/dashboard-metadata';
 import { DashboardChartConfig, ChartPreviewResponse } from '../models/dto/dashboard-chart-config';
+import { ApiGatewayService } from './api-gateway.service';
 
 @Injectable({ providedIn: 'root' })
 export class Dashboard {
-  private apiUrl = 'http://localhost:8085';
-
-  constructor(private http: HttpClient) {}
+  constructor(private api: ApiGatewayService) {}
 
   getDashboardDefault(): Observable<DashboardDataDTO> {
-    return this.http.get<DashboardDataDTO>(`${this.apiUrl}/dashboard/default`);
+    return this.api.bi.get<DashboardDataDTO>('/dashboard/default');
   }
 
   getMetadata(): Observable<DashboardMetadata> {
-    return this.http.get<DashboardMetadata>(`${this.apiUrl}/metadata`);
+    return this.api.bi.get<DashboardMetadata>('/metadata');
   }
 
   previewChart(config: DashboardChartConfig): Observable<ChartPreviewResponse> {
-    return this.http.post<ChartPreviewResponse>(`${this.apiUrl}/dashboard/preview`, config);
+    return this.api.bi.post<ChartPreviewResponse>('/dashboard/preview', config);
   }
 
   getDashboardData(dashboardId: number): Observable<ChartPreviewResponse> {
-    return this.http.get<ChartPreviewResponse>(`${this.apiUrl}/dashboard/${dashboardId}/data`);
+    return this.api.bi.get<ChartPreviewResponse>(`/dashboard/${dashboardId}/data`);
   }
 }
