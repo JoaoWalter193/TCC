@@ -27,6 +27,9 @@ export class ApiGatewayService {
 
       delete: <T>(path: string) =>
         this.http.delete<T>(`${baseUrl}${path}`),
+
+      patch: <T>(path: string, body: unknown) =>
+        this.http.patch<T>(`${baseUrl}${path}`, body),
     };
   }
 }

@@ -60,3 +60,14 @@ input.ng-valid.ng-touched {
 input {
   background-color: #ffffff !important;
 }
+
+.badge-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  padding: 0;
+  min-width: 0;
+  position: absolute;
+  top: 2px;
+  right: calc(50% - 18px);
+}
