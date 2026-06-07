@@ -10,7 +10,7 @@ import {
   IonLabel,
 } from '@ionic/angular/standalone';
 import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
-import { TipoProposicao } from 'src/app/models/dto/tipo-proposicao-enum';
+
 
 @Component({
   selector: 'app-card',
@@ -30,12 +30,12 @@ import { TipoProposicao } from 'src/app/models/dto/tipo-proposicao-enum';
 export class CardComponent {
   @Input() post!: ProposicaoDTO;
   @Input() link: any[] = [];
-  @Output() tipoFiltrado = new EventEmitter<TipoProposicao>();
+  @Output() tipoFiltrado = new EventEmitter<string>();
   @Output() verVereador = new EventEmitter<number>();
 
   constructor() {}
 
-  filtrarChip(event: Event, tipo: TipoProposicao) {
+  filtrarChip(event: Event, tipo: string) {
     event.stopPropagation();
     event.preventDefault();
     this.tipoFiltrado.emit(tipo);

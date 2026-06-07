@@ -10,34 +10,35 @@ senha VARCHAR,
 ativo BOOLEAN,
 data_delecao DATE
 );
+
 CREATE TABLE partido (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nomePartido VARCHAR(255) UNIQUE NOT NULL
 );
- 
+
 CREATE TABLE comissao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nomeComissao VARCHAR(255) UNIQUE NOT NULL
 );
- 
+
 CREATE TYPE vereador_ativo AS ENUM ('licenciado', 'ativo', 'inativo');
- 
+
 CREATE TYPE vereador_escolaridade AS ENUM (
     'sup_comp', 'sup_incomp', 'ens_fund_comp', 'ens_fund_incomp'
 );
- 
+
 CREATE TYPE vereador_cor AS ENUM ('branca', 'parda', 'preta', 'amarela');
- 
+
 CREATE TABLE tipoProposicao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL
 );
- 
+
 CREATE TABLE estadoProposicao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     estado VARCHAR(100) NOT NULL
 );
- 
+
 CREATE TABLE vereador (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -53,17 +54,17 @@ CREATE TABLE vereador (
     cor vereador_cor NOT NULL,
     ocupacao VARCHAR(255) NOT NULL,
     escolaridade vereador_escolaridade NOT NULL,
- 
+
     CONSTRAINT fk_partido_id
         FOREIGN KEY(partido_id)
             REFERENCES partido(id)
 );
- 
+
 CREATE TABLE vereadorComissao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     comissao_id INTEGER NOT NULL,
     vereador_id INTEGER NOT NULL,
- 
+
     CONSTRAINT fk_comissao_id
         FOREIGN KEY(comissao_id)
             REFERENCES comissao(id),
@@ -71,8 +72,7 @@ CREATE TABLE vereadorComissao (
         FOREIGN KEY(vereador_id)
             REFERENCES vereador(id)
 );
- 
- 
+
 CREATE TABLE proposicao (
     codigo BIGINT PRIMARY KEY,
     tipo_id INTEGER NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE proposicao (
     justificativa TEXT NOT NULL,
     tag VARCHAR(100) NOT NULL,
     embedding vector(768),
- 
+
     CONSTRAINT fk_tipo_proposicao
         FOREIGN KEY(tipo_id)
             REFERENCES tipoProposicao(id),
@@ -102,7 +102,7 @@ CREATE TABLE proposicao (
         FOREIGN KEY(estado_id)
             REFERENCES estadoProposicao(id)
 );
- 
+
 CREATE TABLE tramitacao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     cod_proposicao BIGINT NOT NULL,
@@ -112,11 +112,61 @@ CREATE TABLE tramitacao (
     remetente VARCHAR(100) NOT NULL,
     pendente BOOLEAN NOT NULL,
     observacao VARCHAR(255) NOT NULL,
- 
+
     CONSTRAINT fk_cod_proposicao
         FOREIGN KEY(cod_proposicao)
             REFERENCES proposicao(codigo)
 );
+
+CREATE TABLE usuario_vereador_seguindo (
+    usuario_id INTEGER NOT NULL,
+    vereador_id INTEGER NOT NULL,
+    PRIMARY KEY (usuario_id, vereador_id),
+    CONSTRAINT fk_uvs_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_uvs_vereador FOREIGN KEY(vereador_id) REFERENCES vereador(id)
+);
+
+CREATE TABLE usuario_proposicao_favorita (
+    usuario_id INTEGER NOT NULL,
+    proposicao_codigo BIGINT NOT NULL,
+    PRIMARY KEY (usuario_id, proposicao_codigo),
+    CONSTRAINT fk_upf_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_upf_proposicao FOREIGN KEY(proposicao_codigo) REFERENCES proposicao(codigo)
+);
+
+CREATE TABLE notificacao (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    titulo VARCHAR(255) NOT NULL,
+    mensagem TEXT NOT NULL,
+    lida BOOLEAN DEFAULT false,
+    criada_em TIMESTAMP DEFAULT NOW(),
+    proposicao_codigo BIGINT,
+    CONSTRAINT fk_notif_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
+);
+
+CREATE TABLE dispositivo_usuario (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    fcm_token VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_disp_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
+);
+
+CREATE OR REPLACE FUNCTION notify_proposicao_change()
+RETURNS trigger AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        PERFORM pg_notify('proposicao_nova', NEW.codigo::text);
+    ELSIF TG_OP = 'UPDATE' THEN
+        PERFORM pg_notify('proposicao_atualizada', NEW.codigo::text);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_proposicao
+AFTER INSERT OR UPDATE ON proposicao
+FOR EACH ROW EXECUTE FUNCTION notify_proposicao_change();
 
 
 -- Inserir partidos

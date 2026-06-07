@@ -171,8 +171,7 @@ export class Tab1Page implements OnInit {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_info');
         this.carregando = false;
-        this.mensagemSucesso =
-          response.mensagem || 'você tem sete dias para recuperar sua conta.';
+        this.mensagemSucesso = 'você tem sete dias para recuperar sua conta.';
         this.mostraModalDeletado = true;
 
         setTimeout(() => {
@@ -182,7 +181,7 @@ export class Tab1Page implements OnInit {
       error: (error) => {
         this.carregando = false;
         this.mensagemErro =
-          error.error?.mensagem || 'Falha ao deletar a conta. Tente novamente.';
+          error.error?.message || error.error?.desc || 'Falha ao deletar a conta. Tente novamente.';
         console.error('Erro ao deletar conta:', error);
       },
     });
