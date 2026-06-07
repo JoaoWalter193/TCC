@@ -1,1 +1,5 @@
 .env
+/backend/clientes_TCC/src/main/resources/firebase-service-account.json
+*/node_modules/*
+api-gateway/node_modules/*
+backend/api-gateway/node_modules/*

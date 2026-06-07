@@ -25,6 +25,8 @@ class Proposicao(Base):
     data_envio = Column(DateTime)
     ementa = Column(Text)
     tag = Column(String)
+    likes = Column(Integer, default=0)
+    dislikes = Column(Integer, default=0)
 
     vereador = relationship("Vereador")
 

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'assets/mock-api'
+  gatewayUrl: 'http://localhost:3000',
+  mockApiUrl: 'assets/mock-api'
 };
 
 /*
