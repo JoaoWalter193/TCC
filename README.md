@@ -104,63 +104,15 @@ Após a inicialização completa (primeira execução leva alguns minutos para b
 
 ## Tecnologias Utilizadas
 
-### Frontend
-| Tecnologia | Versão | Finalidade |
-|---|---|---|
-| Angular | 20 | Framework SPA com componentes standalone |
-| Ionic | 8 | Componentes de interface mobile-first |
-| Capacitor | 7 | Compilação para Android e iOS |
-| AG Grid Community | 35 | Tabela de dados interativa |
-| AG Charts Enterprise | 13 | Gráficos (barra, pizza, sunburst) |
-| TypeScript | 5.9 | Linguagem principal |
-| Karma + Jasmine | 6 / 5 | Testes unitários |
-| ESLint | 9 | Análise estática de código |
-
-### API Gateway
-| Tecnologia | Versão | Finalidade |
-|---|---|---|
-| Node.js | 22 | Runtime |
-| Express | 4.21 | Servidor HTTP e roteamento |
-| express-http-proxy | 2.1 | Proxy reverso para microserviços |
-| tsx | 4.19 | Execução TypeScript com hot-reload |
-| TypeScript | 5.6 | Linguagem principal |
-
-### Business API (clientes_TCC)
-| Tecnologia | Versão | Finalidade |
-|---|---|---|
-| Spring Boot | 4.0.0 (parent) | Framework de aplicação |
-| Java | 17 | Linguagem principal |
-| Spring Security | (do Boot) | Autenticação e autorização JWT |
-| Spring Data JPA | (do Boot) | ORM e acesso a dados |
-| PostgreSQL Driver | (do Boot) | Conector do banco |
-| Lombok | (do Boot) | Redução de boilerplate |
-| Auth0 java-jwt | 4.4 | Geração e validação de tokens JWT |
-| Firebase Admin SDK | 9.2 | Notificações push (FCM) |
-| SpringDoc OpenAPI | 2.8 | Documentação Swagger |
-| Spring Boot Mail | (do Boot) | Envio de e-mails transacionais |
-| Asciidoctor | 2.2 | Geração de documentação REST |
-| JUnit 5 + Spring Boot Test | — | Testes unitários e de integração |
-
-### Dashboard BI (ms-dashboard)
-| Tecnologia | Versão | Finalidade |
-|---|---|---|
-| Python | 3.11 | Linguagem principal |
-| FastAPI | — | Framework web assíncrono |
-| Uvicorn | — | Servidor ASGI |
-| SQLAlchemy | — | ORM e acesso a dados |
-| Pandas | — | Agregação e transformação de dados |
-| Sentence Transformers | — | Geração de embeddings textuais |
-| Groq Python SDK | — | Consumo da API Groq (LLM) |
-| psycopg2-binary | — | Conector PostgreSQL |
-| Pydantic | — | Validação de schemas de dados |
-
-### Infraestrutura
-| Tecnologia | Versão | Finalidade |
-|---|---|---|
-| Docker Compose | — | Orquestração multi-serviço |
-| PostgreSQL | 15 | Banco de dados relacional |
-| pgvector | (extensão pg15) | Armazenamento e busca de embeddings |
-| Groq Cloud | — | API de inferência LLM |
+**Frontend:** Angular 20, Ionic 8, Capacitor 7  
+**Backend:** Spring Boot 4 + Java 17, FastAPI + Python 3.11 (dashboard), Express 4 (gateway)  
+**Banco:** PostgreSQL 15 + pgvector  
+**Orquestração:** Docker Compose  
+**IA:** Groq Cloud (Llama 3.3 70B), Sentence Transformers  
+**Visualização:** AG Grid Community, AG Charts Enterprise  
+**Autenticação:** JWT (Auth0), BCrypt  
+**Push:** Firebase Cloud Messaging  
+**Testes:** JUnit 5 (backend), Karma + Jasmine (frontend)  
 
 ---
 
