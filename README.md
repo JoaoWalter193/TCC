@@ -59,7 +59,7 @@ Após a inicialização completa (primeira execução leva alguns minutos para b
 ### Catálogo de Proposições Legislativas
 - Listagem paginada com filtro por tag (saúde, educação, urbanismo, meio-ambiente, segurança, etc.).
 - Detalhamento completo de cada proposição (tipo, vereador autor, ementa, texto, justificativa, tramitação, estado atual).
-- **Busca semântica:** digite uma descrição em linguagem natural e encontre proposições relacionadas por similaridade vetorial (pgvector).
+- Busca semântica: digite uma descrição em linguagem natural e encontre proposições relacionadas por similaridade vetorial (pgvector).
 
 ### Perfil de Vereadores
 - Lista completa de vereadores com dados cadastrais (partido, gabinete, escolaridade, ocupação, etc.).
@@ -71,19 +71,96 @@ Após a inicialização completa (primeira execução leva alguns minutos para b
 - Central de notificações com contagem de não lidas.
 
 ### Notificações em Tempo Real
-- **Server-Sent Events (SSE):** notificações instantâneas no navegador.
-- **Firebase Cloud Messaging (FCM):** notificações push para dispositivos mobile (Android/iOS).
-- **PostgreSQL LISTEN/NOTIFY:** gatilhos no banco de dados disparam eventos quando proposições são inseridas ou alteradas.
+- Server-Sent Events (SSE): notificações instantâneas no navegador.
+- Firebase Cloud Messaging (FCM): notificações push para dispositivos mobile (Android/iOS).
+- PostgreSQL LISTEN/NOTIFY: gatilhos no banco de dados disparam eventos quando proposições são inseridas ou alteradas.
 
-### Dashboards e BI
+### Dashboard
 - Dashboard padrão com ranking de vereadores por quantidade de proposições.
-- **Construtor de dashboards personalizados:** selecione níveis hierárquicos, métricas, operações de agregação (contagem, soma, média) e filtros para gerar gráficos dinâmicos.
-- Suporte a gráficos de barra, pizza e **sunburst** (hierárquico) com AG Charts Enterprise.
+- Construtor de dashboards personalizados: selecione métricas e filtros para gerar gráficos dinâmicos.
+- Suporte a gráficos de barra, pizza e hierárquico com AG Charts Enterprise.
 
 ### Inteligência Artificial (Groq LLM)
-- **Classificação automática de proposições (`/tag`):** a IA analisa a ementa e a justificativa e atribui uma das 12 categorias temáticas.
-- **Sumarização em linguagem cidadã (`/resumo`):** a IA gera um resumo de até 3 parágrafos explicando o propósito, a motivação e o impacto prático da proposição.
-- **Geração de embeddings (`/embedding`):** conversão de texto em vetor 768-dimensional para busca semântica.
+- Classificação automática de proposições (`/tag`): a IA analisa a ementa e a justificativa e atribui uma das 12 categorias temáticas.
+- Sumarização em linguagem cidadã (`/resumo`): a IA gera um resumo de até 3 parágrafos explicando o propósito, a motivação e o impacto prático da proposição.
+- Geração de embeddings (`/embedding`): conversão de texto em vetor 768-dimensional para busca semântica.
+
+---
+
+### Fluxo de Dados
+
+1. O **frontend** (Angular) se comunica exclusivamente com o **API Gateway** na porta 3000, nunca diretamente com os microserviços.
+2. O **gateway** roteia requisições baseado no prefixo da URL:
+   - `/api/bi/*` → ms-dashboard (porta 8085)
+   - `/api/v1/*` → clientes (porta 8080)
+3. O **ms-dashboard** expõe três endpoints especiais que consomem a Groq API para classificação (`/tag`) e sumarização (`/resumo`) via LLM, além de gerar embeddings textuais (`/embedding`) com Sentence Transformers.
+4. Quando uma proposição nova é inserida ou atualizada, o **PostgreSQL** dispara um gatilho `NOTIFY` que é capturado pelo serviço `ProposicaoListenerService`, que então:
+   - Persiste a notificação no banco.
+   - Envia evento SSE para conexões ativas.
+   - Envia push notification via Firebase Cloud Messaging.
+5. Para busca semântica, a Business API envia o texto da consulta para o endpoint `/embedding` do ms-dashboard, recebe o vetor resultante e executa uma busca por similaridade do cosseno no pgvector.
+
+---
+
+## Tecnologias Utilizadas
+
+### Frontend
+| Tecnologia | Versão | Finalidade |
+|---|---|---|
+| Angular | 20 | Framework SPA com componentes standalone |
+| Ionic | 8 | Componentes de interface mobile-first |
+| Capacitor | 7 | Compilação para Android e iOS |
+| AG Grid Community | 35 | Tabela de dados interativa |
+| AG Charts Enterprise | 13 | Gráficos (barra, pizza, sunburst) |
+| TypeScript | 5.9 | Linguagem principal |
+| Karma + Jasmine | 6 / 5 | Testes unitários |
+| ESLint | 9 | Análise estática de código |
+
+### API Gateway
+| Tecnologia | Versão | Finalidade |
+|---|---|---|
+| Node.js | 22 | Runtime |
+| Express | 4.21 | Servidor HTTP e roteamento |
+| express-http-proxy | 2.1 | Proxy reverso para microserviços |
+| tsx | 4.19 | Execução TypeScript com hot-reload |
+| TypeScript | 5.6 | Linguagem principal |
+
+### Business API (clientes_TCC)
+| Tecnologia | Versão | Finalidade |
+|---|---|---|
+| Spring Boot | 4.0.0 (parent) | Framework de aplicação |
+| Java | 17 | Linguagem principal |
+| Spring Security | (do Boot) | Autenticação e autorização JWT |
+| Spring Data JPA | (do Boot) | ORM e acesso a dados |
+| PostgreSQL Driver | (do Boot) | Conector do banco |
+| Lombok | (do Boot) | Redução de boilerplate |
+| Auth0 java-jwt | 4.4 | Geração e validação de tokens JWT |
+| Firebase Admin SDK | 9.2 | Notificações push (FCM) |
+| SpringDoc OpenAPI | 2.8 | Documentação Swagger |
+| Spring Boot Mail | (do Boot) | Envio de e-mails transacionais |
+| Asciidoctor | 2.2 | Geração de documentação REST |
+| JUnit 5 + Spring Boot Test | — | Testes unitários e de integração |
+
+### Dashboard BI (ms-dashboard)
+| Tecnologia | Versão | Finalidade |
+|---|---|---|
+| Python | 3.11 | Linguagem principal |
+| FastAPI | — | Framework web assíncrono |
+| Uvicorn | — | Servidor ASGI |
+| SQLAlchemy | — | ORM e acesso a dados |
+| Pandas | — | Agregação e transformação de dados |
+| Sentence Transformers | — | Geração de embeddings textuais |
+| Groq Python SDK | — | Consumo da API Groq (LLM) |
+| psycopg2-binary | — | Conector PostgreSQL |
+| Pydantic | — | Validação de schemas de dados |
+
+### Infraestrutura
+| Tecnologia | Versão | Finalidade |
+|---|---|---|
+| Docker Compose | — | Orquestração multi-serviço |
+| PostgreSQL | 15 | Banco de dados relacional |
+| pgvector | (extensão pg15) | Armazenamento e busca de embeddings |
+| Groq Cloud | — | API de inferência LLM |
 
 ---
 
