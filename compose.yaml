@@ -56,7 +56,7 @@ services:
       - 8085:8085
     volumes:
       - ./backend/ms-dashboard:/code
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8085 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8085
     environment:
       - DATABASE_URL=postgresql://postgres:senha@postgres:5432/TCC
       - GROQ_API_KEY=${GROQ_API_KEY}
