@@ -157,9 +157,15 @@
 
       @if (chartOptions) {
         <div class="card builder-card">
-          <div class="card-header">
-            <h3>Pré-visualização</h3>
-            <p>Gráfico gerado com base na configuração atual</p>
+          <div class="card-header card-header-row">
+            <div>
+              <h3>Pré-visualização</h3>
+              <p>Gráfico gerado com base na configuração atual</p>
+            </div>
+            <ion-button fill="outline" color="primary" size="small" (click)="compartilharDashboard()">
+              <ion-icon slot="start" name="share-outline"></ion-icon>
+              Compartilhar
+            </ion-button>
           </div>
           <div class="chart-container">
             <ag-charts [options]="chartOptions"></ag-charts>

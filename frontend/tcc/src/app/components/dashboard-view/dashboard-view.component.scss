@@ -66,3 +66,9 @@
 .custom-grid ::ng-deep .ag-row {
   line-height: 1.4;
 }
+
+.share-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 16px;
+}

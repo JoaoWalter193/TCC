@@ -1,4 +1,11 @@
-<ion-content class="dashboard-content">
+<ion-content #dashboardContent class="dashboard-content">
+
+  <div class="share-btn-container">
+    <ion-button color="primary" fill="outline" (click)="compartilharDashboard()">
+      <ion-icon slot="start" name="share-outline"></ion-icon>
+      Compartilhar
+    </ion-button>
+  </div>
 
   @if (chartOptions.data.length > 0) {
     <div class="card dashboard-card">
