@@ -57,6 +57,24 @@ public class NotificacaoService {
         }
     }
 
+    public Notificacao criarNotificacao(Integer usuarioId, String titulo, String mensagem, Long proposicaoCodigo) {
+        Notificacao notif = new Notificacao();
+        notif.setUsuarioId(usuarioId);
+        notif.setTitulo(titulo);
+        notif.setMensagem(mensagem);
+        notif.setProposicaoCodigo(proposicaoCodigo);
+        notificacaoRepository.save(notif);
+
+        sseService.enviarNotificacao(usuarioId, titulo, mensagem);
+
+        List<String> tokens = dispositivoRepository.findTokensByUsuarioId(usuarioId);
+        for (String token : tokens) {
+            enviarPushAndroid(token, titulo, mensagem);
+        }
+
+        return notif;
+    }
+
     // chamados pelo NotificacaoController
     public ResponseEntity<List<Notificacao>> listarNotificacoes(Integer usuarioId) {
         return ResponseEntity.ok(

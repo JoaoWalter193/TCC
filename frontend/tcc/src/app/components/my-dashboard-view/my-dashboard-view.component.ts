@@ -7,15 +7,12 @@ import {
   IonSelect, IonSelectOption, IonLabel, IonCheckbox,
   IonSegment, IonSegmentButton, IonChip, IonText,
 } from "@ionic/angular/standalone";
-import { ModuleRegistry, AllEnterpriseModule } from 'ag-charts-enterprise';
 import { AgChartsModule } from 'ag-charts-angular';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { Dashboard } from 'src/app/services/dashboard';
 import { DashboardMetadata } from 'src/app/models/dto/dashboard-metadata';
 import { DashboardChartConfig } from 'src/app/models/dto/dashboard-chart-config';
-
-ModuleRegistry.registerModules([AllEnterpriseModule]);
 
 @Component({
   selector: 'app-my-dashboard-view',
