@@ -9,8 +9,6 @@ def get_flattened_data(db: Session):
         Proposicao.codigo,
         Proposicao.data_envio,
         Proposicao.tag,
-        Proposicao.likes,
-        Proposicao.dislikes,
         Vereador.nome.label("vereador_nome"),
         Vereador.genero,
         Partido.nomepartido.label("partido_nome")
