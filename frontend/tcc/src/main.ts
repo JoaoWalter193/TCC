@@ -18,10 +18,9 @@ import { importProvidersFrom, inject, provideAppInitializer } from '@angular/cor
 import { authInterceptor } from './app/services/auth.interceptor';
 import { AuthService } from './app/services/auth.service';
 
-import { ModuleRegistry } from 'ag-charts-enterprise';
-import { SunburstSeriesModule } from 'ag-charts-enterprise';
+import { ModuleRegistry, AllEnterpriseModule } from 'ag-charts-enterprise';
 
-ModuleRegistry.registerModules([SunburstSeriesModule]);
+ModuleRegistry.registerModules([AllEnterpriseModule]);
 
 import { AllCommunityModule, ModuleRegistry as GridRegistry } from 'ag-grid-community';
 GridRegistry.registerModules([AllCommunityModule]);
