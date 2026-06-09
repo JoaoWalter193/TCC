@@ -1,24 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { IonContent, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { ColDef } from 'ag-grid-community';
 import { AgChartsModule } from 'ag-charts-angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { Dashboard } from 'src/app/services/dashboard';
+import { ShareService } from 'src/app/services/share.service';
 
 @Component({
   selector: 'app-dashboard-view',
   templateUrl: './dashboard-view.component.html',
   styleUrls: ['./dashboard-view.component.scss'],
-  imports: [IonContent, CommonModule, AgGridModule, AgChartsModule],
+  imports: [IonContent, IonButton, IonIcon, CommonModule, AgGridModule, AgChartsModule],
 })
 export class DashboardViewComponent implements OnInit {
+  @ViewChild('dashboardContent', { read: ElementRef })
+  dashboardContentRef!: ElementRef;
+
   columnDefs: ColDef[] = [];
   rowData: any[] = [];
   chartOptions: any = { data: [], series: [] };
   showChart = false;
 
-  constructor(private dashboardService: Dashboard) {}
+  constructor(
+    private dashboardService: Dashboard,
+    private shareService: ShareService,
+  ) {}
 
   ngOnInit() {
     this.loadDashboard();
@@ -57,5 +64,10 @@ export class DashboardViewComponent implements OnInit {
         },
       ],
     };
+  }
+
+  async compartilharDashboard() {
+    const el = this.dashboardContentRef.nativeElement;
+    await this.shareService.compartilharGrafico(el, 'Dashboard CuritibAtiva');
   }
 }

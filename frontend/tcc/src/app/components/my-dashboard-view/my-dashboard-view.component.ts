@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Dashboard } from 'src/app/services/dashboard';
 import { DashboardMetadata } from 'src/app/models/dto/dashboard-metadata';
 import { DashboardChartConfig } from 'src/app/models/dto/dashboard-chart-config';
+import { ShareService } from 'src/app/services/share.service';
 
 @Component({
   selector: 'app-my-dashboard-view',
@@ -31,6 +32,7 @@ export class MyDashboardViewComponent implements OnInit {
   auth = inject(AuthService);
   dashboard = inject(Dashboard);
   datePipe = inject(DatePipe);
+  shareService = inject(ShareService);
 
   metadata: DashboardMetadata = {};
   categoricalFields: string[] = [];
@@ -279,6 +281,12 @@ export class MyDashboardViewComponent implements OnInit {
 
   objectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
+  }
+
+  async compartilharDashboard() {
+    const el = document.querySelector('.builder-container') as HTMLElement;
+    if (!el) return;
+    await this.shareService.compartilharGrafico(el, 'Meu Dashboard CuritibAtiva');
   }
 
   navigateToLogin() {
