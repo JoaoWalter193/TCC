@@ -78,7 +78,7 @@ export class Tab4Page implements OnInit {
     this.isSearching = true;
     this.searchResults = [];
 
-    this.proposicaoService.buscarPorSimilaridade(termo, 50).subscribe({
+    this.proposicaoService.buscarPorSimilaridade(termo, 50, this.usuarioId).subscribe({
       next: (results) => {
         this.searchResults = results;
         this.isSearching = false;
