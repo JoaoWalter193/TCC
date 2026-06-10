@@ -29,12 +29,12 @@ CREATE TYPE vereador_escolaridade AS ENUM (
 
 CREATE TYPE vereador_cor AS ENUM ('branca', 'parda', 'preta', 'amarela');
 
-CREATE TABLE tipoProposicao (
+CREATE TABLE tipo_proposicao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE estadoProposicao (
+CREATE TABLE estado_proposicao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     estado VARCHAR(100) NOT NULL
 );
@@ -43,10 +43,10 @@ CREATE TABLE vereador (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     partido_id INTEGER,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    legislaturas VARCHAR(255) NOT NULL,
-    gabinete VARCHAR(255) NOT NULL,
-    telefone VARCHAR(11) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    legislaturas TEXT,
+    gabinete TEXT,
+    telefone VARCHAR(11),
     site VARCHAR(100) NOT NULL,
     ativo vereador_ativo NOT NULL,
     genero VARCHAR(50) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE vereador (
             REFERENCES partido(id)
 );
 
-CREATE TABLE vereadorComissao (
+CREATE TABLE vereador_comissao (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     comissao_id INTEGER NOT NULL,
     vereador_id INTEGER NOT NULL,
@@ -94,13 +94,13 @@ CREATE TABLE proposicao (
 
     CONSTRAINT fk_tipo_proposicao
         FOREIGN KEY(tipo_id)
-            REFERENCES tipoProposicao(id),
+            REFERENCES tipo_proposicao(id),
     CONSTRAINT fk_vereador_proposicao
         FOREIGN KEY(vereador_id)
             REFERENCES vereador(id),
     CONSTRAINT fk_estado_proposicao
         FOREIGN KEY(estado_id)
-            REFERENCES estadoProposicao(id)
+            REFERENCES estado_proposicao(id)
 );
 
 CREATE TABLE tramitacao (
@@ -215,7 +215,7 @@ ativo, genero, nascimento, cor, ocupacao, escolaridade
 'inativo', 'masculino', '1968-09-30', 'amarela', 'Engenheiro', 'sup_incomp');
 
 -- Inserir associações vereador-comissão
-INSERT INTO vereadorComissao (comissao_id, vereador_id) VALUES
+INSERT INTO vereador_comissao (comissao_id, vereador_id) VALUES
 (1, 1),
 (2, 1),
 (2, 2),
@@ -224,7 +224,7 @@ INSERT INTO vereadorComissao (comissao_id, vereador_id) VALUES
 (5, 5);
 
 -- Inserir tipos de proposição
-INSERT INTO tipoProposicao (tipo) VALUES
+INSERT INTO tipo_proposicao (tipo) VALUES
 ('Projeto de Lei'),
 ('Requerimento'),
 ('Indicação'),
@@ -232,7 +232,7 @@ INSERT INTO tipoProposicao (tipo) VALUES
 ('Emenda');
 
 -- Inserir estados de proposição
-INSERT INTO estadoProposicao (estado) VALUES
+INSERT INTO estado_proposicao (estado) VALUES
 ('Em tramitação'),
 ('Aprovado'),
 ('Rejeitado'),

@@ -1,11 +1,14 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from groq import Groq
+from groq import Groq, InternalServerError, RateLimitError
 import os
 
 router = APIRouter()
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(
+    api_key=os.getenv("GROQ_API_KEY"),
+    timeout=15,
+)
 
 TAGS_POSSIVEIS = [
     "saude", "educacao", "urbanismo", "meio-ambiente",
@@ -29,13 +32,15 @@ def gerar_tag(request: TagRequest):
     Justificativa: {request.justificativa}
     """
 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=20
-    )
-
-    tag = response.choices[0].message.content.strip().lower()
+    try:
+        response = client.chat.completions.create(
+            model="qwen/qwen3-32b",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=20,
+        )
+        tag = response.choices[0].message.content.strip().lower()
+    except (InternalServerError, RateLimitError, Exception):
+        tag = "administrativo"
 
     if tag not in TAGS_POSSIVEIS:
         tag = "administrativo"
