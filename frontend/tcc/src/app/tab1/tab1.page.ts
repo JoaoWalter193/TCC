@@ -20,7 +20,7 @@ interface FormularioPerfil extends AlterarUsuarioDTO {
   standalone: true,
 })
 export class Tab1Page implements OnInit {
-  perfilAtual: UsuarioDTO = { cpf: '', nome: '', email: '', cep: null, escolaridade: null, profissao: null };
+  perfilAtual: UsuarioDTO = { id: 0, cpf: '', nome: '', email: '', cep: null, escolaridade: null, profissao: null };
 
   dadosFormulario: FormularioPerfil = {
     nome: '',
@@ -145,6 +145,7 @@ export class Tab1Page implements OnInit {
           this.carregando = false;
 
           localStorage.setItem('user_info', JSON.stringify(response));
+          localStorage.setItem('usuario_id', String(response.id));
         },
         error: (error) => {
           const errorDetails =

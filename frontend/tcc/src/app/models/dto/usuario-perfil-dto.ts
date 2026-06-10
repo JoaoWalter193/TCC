@@ -1,6 +1,7 @@
 import { ProposicaoResumoDTO } from './proposicao-resumo-dto';
 
 export interface UsuarioPerfilDTO {
+  id: number;
   cpf: string;
   nome: string;
   email: string;

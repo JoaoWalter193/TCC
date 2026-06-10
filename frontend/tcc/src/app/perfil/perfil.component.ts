@@ -32,11 +32,13 @@ export class PerfilComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    const cpf = JSON.parse(raw).cpf;
+    const parsed = JSON.parse(raw);
+    const cpf = parsed.cpf;
     this.usuarioService.pegarPerfil(cpf).subscribe({
       next: (data) => {
         this.perfil = data;
         localStorage.setItem('user_info', JSON.stringify(data));
+        localStorage.setItem('usuario_id', String(data.id));
         this.carregando = false;
       },
       error: (err) => {
