@@ -14,8 +14,8 @@ import { ShareService } from 'src/app/services/share.service';
   imports: [IonContent, IonButton, IonIcon, CommonModule, AgGridModule, AgChartsModule],
 })
 export class DashboardViewComponent implements OnInit {
-  @ViewChild('dashboardContent', { read: ElementRef })
-  dashboardContentRef!: ElementRef;
+  @ViewChild('captureArea', { read: ElementRef })
+  captureAreaRef!: ElementRef;
 
   columnDefs: ColDef[] = [];
   rowData: any[] = [];
@@ -67,7 +67,7 @@ export class DashboardViewComponent implements OnInit {
   }
 
   async compartilharDashboard() {
-    const el = this.dashboardContentRef.nativeElement;
+    const el = this.captureAreaRef.nativeElement;
     await this.shareService.compartilharGrafico(el, 'Dashboard CuritibAtiva');
   }
 }
