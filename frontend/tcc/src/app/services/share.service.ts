@@ -6,27 +6,25 @@ export class ShareService {
   private platform = inject(Platform);
 
   async compartilharGrafico(elemento: HTMLElement, titulo: string): Promise<void> {
-    const html2canvas = (await import('html2canvas')).default;
-    const canvas = await html2canvas(elemento, {
-      backgroundColor: '#ffffff',
-      scale: 2,
-      useCORS: true,
-      logging: false,
-    });
+    const domtoimage = await import('dom-to-image-more');
 
     if (this.platform.is('capacitor')) {
-      await this.compartilharMobile(canvas, titulo);
+      const blob = await domtoimage.toBlob(elemento, {
+        bgcolor: '#ffffff',
+        scale: 2,
+      });
+      if (!blob) return;
+      await this.compartilharMobile(blob, titulo);
     } else {
-      await this.baixarImagem(canvas, titulo);
+      const dataUrl = await domtoimage.toPng(elemento, {
+        bgcolor: '#ffffff',
+        scale: 2,
+      });
+      await this.baixarImagem(dataUrl, titulo);
     }
   }
 
-  private async compartilharMobile(canvas: HTMLCanvasElement, titulo: string): Promise<void> {
-    const blob = await new Promise<Blob | null>(resolve =>
-      canvas.toBlob(b => resolve(b), 'image/png'),
-    );
-    if (!blob) return;
-
+  private async compartilharMobile(blob: Blob, titulo: string): Promise<void> {
     const { Share } = await import('@capacitor/share');
     const { Filesystem, Directory } = await import('@capacitor/filesystem');
 
@@ -47,10 +45,10 @@ export class ShareService {
     });
   }
 
-  private async baixarImagem(canvas: HTMLCanvasElement, titulo: string): Promise<void> {
+  private async baixarImagem(dataUrl: string, titulo: string): Promise<void> {
     const link = document.createElement('a');
     link.download = `${titulo.replace(/\s+/g, '_').toLowerCase()}.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = dataUrl;
     link.click();
   }
 

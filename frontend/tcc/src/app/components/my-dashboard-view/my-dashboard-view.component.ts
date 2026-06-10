@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +29,9 @@ import { ShareService } from 'src/app/services/share.service';
   providers: [DatePipe],
 })
 export class MyDashboardViewComponent implements OnInit {
+  @ViewChild('captureArea', { read: ElementRef })
+  captureAreaRef!: ElementRef;
+
   auth = inject(AuthService);
   dashboard = inject(Dashboard);
   datePipe = inject(DatePipe);
@@ -284,8 +287,7 @@ export class MyDashboardViewComponent implements OnInit {
   }
 
   async compartilharDashboard() {
-    const el = document.querySelector('.builder-container') as HTMLElement;
-    if (!el) return;
+    const el = this.captureAreaRef.nativeElement;
     await this.shareService.compartilharGrafico(el, 'Meu Dashboard CuritibAtiva');
   }
 

@@ -1,4 +1,4 @@
-<ion-content #dashboardContent class="dashboard-content">
+<ion-content class="dashboard-content">
 
   <div class="share-btn-container">
     <ion-button color="primary" fill="outline" (click)="compartilharDashboard()">
@@ -7,31 +7,33 @@
     </ion-button>
   </div>
 
-  @if (chartOptions.data.length > 0) {
+  <div #captureArea class="capture-area">
+    @if (chartOptions.data.length > 0) {
+      <div class="card dashboard-card">
+        <div class="card-header">
+          <h3>Visão geral</h3>
+          <p>Resumo das interações</p>
+        </div>
+
+        <div class="chart-container">
+          <ag-charts [options]="chartOptions"></ag-charts>
+        </div>
+      </div>
+    }
+
     <div class="card dashboard-card">
       <div class="card-header">
-        <h3>Visão geral</h3>
-        <p>Resumo das interações</p>
+        <h3>Dados detalhados</h3>
+        <p>Lista completa das proposições</p>
       </div>
 
-      <div class="chart-container">
-        <ag-charts [options]="chartOptions"></ag-charts>
+      <div class="table-container">
+        <ag-grid-angular 
+          class="ag-theme-alpine custom-grid"
+          [rowData]="rowData"
+          [columnDefs]="columnDefs">
+        </ag-grid-angular>
       </div>
-    </div>
-  }
-
-  <div class="card dashboard-card">
-    <div class="card-header">
-      <h3>Dados detalhados</h3>
-      <p>Lista completa das proposições</p>
-    </div>
-
-    <div class="table-container">
-      <ag-grid-angular 
-        class="ag-theme-alpine custom-grid"
-        [rowData]="rowData"
-        [columnDefs]="columnDefs">
-      </ag-grid-angular>
     </div>
   </div>
 

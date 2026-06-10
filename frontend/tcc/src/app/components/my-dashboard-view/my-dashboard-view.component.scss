@@ -31,13 +31,6 @@
   }
 }
 
-.card-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
-
 .builder-section {
   margin-bottom: 18px;
 }
@@ -152,6 +145,17 @@
   tr:hover td {
     background: #f9fafb;
   }
+}
+
+.share-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.capture-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .login-required-container {
