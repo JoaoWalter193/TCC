@@ -232,6 +232,7 @@ public class UsuarioService {
 
     private UsuarioDTO toDTO(Usuario u) {
         return new UsuarioDTO(
+                u.getId(),
                 u.getCpf(),
                 u.getNome(),
                 u.getEmail(),
@@ -243,6 +244,7 @@ public class UsuarioService {
 
     private UsuarioPerfilDTO toPerfilDTO(Usuario u, Integer totalVereadores, List<ProposicaoResumoDTO> proposicoes) {
         return new UsuarioPerfilDTO(
+                u.getId(),
                 u.getCpf(),
                 u.getNome(),
                 u.getEmail(),
