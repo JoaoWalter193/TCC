@@ -20,6 +20,10 @@ export class AppComponent {
           const push = inject(m.PushService);
           push.init();
         });
+        import('./services/local-notification.service').then(m => {
+          const localNotif = inject(m.LocalNotificationService);
+          localNotif.init();
+        });
       }
     });
   }

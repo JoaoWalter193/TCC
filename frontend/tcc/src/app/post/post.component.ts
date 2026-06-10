@@ -39,6 +39,10 @@ export class PostComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  verVereador(idVereador: number) {
+    this.router.navigate(['/vereador', idVereador]);
+  }
+
   carregarPost() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 

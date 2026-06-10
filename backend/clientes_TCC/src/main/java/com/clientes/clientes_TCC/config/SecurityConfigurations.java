@@ -52,6 +52,11 @@ public class SecurityConfigurations {
                                         "/prop"
                         ).permitAll()
 
+                        // Verificar status de seguimento não precisa de autenticação (usa path param)
+                        .requestMatchers(HttpMethod.GET,
+                                "/user/*/follow/*/status"
+                        ).permitAll()
+
                         //Rotas que necessitam autenticação
                         .requestMatchers(HttpMethod.PUT,
                                 "/user/**"
