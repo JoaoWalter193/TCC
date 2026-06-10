@@ -12,6 +12,7 @@ import {
 import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
 import { ReacaoService } from 'src/app/services/reacao.service';
 import { ReacaoEventService } from 'src/app/services/reacao-event.service';
+import { ShareService } from 'src/app/services/share.service';
 
 @Component({
   selector: 'app-card',
@@ -37,6 +38,7 @@ export class CardComponent {
 
   private reacaoService = inject(ReacaoService);
   private reacaoEvent = inject(ReacaoEventService);
+  private shareService = inject(ShareService);
 
   filtrarChip(event: Event, tipo: string) {
     event.stopPropagation();
