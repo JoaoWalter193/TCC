@@ -34,12 +34,12 @@
     <div class="acoes">
 
       <div class="acao">
-        <ion-icon name="thumbs-up-outline"></ion-icon>
+        <ion-icon [name]="likeIconName()" (click)="reagir($event, 'LIKE')"></ion-icon>
         <span>{{ post.likes }}</span>
       </div>
 
       <div class="acao">
-        <ion-icon name="thumbs-down-outline"></ion-icon>
+        <ion-icon [name]="dislikeIconName()" (click)="reagir($event, 'DISLIKE')"></ion-icon>
         <span>{{ post.dislikes }}</span>
       </div>
 

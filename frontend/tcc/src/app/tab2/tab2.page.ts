@@ -43,9 +43,13 @@ export class Tab2Page implements OnInit {
     this.carregarPosts();
   }
 
+  get usuarioId(): number | null {
+    return this.auth.getUsuarioId();
+  }
+
   carregarPosts() {
     forkJoin([
-      this.proposicaoService.listar(),
+      this.proposicaoService.listar(this.usuarioId),
       this.vereadorService.listar()
     ]).subscribe({
       next: ([proposicoes, vereadores]) => {
