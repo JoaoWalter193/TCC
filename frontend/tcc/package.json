@@ -37,6 +37,7 @@
     "ag-charts-enterprise": "^13.3.1",
     "ag-grid-angular": "^35.2.1",
     "ag-grid-community": "^35.2.1",
+    "dom-to-image-more": "^3.7.2",
     "html2canvas": "^1.4.1",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",

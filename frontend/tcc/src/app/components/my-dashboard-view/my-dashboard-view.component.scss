@@ -147,6 +147,17 @@
   }
 }
 
+.share-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.capture-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .login-required-container {
   display: flex;
   flex-direction: column;

@@ -16,8 +16,8 @@ def read_metadata(db: Session = Depends(get_db)):
 
 
 @router.get("/dashboard/default")
-def get_ranking_vereadores():
-    dados_processados = processar_ranking_vereadores()
+def get_ranking_vereadores(db: Session = Depends(get_db)):
+    dados_processados = processar_ranking_vereadores(db)
 
     return {
         "columnDefs": [
