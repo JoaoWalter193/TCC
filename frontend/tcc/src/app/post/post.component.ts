@@ -6,6 +6,8 @@ import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { ReacaoService } from '../services/reacao.service';
 import { ReacaoEventService } from '../services/reacao-event.service';
+import { ShareService } from '../services/share.service';
+import { IaService } from '../services/ia.service';
 
 @Component({
   selector: 'app-post',
@@ -37,7 +39,9 @@ export class PostComponent implements OnInit {
     private route: ActivatedRoute,
     private proposicaoService: ProposicaoService,
     private reacaoService: ReacaoService,
-    private reacaoEvent: ReacaoEventService
+    private reacaoEvent: ReacaoEventService,
+    private shareService: ShareService,
+    private iaService: IaService
   ) {}
 
   ngOnInit() {
