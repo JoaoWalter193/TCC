@@ -42,7 +42,7 @@
     } @else if (searchResults.length > 0) {
       <div class="highlight-list">
         @for (post of searchResults; track post.id) {
-          <app-card [post]="post" [link]="['/proposicao', post.id]"></app-card>
+          <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"></app-card>
         }
       </div>
     } @else {
