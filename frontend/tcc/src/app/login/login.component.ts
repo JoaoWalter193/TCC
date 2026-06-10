@@ -150,6 +150,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('auth_token', response.token);
           if (response.usuario) {
             localStorage.setItem('user_info', JSON.stringify(response.usuario));
+            localStorage.setItem('usuario_id', String(response.usuario.id));
           }
 
           this.auth.checkAuth();

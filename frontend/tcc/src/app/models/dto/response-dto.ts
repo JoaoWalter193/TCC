@@ -5,6 +5,7 @@ export interface ResponseDTO {
 
 export interface LoginResponseDTO {
   usuario: {
+    id: number;
     cpf: string;
     nome: string;
     email: string;

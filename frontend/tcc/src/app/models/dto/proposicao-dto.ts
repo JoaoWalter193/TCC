@@ -6,6 +6,9 @@ export interface ProposicaoListaDTO {
   ementa: string;
   tag: string;
   estado: string;
+  likes: number;
+  dislikes: number;
+  currentUserReaction: string | null;
 }
 
 export interface ProposicaoDetalheDTO {
@@ -26,6 +29,9 @@ export interface ProposicaoDetalheDTO {
   texto: string;
   justificativa: string;
   tag: string;
+  likes: number;
+  dislikes: number;
+  currentUserReaction: string | null;
 }
 
 export interface ProposicaoDTO {
@@ -50,4 +56,5 @@ export interface ProposicaoDTO {
   };
   likes: number;
   dislikes: number;
+  currentUserReaction: string | null;
 }
