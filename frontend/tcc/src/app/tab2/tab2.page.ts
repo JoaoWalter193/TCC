@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonChip, IonLabel, IonIcon } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
@@ -8,6 +8,8 @@ import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { VereadorService } from '../services/vereador';
 import { forkJoin } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReacaoEventService } from '../services/reacao-event.service';
 
 @Component({
   selector: 'app-tab2',
@@ -26,8 +28,10 @@ import { forkJoin } from 'rxjs';
     IonIcon
 ],
 })
-export class Tab2Page implements OnInit {
+export class Tab2Page {
   auth = inject(AuthService);
+  private reacaoEvent = inject(ReacaoEventService);
+  private destroyRef = inject(DestroyRef);
 
   posts: ProposicaoDTO[] = [];
   postsFiltrados: ProposicaoDTO[] = [];
@@ -37,7 +41,11 @@ export class Tab2Page implements OnInit {
     private router: Router,
     private proposicaoService: ProposicaoService,
     private vereadorService: VereadorService,
-  ) {}
+  ) {
+    this.reacaoEvent.reacaoAlterada$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.carregarPosts());
+  }
 
   ngOnInit() {
     this.carregarPosts();

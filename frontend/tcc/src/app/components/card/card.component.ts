@@ -11,6 +11,7 @@ import {
 } from '@ionic/angular/standalone';
 import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
 import { ReacaoService } from 'src/app/services/reacao.service';
+import { ReacaoEventService } from 'src/app/services/reacao-event.service';
 
 @Component({
   selector: 'app-card',
@@ -35,6 +36,7 @@ export class CardComponent {
   @Output() verVereador = new EventEmitter<number>();
 
   private reacaoService = inject(ReacaoService);
+  private reacaoEvent = inject(ReacaoEventService);
 
   filtrarChip(event: Event, tipo: string) {
     event.stopPropagation();
@@ -81,6 +83,7 @@ export class CardComponent {
     }
 
     this.reacaoService.reagir(this.usuarioId, this.post.id, tipo).subscribe({
+      next: () => this.reacaoEvent.emitir(),
       error: () => {
         this.post.currentUserReaction = estadoAnterior;
         this.post.likes = likesAnterior;
