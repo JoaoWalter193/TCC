@@ -33,7 +33,7 @@ public class NotificacaoService {
         notif.setProposicaoCodigo(proposicaoCodigo);
         notificacaoRepository.save(notif);
 
-        sseService.enviarNotificacao(usuarioId, titulo, mensagem);
+        sseService.enviarNotificacao(usuarioId, titulo, mensagem, proposicaoCodigo);
 
         List<String> tokens = dispositivoRepository.findTokensByUsuarioId(usuarioId);
         for (String token : tokens) {
@@ -65,7 +65,7 @@ public class NotificacaoService {
         notif.setProposicaoCodigo(proposicaoCodigo);
         notificacaoRepository.save(notif);
 
-        sseService.enviarNotificacao(usuarioId, titulo, mensagem);
+        sseService.enviarNotificacao(usuarioId, titulo, mensagem, proposicaoCodigo);
 
         List<String> tokens = dispositivoRepository.findTokensByUsuarioId(usuarioId);
         for (String token : tokens) {

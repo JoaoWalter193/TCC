@@ -44,8 +44,9 @@ public class VereadorService {
 
 
     private VereadorDTO transformarEmDTO(Vereador v) {
+        String siglaPartido = v.getPartido() != null ? v.getPartido().getNomePartido() : "";
         return new VereadorDTO(
-                v.getId(), v.getNome(), v.getPartido(),
+                v.getId(), v.getNome(), siglaPartido,
                 v.getEmail(), v.getLegislaturas(), v.getGabinete(),
                 v.getTelefone(), v.getSite(), v.getAtivo(),
                 v.getGenero(), v.getNascimento(), v.getCor(),

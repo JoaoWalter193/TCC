@@ -85,6 +85,12 @@ ion-icon {
 
 .vereador {
   font-weight: 500;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .tipo {

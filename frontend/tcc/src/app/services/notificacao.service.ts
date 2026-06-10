@@ -1,45 +1,73 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { NotificacaoDTO, NotificacaoViewModel, NotificacaoTipo } from '../models/dto/notificacao-dto';
 import { ApiGatewayService } from './api-gateway.service';
+import { SseService } from './sse.service';
+import { LocalNotificationService } from './local-notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class NotificacaoService {
   private readonly STORAGE_KEY = 'notificacoes_lidas';
+  private api = inject(ApiGatewayService);
+  private sse = inject(SseService);
+  private localNotif = inject(LocalNotificationService);
 
   private notificacoes = signal<NotificacaoViewModel[]>([]);
   private naoLidas = signal(0);
   private estaNaPagina = signal(false);
+  private ultimoUsuarioId = 0;
+  private idsAgendados = new Set<number>();
+  private primeiraCarga = true;
 
   readonly notificacoesSig = this.notificacoes.asReadonly();
   readonly naoLidasSig = this.naoLidas.asReadonly();
   readonly estaNaPaginaSig = this.estaNaPagina.asReadonly();
 
-  constructor(private api: ApiGatewayService) {}
+  constructor() {
+    this.sse.evento$.subscribe(() => {
+      if (this.ultimoUsuarioId) {
+        this.carregarNotificacoes(this.ultimoUsuarioId);
+      }
+    });
+  }
 
   setEstaNaPagina(value: boolean): void {
     this.estaNaPagina.set(value);
   }
 
   carregarNotificacoes(usuarioId: number): void {
+    this.ultimoUsuarioId = usuarioId;
+
+    if (!this.sse.conectado) {
+      this.sse.conectar(usuarioId);
+    }
+
     this.api.v1.get<NotificacaoDTO[]>(`/notificacoes/${usuarioId}`).pipe(
-      catchError(() => of(this.carregarFallback())),
-      map(lista => this.enriquecerLista(lista)),
+      catchError(() => of([] as NotificacaoDTO[])),
     ).subscribe({
-      next: (enriquecidas) => {
+      next: (lista) => {
         const lidasStorage = this.lerLidasStorage();
+        const enriquecidas = this.enriquecerLista(lista);
+
         const comEstado = enriquecidas.map(n => ({
           ...n,
           lida: n.lida || lidasStorage.has(n.id),
         }));
+
+        const anterior = this.notificacoes();
+
         this.notificacoes.set(comEstado);
         this.atualizarContador();
+
+        if (!this.primeiraCarga) {
+          this.agendarNovas(comEstado, anterior);
+        }
+        this.primeiraCarga = false;
       },
       error: () => {
-        const fallback = this.enriquecerLista(this.carregarFallback());
-        this.notificacoes.set(fallback);
-        this.atualizarContador();
+        this.notificacoes.set([]);
+        this.naoLidas.set(0);
       },
     });
   }
@@ -72,6 +100,25 @@ export class NotificacaoService {
     );
     ids.forEach(id => this.persistirLida(id));
     this.atualizarContador();
+  }
+
+  private agendarNovas(atual: NotificacaoViewModel[], anterior: NotificacaoViewModel[]): void {
+    const idsAnteriores = new Set(anterior.map(n => n.id));
+
+    for (const notif of atual) {
+      if (notif.lida) continue;
+      if (this.idsAgendados.has(notif.id)) continue;
+
+      if (!idsAnteriores.has(notif.id)) {
+        this.idsAgendados.add(notif.id);
+        this.localNotif.agendar(
+          notif.id,
+          notif.titulo,
+          notif.mensagem,
+          { proposicaoCodigo: notif.proposicaoCodigo },
+        );
+      }
+    }
   }
 
   private atualizarContador(): void {
@@ -150,52 +197,5 @@ export class NotificacaoService {
     const diffD = Math.floor(diffH / 24);
     if (diffD < 7) return `Há ${diffD}d`;
     return data.toLocaleDateString('pt-BR');
-  }
-
-  private carregarFallback(): NotificacaoDTO[] {
-    return [
-      {
-        id: 1, usuarioId: 1,
-        titulo: 'Nova proposição de Angelo Vanhoni',
-        mensagem: 'Institui Política Municipal de Educação Inovadora',
-        lida: false, criadaEm: new Date(Date.now() - 1800000).toISOString(),
-        proposicaoCodigo: 1,
-      },
-      {
-        id: 2, usuarioId: 1,
-        titulo: 'Atualização em proposição favoritada',
-        mensagem: 'Dispõe sobre a criação do programa de coleta seletiva — Em tramitação',
-        lida: false, criadaEm: new Date(Date.now() - 3600000).toISOString(),
-        proposicaoCodigo: 3,
-      },
-      {
-        id: 3, usuarioId: 1,
-        titulo: 'Nova proposição de Camilla Gonda',
-        mensagem: 'Cria salas sensoriais em escolas para apoio ao neurodesenvolvimento infantil',
-        lida: true, criadaEm: new Date(Date.now() - 7200000).toISOString(),
-        proposicaoCodigo: 2,
-      },
-      {
-        id: 4, usuarioId: 1,
-        titulo: 'Nova proposição de Rafaela Lupion',
-        mensagem: 'Amplia bicicletários públicos com instalação em terminais de transporte',
-        lida: false, criadaEm: new Date(Date.now() - 86400000).toISOString(),
-        proposicaoCodigo: 6,
-      },
-      {
-        id: 5, usuarioId: 1,
-        titulo: 'Atualização em proposição favoritada',
-        mensagem: 'Regula uso de vias públicas para ordenamento urbano — Aprovado',
-        lida: true, criadaEm: new Date(Date.now() - 172800000).toISOString(),
-        proposicaoCodigo: null,
-      },
-      {
-        id: 6, usuarioId: 1,
-        titulo: 'Angelo Vanhoni alterou suas informações de perfil',
-        mensagem: 'O vereador atualizou seus dados cadastrais na câmara municipal',
-        lida: false, criadaEm: new Date(Date.now() - 259200000).toISOString(),
-        proposicaoCodigo: null,
-      },
-    ];
   }
 }

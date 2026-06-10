@@ -4,7 +4,9 @@ import com.clientes.clientes_TCC.domain.Default.ResponseDTO;
 import com.clientes.clientes_TCC.domain.Notificacao.UsuarioVereadorSeguindo;
 import com.clientes.clientes_TCC.domain.Vereador.Vereador;
 import com.clientes.clientes_TCC.domain.Vereador.VereadorSeguindoDTO;
+import com.clientes.clientes_TCC.repositories.UsuarioRepository;
 import com.clientes.clientes_TCC.repositories.UsuarioVereadorSeguindoRepository;
+import com.clientes.clientes_TCC.repositories.VereadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,22 @@ public class SeguirVereadorService {
     @Autowired
     private UsuarioVereadorSeguindoRepository seguindoRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private VereadorRepository vereadorRepository;
+
     public ResponseEntity<ResponseDTO> seguirVereador(Integer usuarioId, Integer vereadorId) {
+        if (!usuarioRepository.existsById(usuarioId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Usuário não encontrado!"));
+        }
+        if (!vereadorRepository.existsById(vereadorId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Vereador não encontrado!"));
+        }
+
         UsuarioVereadorSeguindo.UsuarioVereadorId id =
                 new UsuarioVereadorSeguindo.UsuarioVereadorId(usuarioId, vereadorId);
 
@@ -35,6 +52,15 @@ public class SeguirVereadorService {
     }
 
     public ResponseEntity<ResponseDTO> deixarDeSeguirVereador(Integer usuarioId, Integer vereadorId) {
+        if (!usuarioRepository.existsById(usuarioId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Usuário não encontrado!"));
+        }
+        if (!vereadorRepository.existsById(vereadorId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Vereador não encontrado!"));
+        }
+
         UsuarioVereadorSeguindo.UsuarioVereadorId id =
                 new UsuarioVereadorSeguindo.UsuarioVereadorId(usuarioId, vereadorId);
 
@@ -45,6 +71,12 @@ public class SeguirVereadorService {
 
         seguindoRepository.deleteById(id);
         return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK.toString(), "Deixou de seguir o vereador!"));
+    }
+
+    public ResponseEntity<Boolean> verificarStatusSeguindo(Integer usuarioId, Integer vereadorId) {
+        UsuarioVereadorSeguindo.UsuarioVereadorId id =
+                new UsuarioVereadorSeguindo.UsuarioVereadorId(usuarioId, vereadorId);
+        return ResponseEntity.ok(seguindoRepository.existsById(id));
     }
 
     public ResponseEntity<List<VereadorSeguindoDTO>> listarVereadoresSeguidos(Integer usuarioId) {
