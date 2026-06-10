@@ -1,31 +1,55 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonButtons, IonBackButton, IonMenuButton, IonHeader, IonList, IonItem, IonIcon, IonLabel, IonToolbar } from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
 import { DashboardMode } from '../services/dashboard-mode';
-import { UsuarioDTO } from '../models/dto/usuario-dto';
+import { UsuarioService } from '../services/usuario.service';
+import { UsuarioPerfilDTO } from '../models/dto/usuario-perfil-dto';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss'],
-  imports: [ IonContent, IonButtons, IonBackButton, IonMenuButton, IonHeader, IonList, IonItem, RouterLink, IonIcon, IonLabel, IonToolbar ],
+  imports: [ CommonModule, IonContent, IonButtons, IonBackButton, IonMenuButton, IonHeader, IonList, IonItem, RouterLink, IonIcon, IonLabel, IonToolbar ],
 })
 export class PerfilComponent implements OnInit {
-  usuario: UsuarioDTO = { cpf: '', nome: '', email: '', cep: null, escolaridade: null, profissao: null };
+  perfil: UsuarioPerfilDTO | null = null;
+  carregando = true;
 
-  constructor(private modoService: DashboardMode, private router: Router) {}
+  constructor(
+    private modoService: DashboardMode,
+    private router: Router,
+    private usuarioService: UsuarioService,
+  ) {}
 
   ngOnInit() {
-    this.carregarDados();
+    this.carregarPerfil();
   }
 
-  private carregarDados() {
+  private carregarPerfil() {
     const raw = localStorage.getItem('user_info');
-    if (raw) {
-      try {
-        this.usuario = JSON.parse(raw);
-      } catch {}
+    if (!raw) {
+      this.router.navigate(['/login']);
+      return;
     }
+    const cpf = JSON.parse(raw).cpf;
+    this.usuarioService.pegarPerfil(cpf).subscribe({
+      next: (data) => {
+        this.perfil = data;
+        localStorage.setItem('user_info', JSON.stringify(data));
+        this.carregando = false;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar perfil:', err);
+        if (err.status === 401 || err.status === 403) {
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('user_info');
+          this.router.navigate(['/login']);
+          return;
+        }
+        this.carregando = false;
+      },
+    });
   }
 
   navMeusDashboards() {
@@ -35,5 +59,9 @@ export class PerfilComponent implements OnInit {
 
   navEditarPerfil() {
     this.router.navigate(['/tabs/tab1']);
+  }
+
+  navProposicao(codigo: number) {
+    this.router.navigate(['/proposicao', codigo]);
   }
 }

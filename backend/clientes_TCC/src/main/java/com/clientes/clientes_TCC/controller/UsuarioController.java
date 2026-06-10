@@ -6,6 +6,7 @@ import com.clientes.clientes_TCC.domain.Usuario.UsuarioAtualizarDTO;
 import com.clientes.clientes_TCC.domain.Usuario.UsuarioCriarDTO;
 import com.clientes.clientes_TCC.domain.Usuario.UsuarioDTO;
 import com.clientes.clientes_TCC.domain.Usuario.UsuarioLoginDTO;
+import com.clientes.clientes_TCC.domain.Usuario.UsuarioPerfilDTO;
 import com.clientes.clientes_TCC.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -23,11 +24,21 @@ public class UsuarioController {
     @GetMapping("/{cpf}")
     public ResponseEntity<UsuarioDTO> pegarUsuario(
     @Parameter(
-            description = "CPF do usuário a ser atualizado",
+            description = "CPF do usuário",
             example = "07762143432",
             required = true
     )@PathVariable String cpf){
         return usuarioService.pegarUsuario(cpf);
+    }
+
+    @GetMapping("/{cpf}/perfil")
+    public ResponseEntity<UsuarioPerfilDTO> pegarPerfil(
+    @Parameter(
+            description = "CPF do usuário",
+            example = "07762143432",
+            required = true
+    )@PathVariable String cpf){
+        return usuarioService.pegarPerfil(cpf);
     }
 
     @PostMapping
