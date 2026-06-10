@@ -49,6 +49,18 @@ export class CadastroComponent implements OnInit {
   mensagemErro: string = '';
   carregando: boolean = false;
 
+  escolaridadeOptions = [
+    'Ensino Fundamental Incompleto',
+    'Ensino Fundamental Completo',
+    'Ensino Médio Incompleto',
+    'Ensino Médio Completo',
+    'Ensino Superior Incompleto',
+    'Ensino Superior Completo',
+    'Pós-Graduação',
+    'Mestrado',
+    'Doutorado',
+  ];
+
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -78,6 +90,12 @@ export class CadastroComponent implements OnInit {
         },
         { validators: PasswordsMatchValidator }
       ),
+
+      stepThreeGroup: this.fb.group({
+        cep: ['', [Validators.pattern(/^[0-9]{8}$/)]],
+        escolaridade: [''],
+        profissao: [''],
+      }),
     });
   }
 
@@ -87,6 +105,10 @@ export class CadastroComponent implements OnInit {
 
   get stepTwoGroup(): FormGroup {
     return this.cadastroForm.get('stepTwoGroup') as FormGroup;
+  }
+
+  get stepThreeGroup(): FormGroup {
+    return this.cadastroForm.get('stepThreeGroup') as FormGroup;
   }
 
 
@@ -109,16 +131,31 @@ export class CadastroComponent implements OnInit {
     this.mensagemErro = '';
   }
 
+  goToStepThree() {
+    this.mensagemErro = '';
+    this.stepTwoGroup.markAllAsTouched();
+
+    if (this.stepTwoGroup.invalid || this.stepTwoGroup.hasError('passwordsMismatch')) {
+      this.mensagemErro =
+        'Por favor, corrija os erros de senha antes de prosseguir.';
+      return;
+    }
+
+    this.currentStep = 3;
+  }
+
+  goToStepTwoBack() {
+    this.currentStep = 2;
+    this.mensagemErro = '';
+  }
+
   onSubmit() {
     this.mensagemSucesso = '';
     this.mensagemErro = '';
 
-    this.stepTwoGroup.markAllAsTouched();
-
     if (this.cadastroForm.invalid) {
       this.mensagemErro =
-        'Por favor, corrija os erros do formulário e verifique as senhas.';
-      this.currentStep = 2;
+        'Por favor, corrija os erros do formulário.';
       return;
     }
 
@@ -126,6 +163,7 @@ export class CadastroComponent implements OnInit {
 
     const stepOneValue = this.stepOneGroup.value;
     const stepTwoValue = this.stepTwoGroup.value;
+    const stepThreeValue = this.stepThreeGroup.value;
 
     const dadosParaBackend: CriarUsuarioDTO = {
       cpf: stepOneValue.cpf,
@@ -133,6 +171,9 @@ export class CadastroComponent implements OnInit {
       email: stepOneValue.email,
       senha: stepTwoValue.senha,
       senhaNovamente: stepTwoValue.senhaNovamente,
+      cep: stepThreeValue.cep || undefined,
+      escolaridade: stepThreeValue.escolaridade || undefined,
+      profissao: stepThreeValue.profissao || undefined,
     };
 
     this.usuarioService

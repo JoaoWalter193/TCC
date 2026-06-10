@@ -2,13 +2,16 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 
 CREATE TABLE usuario (
-id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-cpf VARCHAR(11) UNIQUE,
-nome VARCHAR(100),
-email VARCHAR(100),
-senha VARCHAR,
-ativo BOOLEAN,
-data_delecao DATE
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    cpf VARCHAR(11) UNIQUE,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    cep VARCHAR(8),
+    escolaridade VARCHAR(50),
+    profissao VARCHAR(100),
+    senha VARCHAR,
+    ativo BOOLEAN,
+    data_delecao DATE
 );
 
 CREATE TABLE partido (
@@ -150,6 +153,16 @@ CREATE TABLE dispositivo_usuario (
     usuario_id INTEGER NOT NULL,
     fcm_token VARCHAR(255) NOT NULL,
     CONSTRAINT fk_disp_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
+);
+
+CREATE TABLE usuario_dashboard (
+    id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id  INTEGER NOT NULL REFERENCES usuario(id) ON DELETE CASCADE,
+    titulo      VARCHAR(150) NOT NULL,
+    chart_type  VARCHAR(20)  NOT NULL,
+    config      JSONB NOT NULL DEFAULT '{}',
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 CREATE OR REPLACE FUNCTION notify_proposicao_change()

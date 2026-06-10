@@ -49,6 +49,26 @@ public record UsuarioCriarDTO(
                 example = "123"
         )
         @NotBlank(message = "Confirmação de senha é obrigatória")
-        String senhaNovamente
+        String senhaNovamente,
+
+        @Schema(
+                description = "CEP do usuário (apenas números, 8 dígitos)",
+                example = "80020010",
+                maxLength = 8
+        )
+        @Size(max = 8, message = "CEP deve ter no máximo 8 dígitos")
+        String cep,
+
+        @Schema(
+                description = "Escolaridade do usuário",
+                example = "Ensino Superior Completo"
+        )
+        String escolaridade,
+
+        @Schema(
+                description = "Profissão do usuário",
+                example = "Engenheiro Civil"
+        )
+        String profissao
 ) {
 }
