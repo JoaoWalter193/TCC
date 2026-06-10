@@ -58,7 +58,10 @@ public class FavoritarProposicaoService {
                         p.getDataEnvio(),
                         p.getEmenta(),
                         p.getTag(),
-                        p.getEstado().getEstado()
+                        p.getEstado().getEstado(),
+                        p.getLikes(),
+                        p.getDislikes(),
+                        null
                 ))
                 .toList();
 

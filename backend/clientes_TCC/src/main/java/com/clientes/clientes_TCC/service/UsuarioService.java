@@ -41,7 +41,7 @@ public class UsuarioService {
         }
         Usuario usuarioTemp = optionalUsuario.get();
 
-        return ResponseEntity.ok(new UsuarioDTO(usuarioTemp.getCpf(), usuarioTemp.getNome(), usuarioTemp.getEmail()));
+        return ResponseEntity.ok(new UsuarioDTO(usuarioTemp.getId(), usuarioTemp.getCpf(), usuarioTemp.getNome(), usuarioTemp.getEmail()));
     }
 
 
@@ -103,7 +103,7 @@ public class UsuarioService {
                 String token = tokenService.generateToken(usuarioTemp);
 
                 return ResponseEntity.ok(new LoginResponseDTO(
-                        new UsuarioDTO (usuarioTemp.getCpf(),usuarioTemp.getNome(),usuarioTemp.getEmail()),
+                        new UsuarioDTO (usuarioTemp.getId(), usuarioTemp.getCpf(),usuarioTemp.getNome(),usuarioTemp.getEmail()),
                         token));
             }
 
@@ -145,7 +145,7 @@ public class UsuarioService {
         usuarioTemp.setSenha(senhaNovaHasheada);
         usuarioRepository.save(usuarioTemp);
 
-        return ResponseEntity.ok(new UsuarioDTO(cpf, data.nome(),data.email()));
+        return ResponseEntity.ok(new UsuarioDTO(usuarioTemp.getId(), cpf, data.nome(),data.email()));
     }
 
     public ResponseEntity<ResponseDTO> deletarUsuario(String cpf){

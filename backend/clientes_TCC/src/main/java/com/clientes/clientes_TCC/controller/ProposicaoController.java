@@ -27,23 +27,26 @@ public class ProposicaoController {
     @GetMapping
     public ResponseEntity<Page<ProposicaoListaResponseDTO>> listarProposicoes(
             @RequestParam(required = false) String tag,
+            @RequestParam(required = false) Integer usuarioId,
             @ParameterObject
             @PageableDefault(size = 10, sort = "ultimoTramite", direction = Sort.Direction.DESC)
             Pageable pageable) {
 
-        return proposicaoService.listarProposicoes(tag,pageable);
+        return proposicaoService.listarProposicoes(tag, pageable, usuarioId);
     }
     @GetMapping("/{codigo}")
     public ResponseEntity<ProposicaoEspecificaDTO> buscarProposicao(
-            @PathVariable Long codigo) {
-        return proposicaoService.buscarProposicao(codigo);
+            @PathVariable Long codigo,
+            @RequestParam(required = false) Integer usuarioId) {
+        return proposicaoService.buscarProposicao(codigo, usuarioId);
     }
 
     @GetMapping("/busca")
     public ResponseEntity<List<ProposicaoListaResponseDTO>> buscarPorSimilaridade(
             @RequestParam String q,
-            @RequestParam(defaultValue = "10") int limit) {
-        return proposicaoService.buscarPorSimilaridade(q, limit);
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) Integer usuarioId) {
+        return proposicaoService.buscarPorSimilaridade(q, limit, usuarioId);
     }
 
 }
