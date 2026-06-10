@@ -82,6 +82,48 @@
   background: #e5e7eb;
 }
 
+.perfil-dados-card {
+  margin: 0 16px;
+  background: white;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dado-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  ion-icon {
+    font-size: 22px;
+    color: #64748b;
+    flex-shrink: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.dado-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dado-value {
+  font-size: 0.95rem;
+  color: #111827;
+  margin-top: 2px;
+}
+
 .perfil-opcoes {
   margin: 0 16px 24px;
   background: white;

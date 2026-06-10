@@ -20,7 +20,7 @@ interface FormularioPerfil extends AlterarUsuarioDTO {
   standalone: true,
 })
 export class Tab1Page implements OnInit {
-  perfilAtual: UsuarioDTO = { cpf: '', nome: '', email: '' };
+  perfilAtual: UsuarioDTO = { cpf: '', nome: '', email: '', cep: null, escolaridade: null, profissao: null };
 
   dadosFormulario: FormularioPerfil = {
     nome: '',
@@ -28,6 +28,9 @@ export class Tab1Page implements OnInit {
     senhaAntiga: '',
     senhaNova: '',
     senhaNovaNovamente: '',
+    cep: '',
+    escolaridade: '',
+    profissao: '',
   };
 
   mensagemSucesso: string = '';
@@ -58,10 +61,19 @@ export class Tab1Page implements OnInit {
           // Pré-preenche o formulário com dados atuais (garantindo que os inputs sejam preenchidos)
           this.dadosFormulario.nome = data.nome;
           this.dadosFormulario.email = data.email;
+          this.dadosFormulario.cep = data.cep || '';
+          this.dadosFormulario.escolaridade = data.escolaridade || '';
+          this.dadosFormulario.profissao = data.profissao || '';
           this.carregando = false;
         },
         error: (error) => {
           console.error('Erro ao carregar perfil:', error);
+          if (error.status === 401 || error.status === 403) {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_info');
+            this.router.navigate(['/login']);
+            return;
+          }
           this.mensagemErro = 'Não foi possível carregar os dados do perfil.';
           this.carregando = false;
         },
@@ -108,6 +120,9 @@ export class Tab1Page implements OnInit {
     const dadosParaBackend: AlterarUsuarioDTO = {
       nome: this.dadosFormulario.nome,
       email: this.dadosFormulario.email,
+      cep: this.dadosFormulario.cep || null,
+      escolaridade: this.dadosFormulario.escolaridade || null,
+      profissao: this.dadosFormulario.profissao || null,
     };
 
 
