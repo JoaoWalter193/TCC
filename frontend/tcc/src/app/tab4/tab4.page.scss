@@ -49,6 +49,48 @@
   gap: 14px;
 }
 
+.search-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  gap: 12px;
+
+  ion-spinner {
+    width: 32px;
+    height: 32px;
+    color: var(--ion-color-primary);
+  }
+
+  p {
+    font-size: 14px;
+    color: #888;
+    margin: 0;
+  }
+}
+
+.empty-state {
+  ion-icon {
+    font-size: 48px;
+    color: #ccc;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    margin: 0;
+  }
+
+  p {
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+  }
+}
+
 ion-card {
   margin: 0;
   border-radius: 14px;
