@@ -42,12 +42,16 @@ export class Tab4Page implements OnInit {
     this.carregarPostsDestaque();
   }
 
+  get usuarioId(): number | null {
+    return this.auth.getUsuarioId();
+  }
+
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
 
   carregarPostsDestaque() {
-    this.proposicaoService.listar().subscribe({
+    this.proposicaoService.listar(this.usuarioId).subscribe({
       next: (data) => {
         this.postsDestaque = data
           .sort((a, b) => (b.likes - b.dislikes) - (a.likes - a.dislikes))

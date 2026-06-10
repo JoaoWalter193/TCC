@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonCard,
@@ -10,7 +10,7 @@ import {
   IonLabel,
 } from '@ionic/angular/standalone';
 import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
-
+import { ReacaoService } from 'src/app/services/reacao.service';
 
 @Component({
   selector: 'app-card',
@@ -30,10 +30,11 @@ import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
 export class CardComponent {
   @Input() post!: ProposicaoDTO;
   @Input() link: any[] = [];
+  @Input() usuarioId: number | null = null;
   @Output() tipoFiltrado = new EventEmitter<string>();
   @Output() verVereador = new EventEmitter<number>();
 
-  constructor() {}
+  private reacaoService = inject(ReacaoService);
 
   filtrarChip(event: Event, tipo: string) {
     event.stopPropagation();
@@ -50,5 +51,41 @@ export class CardComponent {
     event.stopPropagation();
     event.preventDefault();
     this.verVereador.emit(idVereador);
+  }
+
+  likeIconName(): string {
+    return this.post.currentUserReaction === 'LIKE' ? 'thumbs-up' : 'thumbs-up-outline';
+  }
+
+  dislikeIconName(): string {
+    return this.post.currentUserReaction === 'DISLIKE' ? 'thumbs-down' : 'thumbs-down-outline';
+  }
+
+  reagir(event: Event, tipo: 'LIKE' | 'DISLIKE') {
+    event.stopPropagation();
+    event.preventDefault();
+    if (this.usuarioId == null) { return; }
+
+    const estadoAnterior = this.post.currentUserReaction;
+    const likesAnterior = this.post.likes;
+    const dislikesAnterior = this.post.dislikes;
+
+    if (estadoAnterior === tipo) {
+      this.post.currentUserReaction = null;
+      if (tipo === 'LIKE') { this.post.likes--; } else { this.post.dislikes--; }
+    } else {
+      if (estadoAnterior === 'LIKE') { this.post.likes--; }
+      if (estadoAnterior === 'DISLIKE') { this.post.dislikes--; }
+      this.post.currentUserReaction = tipo;
+      if (tipo === 'LIKE') { this.post.likes++; } else { this.post.dislikes++; }
+    }
+
+    this.reacaoService.reagir(this.usuarioId, this.post.id, tipo).subscribe({
+      error: () => {
+        this.post.currentUserReaction = estadoAnterior;
+        this.post.likes = likesAnterior;
+        this.post.dislikes = dislikesAnterior;
+      }
+    });
   }
 }

@@ -20,18 +20,18 @@
 <ion-content class="post-content">
 
   @if(post) {
-  <div class="acoes-topo">
+    <div class="acoes-topo">
     <div class="acoes-esquerda">
       <div class="acao-item">
-        <ion-button fill="clear">
-          <ion-icon name="thumbs-up-outline"></ion-icon>
+        <ion-button fill="clear" (click)="reagir('LIKE')">
+          <ion-icon [name]="likeIconName()"></ion-icon>
         </ion-button>
         <span>{{ post.likes }}</span>
       </div>
 
       <div class="acao-item">
-        <ion-button fill="clear">
-          <ion-icon name="thumbs-down-outline"></ion-icon>
+        <ion-button fill="clear" (click)="reagir('DISLIKE')">
+          <ion-icon [name]="dislikeIconName()"></ion-icon>
         </ion-button>
         <span>{{ post.dislikes }}</span>
       </div>
