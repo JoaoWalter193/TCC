@@ -11,6 +11,7 @@ import {
 } from '@ionic/angular/standalone';
 import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
 import { ReacaoService } from 'src/app/services/reacao.service';
+import { ShareService } from 'src/app/services/share.service';
 
 @Component({
   selector: 'app-card',
@@ -35,6 +36,7 @@ export class CardComponent {
   @Output() verVereador = new EventEmitter<number>();
 
   private reacaoService = inject(ReacaoService);
+  private shareService = inject(ShareService);
 
   filtrarChip(event: Event, tipo: string) {
     event.stopPropagation();
@@ -51,6 +53,17 @@ export class CardComponent {
     event.stopPropagation();
     event.preventDefault();
     this.verVereador.emit(idVereador);
+  }
+
+  compartilhar(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    const url = window.location.origin + '/proposicao/' + this.post.id;
+    this.shareService.compartilharProposicao(
+      'Proposição - CuritibAtiva',
+      this.post.ementa.substring(0, 100),
+      url,
+    );
   }
 
   likeIconName(): string {

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { ReacaoService } from '../services/reacao.service';
+import { ShareService } from '../services/share.service';
 
 @Component({
   selector: 'app-post',
@@ -30,7 +31,8 @@ export class PostComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private proposicaoService: ProposicaoService,
-    private reacaoService: ReacaoService
+    private reacaoService: ReacaoService,
+    private shareService: ShareService
   ) {}
 
   ngOnInit() {
@@ -89,5 +91,14 @@ export class PostComponent implements OnInit {
         this.post.dislikes = dislikesAnterior;
       }
     });
+  }
+
+  compartilhar() {
+    const url = window.location.origin + '/proposicao/' + this.post.id;
+    this.shareService.compartilharProposicao(
+      'Proposição - CuritibAtiva',
+      this.post.ementa.substring(0, 100),
+      url,
+    );
   }
 }
