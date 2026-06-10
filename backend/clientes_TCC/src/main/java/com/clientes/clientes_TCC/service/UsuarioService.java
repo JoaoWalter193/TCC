@@ -2,9 +2,12 @@ package com.clientes.clientes_TCC.service;
 
 import com.clientes.clientes_TCC.domain.Default.LoginResponseDTO;
 import com.clientes.clientes_TCC.domain.Default.ResponseDTO;
+import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoResumoDTO;
 import com.clientes.clientes_TCC.domain.Usuario.*;
 import com.clientes.clientes_TCC.exceptions.*;
+import com.clientes.clientes_TCC.repositories.UsuarioProposicaoFavoritaRepository;
 import com.clientes.clientes_TCC.repositories.UsuarioRepository;
+import com.clientes.clientes_TCC.repositories.UsuarioVereadorSeguindoRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +35,12 @@ public class UsuarioService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    private UsuarioVereadorSeguindoRepository seguindoRepository;
+
+    @Autowired
+    private UsuarioProposicaoFavoritaRepository favoritaRepository;
+
 
     public ResponseEntity<UsuarioDTO> pegarUsuario(String cpf){
         Optional<Usuario> optionalUsuario = usuarioRepository.findByCpf(cpf);
@@ -43,6 +53,23 @@ public class UsuarioService {
         return ResponseEntity.ok(toDTO(usuarioTemp));
     }
 
+
+    public ResponseEntity<UsuarioPerfilDTO> pegarPerfil(String cpf) {
+        Optional<Usuario> optionalUsuario = usuarioRepository.findByCpf(cpf);
+
+        if (optionalUsuario.isEmpty()) {
+            throw new UsuarioInexistenteException();
+        }
+        Usuario usuarioTemp = optionalUsuario.get();
+
+        List<Integer> vereadorIds = seguindoRepository.findVereadorIdsByUsuarioId(usuarioTemp.getId());
+        List<ProposicaoResumoDTO> proposicoes = favoritaRepository.findProposicoesByUsuarioId(usuarioTemp.getId())
+                .stream()
+                .map(p -> new ProposicaoResumoDTO(p.getCodigo(), p.getEmenta(), p.getTag()))
+                .toList();
+
+        return ResponseEntity.ok(toPerfilDTO(usuarioTemp, vereadorIds.size(), proposicoes));
+    }
 
     public ResponseEntity<ResponseDTO> criarUsuario(UsuarioCriarDTO data){
                 Optional<Usuario> optionalUsuarioCpf = usuarioRepository.findByCpf(data.cpf());
@@ -211,6 +238,19 @@ public class UsuarioService {
                 u.getCep(),
                 u.getEscolaridade(),
                 u.getProfissao()
+        );
+    }
+
+    private UsuarioPerfilDTO toPerfilDTO(Usuario u, Integer totalVereadores, List<ProposicaoResumoDTO> proposicoes) {
+        return new UsuarioPerfilDTO(
+                u.getCpf(),
+                u.getNome(),
+                u.getEmail(),
+                u.getCep(),
+                u.getEscolaridade(),
+                u.getProfissao(),
+                totalVereadores,
+                proposicoes
         );
     }
 }
