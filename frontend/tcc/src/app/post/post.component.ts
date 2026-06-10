@@ -5,8 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { ReacaoService } from '../services/reacao.service';
-import { ShareService } from '../services/share.service';
-import { IaService } from '../services/ia.service';
+import { ReacaoEventService } from '../services/reacao-event.service';
 
 @Component({
   selector: 'app-post',
@@ -38,8 +37,7 @@ export class PostComponent implements OnInit {
     private route: ActivatedRoute,
     private proposicaoService: ProposicaoService,
     private reacaoService: ReacaoService,
-    private shareService: ShareService,
-    private iaService: IaService
+    private reacaoEvent: ReacaoEventService
   ) {}
 
   ngOnInit() {
@@ -92,6 +90,7 @@ export class PostComponent implements OnInit {
     }
 
     this.reacaoService.reagir(this.usuarioId, this.post.id, tipo).subscribe({
+      next: () => this.reacaoEvent.emitir(),
       error: () => {
         this.post.currentUserReaction = estadoAnterior;
         this.post.likes = likesAnterior;
