@@ -25,6 +25,15 @@ public record ProposicaoListaResponseDTO(
         String tag,
 
         @Schema(description = "Estado atual da tramitação", example = "Em tramitação")
-        String estado
+        String estado,
+
+        @Schema(description = "Quantidade de likes", example = "15")
+        Integer likes,
+
+        @Schema(description = "Quantidade de dislikes", example = "3")
+        Integer dislikes,
+
+        @Schema(description = "Reação do usuário logado (LIKE, DISLIKE ou null)", example = "LIKE")
+        String currentUserReaction
 ) {
 }
