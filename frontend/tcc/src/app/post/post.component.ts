@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { IonHeader, IonButtons, IonBackButton, IonButton, IonMenuButton, IonContent, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonHeader, IonButtons, IonBackButton, IonButton, IonMenuButton, IonContent, IonIcon, IonTitle, IonToolbar, IonModal, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { ReacaoService } from '../services/reacao.service';
 import { ShareService } from '../services/share.service';
+import { IaService } from '../services/ia.service';
 
 @Component({
   selector: 'app-post',
@@ -20,19 +21,25 @@ import { ShareService } from '../services/share.service';
     IonContent,
     IonIcon,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    IonModal,
+    IonSpinner
 ],
 })
 export class PostComponent implements OnInit {
   auth = inject(AuthService);
   post!: ProposicaoDTO;
+  isIaModalOpen = false;
+  iaResumo = '';
+  iaCarregando = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private proposicaoService: ProposicaoService,
     private reacaoService: ReacaoService,
-    private shareService: ShareService
+    private shareService: ShareService,
+    private iaService: IaService
   ) {}
 
   ngOnInit() {
@@ -100,5 +107,38 @@ export class PostComponent implements OnInit {
       this.post.ementa.substring(0, 100),
       url,
     );
+  }
+
+  abrirIaModal() {
+    if (!this.post) return;
+    this.isIaModalOpen = true;
+    this.iaCarregando = true;
+    this.iaResumo = '';
+
+    this.iaService.gerarResumo({
+      codigo: this.post.id,
+      tipo: this.post.tipoProposicao,
+      vereador: this.post.vereador.nome,
+      ementa: this.post.ementa,
+      texto: this.post.texto || '',
+      justificativa: this.post.justificativa || '',
+      estado: this.post.encerrouTramitacao ? 'Tramitação encerrada' : 'Em tramitação',
+      tag: this.post.tag,
+    }).subscribe({
+      next: (res) => {
+        this.iaResumo = res.resumo;
+        this.iaCarregando = false;
+      },
+      error: () => {
+        this.iaResumo = 'Não foi possível gerar a explicação. Tente novamente.';
+        this.iaCarregando = false;
+      },
+    });
+  }
+
+  fecharIaModal() {
+    this.isIaModalOpen = false;
+    this.iaResumo = '';
+    this.iaCarregando = false;
   }
 }

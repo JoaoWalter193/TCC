@@ -37,6 +37,11 @@
       </div>
     </div>
 
+    <ion-button fill="outline" color="primary" (click)="abrirIaModal()">
+      <ion-icon name="sparkles" slot="start"></ion-icon>
+      Resumo simplificado
+    </ion-button>
+
     <ion-button fill="clear" (click)="compartilhar()">
       <ion-icon name="send-outline"></ion-icon>
     </ion-button>
@@ -104,3 +109,28 @@
   }
 
 </ion-content>
+
+<ion-modal [isOpen]="isIaModalOpen" (didDismiss)="fecharIaModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Explicação por IA</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="fecharIaModal()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ia-content">
+      @if (iaCarregando) {
+        <div class="ia-loading">
+          <ion-spinner></ion-spinner>
+          <p>Gerando explicação...</p>
+        </div>
+      } @else {
+        <div class="ia-message">{{ iaResumo }}</div>
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>
