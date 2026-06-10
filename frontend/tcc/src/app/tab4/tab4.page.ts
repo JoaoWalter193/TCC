@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonMenuButton, IonButtons, IonText } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonMenuButton, IonButtons, IonText, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
@@ -26,12 +26,18 @@ import { CardComponent } from '../components/card/card.component';
     IonMenuButton,
     IonButtons,
     CardComponent,
-    IonText
-],
+    IonText,
+    IonSpinner,
+  ],
 })
 export class Tab4Page implements OnInit {
   auth = inject(AuthService);
   postsDestaque: ProposicaoDTO[] = [];
+
+  searchTerm = '';
+  searchResults: ProposicaoDTO[] = [];
+  isSearching = false;
+  hasSearched = false;
 
   constructor(
     private router: Router,
@@ -61,5 +67,33 @@ export class Tab4Page implements OnInit {
         console.error('Erro ao carregar proposições', err);
       },
     });
+  }
+
+  executarPesquisa(event: Event) {
+    event.preventDefault();
+    const termo = this.searchTerm.trim();
+    if (!termo) return;
+
+    this.hasSearched = true;
+    this.isSearching = true;
+    this.searchResults = [];
+
+    this.proposicaoService.buscarPorSimilaridade(termo, 50).subscribe({
+      next: (results) => {
+        this.searchResults = results;
+        this.isSearching = false;
+      },
+      error: () => {
+        this.isSearching = false;
+        this.searchResults = [];
+      },
+    });
+  }
+
+  limparPesquisa() {
+    this.searchTerm = '';
+    this.searchResults = [];
+    this.hasSearched = false;
+    this.isSearching = false;
   }
 }
