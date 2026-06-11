@@ -1,38 +1,39 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, BIGINT, DateTime, Boolean, Text
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy.dialects.postgresql import JSONB
 from app.core.database import Base
+
 
 class Partido(Base):
     __tablename__ = "partido"
     id = Column(Integer, primary_key=True)
     nomepartido = Column(String)
 
+
 class Vereador(Base):
     __tablename__ = "vereador"
     id = Column(Integer, primary_key=True)
     nome = Column(String)
-    partido_id = Column(Integer, ForeignKey("partido.id"))
+    partido_id = Column(Integer)
     genero = Column(String)
     cor = Column(String)
 
-    partido = relationship("Partido")
 
 class Proposicao(Base):
     __tablename__ = "proposicao"
-    codigo = Column(BIGINT, primary_key=True)
-    vereador_id = Column(Integer, ForeignKey("vereador.id"))
+    codigo = Column(Integer, primary_key=True)
+    vereador_id = Column(Integer)
     data_envio = Column(DateTime)
-    ementa = Column(Text)
+    ementa = Column(String)
     tag = Column(String)
-    likes = Column(Integer, default=0)
-    dislikes = Column(Integer, default=0)
 
-    vereador = relationship("Vereador")
 
 class Dashboard(Base):
-    __tablename__ = "dashboards"
-    id = Column(Integer, primary_key = True, index = True)
-    user_id = Column(Integer, nullable=False)
-    title = Column(String(100), nullable=False)
-    config = Column(JSONB)
+    __tablename__ = "usuario_dashboard"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    usuario_id = Column(Integer, nullable=False)
+    titulo = Column(String(150), nullable=False)
+    chart_type = Column(String(20), nullable=False)
+    config = Column(JSONB, nullable=False, default=dict)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

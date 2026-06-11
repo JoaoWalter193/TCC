@@ -36,6 +36,20 @@ public class SeguirVereadorController {
         return seguirVereadorService.listarVereadoresSeguidos(usuarioId);
     }
 
+    @Operation(summary = "Verificar se segue vereador", description = "Retorna true se o usuário já segue o vereador, false caso contrário")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Status retornado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado", content = @Content)
+    })
+    @GetMapping("/{vereadorId}/status")
+    public ResponseEntity<Boolean> verificarStatusSeguindo(
+            @Parameter(description = "ID do usuário", example = "1", required = true)
+            @PathVariable Integer usuarioId,
+            @Parameter(description = "ID do vereador", example = "1", required = true)
+            @PathVariable Integer vereadorId) {
+        return seguirVereadorService.verificarStatusSeguindo(usuarioId, vereadorId);
+    }
+
     @Operation(summary = "Seguir vereador", description = "Adiciona um vereador à lista de seguidos do usuário para receber notificações sobre suas proposições")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Vereador seguido com sucesso"),

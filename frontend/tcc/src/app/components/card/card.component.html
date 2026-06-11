@@ -6,8 +6,9 @@
       <ion-card-title>{{ post.ementa }}</ion-card-title>
 
       <ion-icon
-        name="star-outline"
-        (click)="favoritar($event, post)">
+        [name]="starIconName()"
+        [color]="post.isFavorito ? 'warning' : ''"
+        (click)="toggleFavorito($event)">
       </ion-icon>
     </div>
 
@@ -33,18 +34,18 @@
 
     <div class="acoes">
 
-      <div class="acao">
-        <ion-icon name="thumbs-up-outline"></ion-icon>
+      <div class="acao" (click)="reagir($event, 'LIKE')">
+        <ion-icon [name]="likeIconName()"></ion-icon>
         <span>{{ post.likes }}</span>
       </div>
 
-      <div class="acao">
-        <ion-icon name="thumbs-down-outline"></ion-icon>
+      <div class="acao" (click)="reagir($event, 'DISLIKE')">
+        <ion-icon [name]="dislikeIconName()"></ion-icon>
         <span>{{ post.dislikes }}</span>
       </div>
 
       <div class="acao">
-        <ion-icon name="send-outline"></ion-icon>
+        <ion-icon name="send-outline" (click)="compartilhar($event)"></ion-icon>
       </div>
 
     </div>

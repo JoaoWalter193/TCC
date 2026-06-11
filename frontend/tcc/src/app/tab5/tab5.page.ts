@@ -1,34 +1,79 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonToolbar, IonButton, IonIcon, IonCol, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonText,
+  IonButtons,
+  IonMenuButton,
+} from '@ionic/angular/standalone';
+import { AuthService } from '../services/auth.service';
+import { FavoritosService } from '../services/favoritos.service';
+import { ProposicaoDTO } from '../models/dto/proposicao-dto';
+import { CardComponent } from '../components/card/card.component';
 
 @Component({
   selector: 'app-tab5',
   templateUrl: './tab5.page.html',
   styleUrls: ['./tab5.page.scss'],
-  standalone: true,
   imports: [
-    IonContent,
     IonHeader,
     IonToolbar,
-    CommonModule,
-    FormsModule,
-    IonButton,
-    IonIcon,
-    IonCol,
+    IonTitle,
+    IonContent,
+    IonText,
     IonButtons,
-    IonMenuButton
-],
+    IonMenuButton,
+    CardComponent,
+  ],
 })
 export class Tab5Page {
+  private router = inject(Router);
   auth = inject(AuthService);
-  router = inject(Router);
+  private favoritosService = inject(FavoritosService);
 
-  navigateToLogin() {
-    this.router.navigate(['/login']);
+  favoritos: ProposicaoDTO[] = [];
+  carregando = false;
+
+  get usuarioId(): number | null {
+    return this.auth.getUsuarioId();
   }
-  constructor() {}
+
+  ionViewWillEnter() {
+    this.carregarFavoritos();
+  }
+
+  carregarFavoritos() {
+    const id = this.usuarioId;
+    if (id == null) {
+      this.favoritos = [];
+      return;
+    }
+
+    this.carregando = true;
+    this.favoritosService.listar(id).subscribe({
+      next: (lista) => {
+        this.favoritos = lista;
+        this.carregando = false;
+      },
+      error: () => {
+        this.favoritos = [];
+        this.carregando = false;
+      },
+    });
+  }
+
+  verProposicao(id: number) {
+    this.router.navigate(['/proposicao', id]);
+  }
+
+  verVereador(idVereador: number) {
+    this.router.navigate(['/vereador', idVereador]);
+  }
+
+  trackById(_index: number, item: ProposicaoDTO) {
+    return item.id;
+  }
 }

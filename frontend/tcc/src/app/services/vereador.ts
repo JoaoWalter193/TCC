@@ -6,7 +6,7 @@ import { ApiGatewayService } from './api-gateway.service';
 interface VereadorBackend {
   id: number;
   nome: string;
-  partido: { id: number; nomePartido: string };
+  partido: string;
   email: string;
   legislaturas: string;
   gabinete: string;
@@ -24,7 +24,7 @@ function mapToDTO(v: VereadorBackend): VereadorDTO {
   return {
     id: v.id,
     nome: v.nome,
-    partido: v.partido?.nomePartido ?? '',
+    partido: v.partido ?? '',
     legislaturas: v.legislaturas ?? '',
     gabinete: v.gabinete ?? '',
     telefone: v.telefone ?? '',
@@ -45,5 +45,17 @@ export class VereadorService {
   buscarPorId(id: number): Observable<VereadorDTO | undefined> {
     return this.api.v1.get<VereadorBackend>(`/vereador/${id}`)
       .pipe(map(v => mapToDTO(v)));
+  }
+
+  verificarStatusSeguindo(usuarioId: number, vereadorId: number): Observable<boolean> {
+    return this.api.v1.get<boolean>(`/user/${usuarioId}/follow/${vereadorId}/status`);
+  }
+
+  seguir(usuarioId: number, vereadorId: number): Observable<unknown> {
+    return this.api.v1.post(`/user/${usuarioId}/follow/${vereadorId}`, {});
+  }
+
+  deixarDeSeguir(usuarioId: number, vereadorId: number): Observable<unknown> {
+    return this.api.v1.delete(`/user/${usuarioId}/follow/${vereadorId}`);
   }
 }

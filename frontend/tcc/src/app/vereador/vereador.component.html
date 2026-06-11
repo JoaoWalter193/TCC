@@ -19,8 +19,24 @@
   @if (vereador) {
 
   <div class="vereador-topo">
+    <div class="avatar-wrapper">
+      <ion-avatar class="vereador-avatar">
+        <span class="avatar-iniciais">{{ iniciais }}</span>
+      </ion-avatar>
+    </div>
     <h2>{{ vereador.nome }}</h2>
-    <p>{{ vereador.partido }}</p>
+    <p class="partido">{{ vereador.partido }}</p>
+
+    <ion-button
+      [disabled]="carregandoStatus"
+      [color]="seguindo ? 'medium' : 'primary'"
+      [fill]="seguindo ? 'outline' : 'solid'"
+      class="btn-seguir"
+      (click)="toggleSeguir()"
+    >
+      <ion-icon slot="start" [name]="seguindo ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
+      {{ seguindo ? 'Seguindo' : 'Seguir' }}
+    </ion-button>
   </div>
 
   <div class="vereador-card">

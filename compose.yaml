@@ -56,7 +56,7 @@ services:
       - 8085:8085
     volumes:
       - ./backend/ms-dashboard:/code
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8085 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8085
     environment:
       - DATABASE_URL=postgresql://postgres:senha@postgres:5432/TCC
       - GROQ_API_KEY=${GROQ_API_KEY}
@@ -80,7 +80,7 @@ services:
       GATEWAY_PORT: 3000
       BI_MS_URL: http://ms-dashboard:8085
       BUSINESS_MS_URL: http://clientes:8080
-      CORS_ORIGINS: http://localhost:4200,http://localhost:8100
+      CORS_ORIGINS: "http://localhost:4200,http://localhost:8100,capacitor://localhost,http://localhost"
     depends_on:
       - ms-dashboard
       - clientes

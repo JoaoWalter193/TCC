@@ -1,22 +1,36 @@
-<ion-header mode="ios" collapse="fade">
-  <ion-buttons mode="md">
-    <ion-back-button defaultHref="/perfil"></ion-back-button>
-    <ion-menu-button></ion-menu-button>
-  </ion-buttons>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    Histórico
+  </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  @for (visitado of Visitados; track visitado.id) {
-
-  @if (visitado.tipo === 'proposicao') {
-  <app-card [post]="visitado.component" [link]="['/proposicao', visitado.component.id]">
-  </app-card>
-  }
-
-  @else if (visitado.tipo === 'vereador') {
-  <app-card-vereador [post]="visitado.component" [link]="['/vereador', visitado.component.id]">
-  </app-card-vereador>
-  }
-
+<ion-content class="ion-padding">
+  @if (carregando) {
+    <p>Carregando...</p>
+  } @else if (historico.length === 0) {
+    <div class="empty-state">
+      <ion-icon name="time-outline" class="empty-icon"></ion-icon>
+      <ion-text>
+        <p>Nenhum item visitado ainda.</p>
+      </ion-text>
+    </div>
+  } @else {
+    @for (item of historico; track item.id + '-' + item.tipo) {
+      @if (item.tipo === 'PROPOSICAO') {
+        <app-card
+          [post]="item.componente"
+          [usuarioId]="usuarioId"
+          [link]="['/proposicao', item.componente.id]">
+        </app-card>
+      } @else if (item.tipo === 'VEREADOR') {
+        <app-card-vereador
+          [post]="item.componente"
+          [link]="['/vereador', item.componente.id, item.componente.nome]">
+        </app-card-vereador>
+      }
+    }
   }
 </ion-content>

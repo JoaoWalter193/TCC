@@ -71,6 +71,12 @@ public class Proposicao {
     @Column(nullable = false, length = 100)
     private String tag;
 
+    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+    private Integer likes = 0;
+
+    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+    private Integer dislikes = 0;
+
     @OneToMany(mappedBy = "proposicao", cascade = CascadeType.ALL)
     private List<Tramitacao> tramitacoes;
 }

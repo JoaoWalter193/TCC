@@ -54,11 +54,15 @@ public class FavoritarProposicaoService {
                 .map(p -> new ProposicaoListaResponseDTO(
                         p.getCodigo(),
                         p.getTipo().getTipo(),
+                        p.getVereador().getId(),
                         p.getVereador().getNome(),
                         p.getDataEnvio(),
                         p.getEmenta(),
                         p.getTag(),
-                        p.getEstado().getEstado()
+                        p.getEstado().getEstado(),
+                        p.getLikes(),
+                        p.getDislikes(),
+                        null
                 ))
                 .toList();
 
