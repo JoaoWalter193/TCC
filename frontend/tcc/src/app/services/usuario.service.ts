@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UsuarioDTO } from '../models/dto/usuario-dto';
+import { UsuarioPerfilDTO } from '../models/dto/usuario-perfil-dto';
 import { CriarUsuarioDTO } from '../models/dto/criar-usuario-dto';
 import { AlterarUsuarioDTO } from '../models/dto/alterar-usuario-dto';
 import { ResponseDTO, LoginResponseDTO } from '../models/dto/response-dto';
@@ -13,6 +14,10 @@ export class UsuarioService {
 
   pegarUsuario(cpf: string): Observable<UsuarioDTO> {
     return this.api.v1.get<UsuarioDTO>(`/user/${cpf}`);
+  }
+
+  pegarPerfil(cpf: string): Observable<UsuarioPerfilDTO> {
+    return this.api.v1.get<UsuarioPerfilDTO>(`/user/${cpf}/perfil`);
   }
 
   criarUsuario(data: CriarUsuarioDTO): Observable<ResponseDTO> {

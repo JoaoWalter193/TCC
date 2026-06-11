@@ -3,7 +3,19 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
   appName: 'tcc',
-  webDir: 'www'
+  webDir: 'www',
+  server: {
+    androidScheme: 'http'
+  },
+  plugins: {
+    LocalNotifications: {
+      smallIcon: 'ic_notification',
+      iconColor: '#488AFF',
+    },
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert', 'banner', 'list'],
+    },
+  },
 };
 
 export default config;

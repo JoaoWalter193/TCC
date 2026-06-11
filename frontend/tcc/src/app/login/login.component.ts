@@ -13,6 +13,7 @@ import { LoginResponseDTO } from '../models/dto/response-dto';
 import { ResponseDTO } from '../models/dto/response-dto';
 import { LoginRequest } from '../models/dto/login-request';
 import { AuthService } from '../services/auth.service';
+import { PushService } from '../services/push.service';
 import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
 
 @Component({
@@ -41,7 +42,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private pushService: PushService
   ) {}
 
   ngOnInit() {
@@ -151,6 +153,7 @@ export class LoginComponent implements OnInit {
           if (response.usuario) {
             localStorage.setItem('user_info', JSON.stringify(response.usuario));
             localStorage.setItem('usuario_id', String(response.usuario.id));
+            this.pushService.tentarRegistrarBackend();
           }
 
           this.auth.checkAuth();

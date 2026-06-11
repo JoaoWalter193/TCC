@@ -5,6 +5,7 @@ import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
 import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
+import { VereadorDTO } from '../models/dto/vereador-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { VereadorService } from '../services/vereador';
 import { forkJoin } from 'rxjs';
@@ -57,8 +58,12 @@ export class Tab2Page {
 
   carregarPosts() {
     forkJoin([
-      this.proposicaoService.listar(this.usuarioId),
-      this.vereadorService.listar()
+      this.proposicaoService.listar().pipe(
+        catchError(() => of([] as ProposicaoDTO[]))
+      ),
+      this.vereadorService.listar().pipe(
+        catchError(() => of([] as VereadorDTO[]))
+      )
     ]).subscribe({
       next: ([proposicoes, vereadores]) => {
         const vereadorMap = new Map(

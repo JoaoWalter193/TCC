@@ -1,6 +1,7 @@
 package com.clientes.clientes_TCC.controller;
 
 import com.clientes.clientes_TCC.domain.Notificacao.Notificacao;
+import com.clientes.clientes_TCC.domain.Notificacao.NotificacaoTesteDTO;
 import com.clientes.clientes_TCC.service.NotificacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -72,5 +73,20 @@ public class NotificacaoController {
             @Parameter(description = "ID do usuário", example = "1", required = true)
             @PathVariable Integer usuarioId) {
         return notificacaoService.marcarTodasComoLidas(usuarioId);
+    }
+
+    @Operation(summary = "Testar notificação", description = "Dispara manualmente uma notificação de teste para um usuário")
+    @PostMapping("/{usuarioId}/teste")
+    public ResponseEntity<Notificacao> testarNotificacao(
+            @Parameter(description = "ID do usuário", example = "1", required = true)
+            @PathVariable Integer usuarioId,
+            @RequestBody NotificacaoTesteDTO dto) {
+        Notificacao notif = notificacaoService.criarNotificacao(
+                usuarioId,
+                dto.titulo(),
+                dto.mensagem(),
+                dto.proposicaoCodigo()
+        );
+        return ResponseEntity.ok(notif);
     }
 }

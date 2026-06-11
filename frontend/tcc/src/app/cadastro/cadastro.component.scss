@@ -120,13 +120,6 @@ input.ng-invalid.ng-touched {
   }
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
-  color: #555;
-}
-
 button {
   width: 100%;
   padding: 12px;
@@ -166,6 +159,36 @@ button {
 
 form > div:nth-child(2) .btn-primary {
   margin-top: 10px;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: $color-text;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+    outline: none;
+  }
+}
+
+.custom-select.ng-invalid.ng-touched {
+  border-color: $color-error;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+  text-align: left;
 }
 
 .login {

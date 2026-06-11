@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { AlterarUsuarioDTO } from '../models/dto/alterar-usuario-dto';
 import { UsuarioDTO } from '../models/dto/usuario-dto';
+import { PushService } from '../services/push.service';
 import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
 
 interface FormularioPerfil extends AlterarUsuarioDTO {
@@ -20,7 +21,7 @@ interface FormularioPerfil extends AlterarUsuarioDTO {
   standalone: true,
 })
 export class Tab1Page implements OnInit {
-  perfilAtual: UsuarioDTO = { cpf: '', nome: '', email: '' };
+  perfilAtual: UsuarioDTO = { id: 0, cpf: '', nome: '', email: '', cep: null, escolaridade: null, profissao: null };
 
   dadosFormulario: FormularioPerfil = {
     nome: '',
@@ -28,6 +29,9 @@ export class Tab1Page implements OnInit {
     senhaAntiga: '',
     senhaNova: '',
     senhaNovaNovamente: '',
+    cep: '',
+    escolaridade: '',
+    profissao: '',
   };
 
   mensagemSucesso: string = '';
@@ -38,7 +42,11 @@ export class Tab1Page implements OnInit {
   mostraConfirmacaoDelecao: boolean = false;
   mostraModalDeletado: boolean = false;
 
-  constructor(private usuarioService: UsuarioService, private router: Router) {}
+  constructor(
+    private usuarioService: UsuarioService,
+    private router: Router,
+    private pushService: PushService,
+  ) {}
 
   ngOnInit() {
     this.carregarDadosDoPerfil();
@@ -58,10 +66,19 @@ export class Tab1Page implements OnInit {
           // Pré-preenche o formulário com dados atuais (garantindo que os inputs sejam preenchidos)
           this.dadosFormulario.nome = data.nome;
           this.dadosFormulario.email = data.email;
+          this.dadosFormulario.cep = data.cep || '';
+          this.dadosFormulario.escolaridade = data.escolaridade || '';
+          this.dadosFormulario.profissao = data.profissao || '';
           this.carregando = false;
         },
         error: (error) => {
           console.error('Erro ao carregar perfil:', error);
+          if (error.status === 401 || error.status === 403) {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_info');
+            this.router.navigate(['/login']);
+            return;
+          }
           this.mensagemErro = 'Não foi possível carregar os dados do perfil.';
           this.carregando = false;
         },
@@ -108,6 +125,9 @@ export class Tab1Page implements OnInit {
     const dadosParaBackend: AlterarUsuarioDTO = {
       nome: this.dadosFormulario.nome,
       email: this.dadosFormulario.email,
+      cep: this.dadosFormulario.cep || null,
+      escolaridade: this.dadosFormulario.escolaridade || null,
+      profissao: this.dadosFormulario.profissao || null,
     };
 
 
@@ -130,6 +150,8 @@ export class Tab1Page implements OnInit {
           this.carregando = false;
 
           localStorage.setItem('user_info', JSON.stringify(response));
+          localStorage.setItem('usuario_id', String(response.id));
+          this.pushService.tentarRegistrarBackend();
         },
         error: (error) => {
           const errorDetails =

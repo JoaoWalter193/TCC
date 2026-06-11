@@ -58,8 +58,13 @@
 
 .vereador {
   font-size: 14px;
-  color: var(--ion-color-medium);
+  color: var(--ion-color-primary);
   margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .favorito-btn {

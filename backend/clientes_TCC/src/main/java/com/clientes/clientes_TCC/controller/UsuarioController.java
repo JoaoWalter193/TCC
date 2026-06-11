@@ -6,6 +6,7 @@ import com.clientes.clientes_TCC.domain.Usuario.UsuarioAtualizarDTO;
 import com.clientes.clientes_TCC.domain.Usuario.UsuarioCriarDTO;
 import com.clientes.clientes_TCC.domain.Usuario.UsuarioDTO;
 import com.clientes.clientes_TCC.domain.Usuario.UsuarioLoginDTO;
+import com.clientes.clientes_TCC.domain.Usuario.UsuarioPerfilDTO;
 import com.clientes.clientes_TCC.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,12 +42,16 @@ public class UsuarioController {
         return usuarioService.pegarUsuario(cpf);
     }
 
-    @Operation(summary = "Criar usuário", description = "Cria uma nova conta de usuário")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content),
-            @ApiResponse(responseCode = "409", description = "CPF ou email já cadastrado", content = @Content)
-    })
+    @GetMapping("/{cpf}/perfil")
+    public ResponseEntity<UsuarioPerfilDTO> pegarPerfil(
+    @Parameter(
+            description = "CPF do usuário",
+            example = "07762143432",
+            required = true
+    )@PathVariable String cpf){
+        return usuarioService.pegarPerfil(cpf);
+    }
+
     @PostMapping
     public ResponseEntity<ResponseDTO> criarUsuario(@RequestBody @Valid UsuarioCriarDTO data){
         return usuarioService.criarUsuario(data);
