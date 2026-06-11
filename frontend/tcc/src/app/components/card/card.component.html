@@ -6,8 +6,9 @@
       <ion-card-title>{{ post.ementa }}</ion-card-title>
 
       <ion-icon
-        name="star-outline"
-        (click)="favoritar($event, post)">
+        [name]="starIconName()"
+        [color]="post.isFavorito ? 'warning' : ''"
+        (click)="toggleFavorito($event)">
       </ion-icon>
     </div>
 

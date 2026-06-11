@@ -8,6 +8,7 @@ import { ReacaoService } from '../services/reacao.service';
 import { ReacaoEventService } from '../services/reacao-event.service';
 import { ShareService } from '../services/share.service';
 import { IaService } from '../services/ia.service';
+import { FavoritosService } from '../services/favoritos.service';
 
 @Component({
   selector: 'app-post',
@@ -25,7 +26,7 @@ import { IaService } from '../services/ia.service';
     IonToolbar,
     IonModal,
     IonSpinner
-],
+  ],
 })
 export class PostComponent implements OnInit {
   auth = inject(AuthService);
@@ -45,7 +46,8 @@ export class PostComponent implements OnInit {
     private reacaoService: ReacaoService,
     private reacaoEvent: ReacaoEventService,
     private shareService: ShareService,
-    private iaService: IaService
+    private iaService: IaService,
+    private favoritosService: FavoritosService,
   ) {}
 
   ngOnInit() {
@@ -70,6 +72,19 @@ export class PostComponent implements OnInit {
         console.error('Erro ao carregar proposição', err);
       },
     });
+  }
+
+  toggleFavorito() {
+    if (this.usuarioId == null || !this.post) { return; }
+
+    const anterior = this.post.isFavorito;
+    this.post.isFavorito = !anterior;
+
+    const obs = anterior
+      ? this.favoritosService.desfavoritar(this.usuarioId, this.post.id)
+      : this.favoritosService.favoritar(this.usuarioId, this.post.id);
+
+    obs.subscribe({ error: () => { this.post.isFavorito = anterior; } });
   }
 
   likeIconName(): string {
