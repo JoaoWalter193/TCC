@@ -29,6 +29,8 @@ public class ProposicaoService {
     private ProposicaoRepository proposicaoRepository;
 
     @Autowired
+    private HistoricoService historicoService;
+
     private ReacaoRepository reacaoRepository;
 
     public ResponseEntity<Page<ProposicaoListaResponseDTO>> listarProposicoes(String tag, Pageable pageable, Integer usuarioId) {
@@ -104,6 +106,8 @@ public class ProposicaoService {
                 proposicao.getDislikes(),
                 currentUserReaction
         );
+
+        historicoService.registrarVisualizacao(codigo);
 
         return ResponseEntity.ok(dto);
 
