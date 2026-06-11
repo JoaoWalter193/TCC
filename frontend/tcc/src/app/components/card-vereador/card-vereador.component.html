@@ -1,9 +1,25 @@
 <ion-card [routerLink]="link" button="true">
   <ion-card-header>
-    <ion-card-title>{{ post.titulo }}</ion-card-title>
+    <ion-card-title>{{ post.nome }}</ion-card-title>
+    <ion-card-subtitle>{{ post.partido }}</ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content>
-    {{ post.texto }}
+    <div class="info-row">
+      <ion-icon name="call-outline"></ion-icon>
+      <span>{{ post.telefone }}</span>
+    </div>
+    <div class="info-row">
+      <ion-icon name="mail-outline"></ion-icon>
+      <span>{{ post.email }}</span>
+    </div>
+    <div class="info-row">
+      <ion-icon name="globe-outline"></ion-icon>
+      <span>{{ post.site }}</span>
+    </div>
+    <div class="info-row">
+      <ion-icon name="business-outline"></ion-icon>
+      <span>{{ post.gabinete }}</span>
+    </div>
   </ion-card-content>
 </ion-card>

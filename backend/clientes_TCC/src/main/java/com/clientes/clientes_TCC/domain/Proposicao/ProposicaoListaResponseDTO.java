@@ -12,6 +12,9 @@ public record ProposicaoListaResponseDTO(
         @Schema(description = "Tipo da proposição", example = "Projeto de Lei")
         String tipo,
 
+        @Schema(description = "ID do vereador autor", example = "1")
+        Integer vereadorId,
+
         @Schema(description = "Nome do vereador autor", example = "João Silva")
         String vereadorNome,
 

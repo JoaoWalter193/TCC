@@ -1,6 +1,7 @@
 package com.clientes.clientes_TCC.controller;
 
 import com.clientes.clientes_TCC.domain.Vereador.VereadorDTO;
+import com.clientes.clientes_TCC.service.HistoricoService;
 import com.clientes.clientes_TCC.service.VereadorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +26,9 @@ public class VereadorController {
     @Autowired
     VereadorService vereadorService;
 
+    @Autowired
+    HistoricoService historicoService;
+
     @Operation(summary = "Listar todos os vereadores", description = "Retorna uma lista com todos os vereadores cadastrados, incluindo dados como nome, partido, gabinete e contato")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de vereadores retornada com sucesso"),
@@ -45,7 +49,11 @@ public class VereadorController {
     public ResponseEntity<VereadorDTO> buscarVereador(
             @Parameter(description = "ID do vereador", example = "1", required = true)
             @PathVariable Integer id){
-        return vereadorService.buscarVereador(id);
+        ResponseEntity<VereadorDTO> response = vereadorService.buscarVereador(id);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            historicoService.registrarVisualizacaoVereador(id);
+        }
+        return response;
     }
 
 }

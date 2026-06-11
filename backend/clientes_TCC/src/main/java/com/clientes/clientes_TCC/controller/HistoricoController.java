@@ -1,6 +1,6 @@
 package com.clientes.clientes_TCC.controller;
 
-import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoListaResponseDTO;
+import com.clientes.clientes_TCC.domain.Historico.HistoricoResponseDTO;
 import com.clientes.clientes_TCC.service.HistoricoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class HistoricoController {
     private HistoricoService historicoService;
 
     @GetMapping
-    public ResponseEntity<List<ProposicaoListaResponseDTO>> listarHistorico() {
+    public ResponseEntity<List<HistoricoResponseDTO>> listarHistorico() {
         return historicoService.listarHistorico();
     }
 }
