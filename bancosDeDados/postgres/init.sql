@@ -148,6 +148,19 @@ CREATE TABLE notificacao (
     CONSTRAINT fk_notif_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
 );
 
+CREATE TABLE reacao (
+    usuario_id INTEGER NOT NULL,
+    proposicao_codigo BIGINT NOT NULL,
+    tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('LIKE', 'DISLIKE')),
+    criada_em TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (usuario_id, proposicao_codigo),
+    CONSTRAINT fk_reacao_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_reacao_proposicao FOREIGN KEY(proposicao_codigo) REFERENCES proposicao(codigo)
+);
+
+ALTER TABLE proposicao ADD COLUMN IF NOT EXISTS likes INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE proposicao ADD COLUMN IF NOT EXISTS dislikes INTEGER NOT NULL DEFAULT 0;
+
 CREATE TABLE dispositivo_usuario (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     usuario_id INTEGER NOT NULL,

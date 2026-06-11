@@ -24,8 +24,9 @@ function mapListaToListaDTO(item: ProposicaoListaDTO): ProposicaoDTO {
       nome: item.vereadorNome,
       partido: '',
     },
-    likes: 0,
-    dislikes: 0,
+    likes: item.likes ?? 0,
+    dislikes: item.dislikes ?? 0,
+    currentUserReaction: item.currentUserReaction ?? null,
   };
 }
 
@@ -50,8 +51,9 @@ function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
       nome: item.vereadorNome,
       partido: item.vereadorPartido,
     },
-    likes: 0,
-    dislikes: 0,
+    likes: item.likes ?? 0,
+    dislikes: item.dislikes ?? 0,
+    currentUserReaction: item.currentUserReaction ?? null,
   };
 }
 
@@ -59,18 +61,24 @@ function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
 export class ProposicaoService {
   constructor(private api: ApiGatewayService) {}
 
-  listar(): Observable<ProposicaoDTO[]> {
-    return this.api.v1.get<{ content: ProposicaoListaDTO[] }>('/prop?size=50')
+  listar(usuarioId?: number | null): Observable<ProposicaoDTO[]> {
+    const params: Record<string, string | number> = { size: 50 };
+    if (usuarioId != null) { params['usuarioId'] = usuarioId; }
+    return this.api.v1.get<{ content: ProposicaoListaDTO[] }>('/prop', params)
       .pipe(map(res => res.content.map(mapListaToListaDTO)));
   }
 
-  buscarPorId(id: number): Observable<ProposicaoDTO | undefined> {
-    return this.api.v1.get<ProposicaoDetalheDTO>(`/prop/${id}`)
+  buscarPorId(id: number, usuarioId?: number | null): Observable<ProposicaoDTO | undefined> {
+    const params: Record<string, string | number> = {};
+    if (usuarioId != null) { params['usuarioId'] = usuarioId; }
+    return this.api.v1.get<ProposicaoDetalheDTO>(`/prop/${id}`, params)
       .pipe(map(d => mapDetalheToDTO(d)));
   }
 
-  buscarPorSimilaridade(q: string, limit = 10): Observable<ProposicaoDTO[]> {
-    return this.api.v1.get<ProposicaoListaDTO[]>('/prop/busca', { q, limit })
+  buscarPorSimilaridade(q: string, limit = 10, usuarioId?: number | null): Observable<ProposicaoDTO[]> {
+    const params: Record<string, string | number> = { q, limit };
+    if (usuarioId != null) { params['usuarioId'] = usuarioId; }
+    return this.api.v1.get<ProposicaoListaDTO[]>('/prop/busca', params)
       .pipe(map(lista => lista.map(mapListaToListaDTO)));
   }
 }

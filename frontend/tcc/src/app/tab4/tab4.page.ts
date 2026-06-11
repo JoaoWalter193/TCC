@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonMenuButton, IonButtons, IonText, IonSpinner } from '@ionic/angular/standalone';
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { CardComponent } from '../components/card/card.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReacaoEventService } from '../services/reacao-event.service';
 
 @Component({
   selector: 'app-tab4',
@@ -30,8 +32,11 @@ import { CardComponent } from '../components/card/card.component';
     IonSpinner,
   ],
 })
-export class Tab4Page implements OnInit {
+export class Tab4Page {
   auth = inject(AuthService);
+  private reacaoEvent = inject(ReacaoEventService);
+  private destroyRef = inject(DestroyRef);
+
   postsDestaque: ProposicaoDTO[] = [];
 
   searchTerm = '';
@@ -42,10 +47,18 @@ export class Tab4Page implements OnInit {
   constructor(
     private router: Router,
     private proposicaoService: ProposicaoService,
-  ) {}
+  ) {
+    this.reacaoEvent.reacaoAlterada$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.carregarPostsDestaque());
+  }
 
   ngOnInit() {
     this.carregarPostsDestaque();
+  }
+
+  get usuarioId(): number | null {
+    return this.auth.getUsuarioId();
   }
 
   navigateToLogin() {
@@ -53,7 +66,7 @@ export class Tab4Page implements OnInit {
   }
 
   carregarPostsDestaque() {
-    this.proposicaoService.listar().subscribe({
+    this.proposicaoService.listar(this.usuarioId).subscribe({
       next: (data) => {
         this.postsDestaque = data
           .sort((a, b) => (b.likes - b.dislikes) - (a.likes - a.dislikes))
@@ -74,7 +87,7 @@ export class Tab4Page implements OnInit {
     this.isSearching = true;
     this.searchResults = [];
 
-    this.proposicaoService.buscarPorSimilaridade(termo, 50).subscribe({
+    this.proposicaoService.buscarPorSimilaridade(termo, 50, this.usuarioId).subscribe({
       next: (results) => {
         this.searchResults = results;
         this.isSearching = false;

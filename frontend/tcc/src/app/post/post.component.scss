@@ -143,3 +143,25 @@ li {
   color: var(--ion-color-medium);
   margin-top: 4px;
 }
+
+.ia-content {
+  --padding: 20px;
+  padding: 20px;
+}
+
+.ia-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+  gap: 12px;
+  color: var(--ion-color-medium);
+}
+
+.ia-message {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ion-color-dark);
+  white-space: pre-wrap;
+}

@@ -54,6 +54,19 @@ export class ShareService {
     link.click();
   }
 
+  async compartilharProposicao(titulo: string, texto: string, url: string): Promise<void> {
+    const shareData = { title: titulo, text: texto, url };
+
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else if (this.platform.is('capacitor')) {
+      const { Share } = await import('@capacitor/share');
+      await Share.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  }
+
   private blobToBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

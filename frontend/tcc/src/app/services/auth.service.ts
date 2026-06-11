@@ -15,4 +15,9 @@ export class AuthService {
             resolve();
         })
     }
+
+    getUsuarioId(): number | null {
+        const id = localStorage.getItem('usuario_id');
+        return id ? Number(id) : null;
+    }
 }
