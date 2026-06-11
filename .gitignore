@@ -3,3 +3,5 @@
 */node_modules/*
 api-gateway/node_modules/*
 backend/api-gateway/node_modules/*
+frontend/tcc/android/app/google-services.json
+google-services.json
