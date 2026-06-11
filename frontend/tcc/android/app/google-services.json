@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "386458300320",
+    "project_id": "curitibaativa",
+    "storage_bucket": "curitibaativa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386458300320:android:1cf0fc6195af39f35e3ec5",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKBoV-6ZH8h_BpF2BVZe_L5rELhEyt7us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

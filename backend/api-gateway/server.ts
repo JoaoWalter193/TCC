@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({
   origin: env.cors.origins,
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
@@ -58,6 +58,9 @@ app.use(env.business.prefix, (req, _res, next) => {
   proxyReqPathResolver: (req) => {
     const stripped = req.originalUrl.replace(env.business.prefix, "");
     return stripped;
+  },
+  proxyReqOptDecorator: (proxyReqOpts) => {
+    return { ...proxyReqOpts, timeout: 0 };
   },
   proxyErrorHandler: (err, res, next) => {
     console.error(`[Proxy Error] Business service: ${err.message}`);

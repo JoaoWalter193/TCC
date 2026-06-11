@@ -27,7 +27,11 @@ export class SseService {
       } catch { /* ignora erros de parse */ }
     });
 
-    this.eventSource.onerror = () => {};
+    this.eventSource.onerror = () => {
+      if (this.eventSource?.readyState === EventSource.CLOSED) {
+        this.desconectar();
+      }
+    };
   }
 
   desconectar(): void {
