@@ -168,6 +168,16 @@ CREATE TABLE dispositivo_usuario (
     CONSTRAINT fk_disp_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
 );
 
+CREATE TABLE historico_proposicao (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    proposicao_codigo BIGINT NOT NULL,
+    visualizado_em TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT fk_hist_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_hist_proposicao FOREIGN KEY(proposicao_codigo) REFERENCES proposicao(codigo)
+);
+
+
 CREATE TABLE usuario_dashboard (
     id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     usuario_id  INTEGER NOT NULL REFERENCES usuario(id) ON DELETE CASCADE,

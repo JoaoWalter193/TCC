@@ -34,24 +34,28 @@ public class SecurityConfigurations {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        //Rotas liberadas(Autenticação/Cadastro/Vereadores)
+
+                        // ── Rotas públicas ──────────────────────────────────────────
+
+                        // Autenticação e cadastro
                         .requestMatchers(HttpMethod.POST,
                                 "/user",
-                                        "/user/login",
-                                        "/user/recover/**"
-                        ).permitAll()
-                        // Documentação Swagger/ Testes com full acesso
-                        .requestMatchers("/v3/*",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html",
-                                        "/swagger-resources/**",
-                                        "/webjars/**",
-                                        "/configuration/ui",
-                                        "/configuration/security",
-                                        "/prop"
+                                "/user/login",
+                                "/user/recover/**"
                         ).permitAll()
 
+                        // Swagger
+                        .requestMatchers(
+                                "/v3/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/configuration/ui",
+                                "/configuration/security"
+                        ).permitAll()
+
+                        // Proposições — totalmente públicas
                         // Verificar status de seguimento não precisa de autenticação (usa path param)
                         .requestMatchers(HttpMethod.GET,
                                 "/user/*/follow/*/status"
@@ -65,11 +69,31 @@ public class SecurityConfigurations {
                                 "/user/**"
                         ).authenticated()
                         .requestMatchers(HttpMethod.GET,
-                                "/user/**"
-                        ).authenticated()
+                                "/prop",
+                                "/prop/**"
+                        ).permitAll()
+
+                        // SSE público (usuário deslogado pode receber notificações gerais futuramente)
+                        .requestMatchers(HttpMethod.GET, "/sse/**").permitAll()
+
+                        // ── Rotas autenticadas ──────────────────────────────────────
+
+                        // Usuário
+                        .requestMatchers(HttpMethod.GET, "/user/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/user/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/user/**").authenticated()
+
+                        // Seguir e favoritar (regalias do usuário logado)
+                        .requestMatchers("/user/*/vereadores-seguindo/**").authenticated()
+                        .requestMatchers("/user/*/fav/**").authenticated()
+                        .requestMatchers("/user/*/follow/**").authenticated()
+
+                        // Notificações, dispositivos e histórico (regalias do usuário logado)
+                        .requestMatchers("/notificacoes/**").authenticated()
+                        .requestMatchers("/dispositivos/**").authenticated()
+                        .requestMatchers("/historico/**").authenticated()
 
                         .anyRequest().permitAll()
-
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
