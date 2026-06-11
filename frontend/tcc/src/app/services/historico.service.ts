@@ -40,6 +40,7 @@ export class HistoricoService {
                 likes: dto.likes,
                 dislikes: dto.dislikes,
                 currentUserReaction: dto.currentUserReaction,
+                isFavorito: false,
               },
             } as HistoricoItem;
           }

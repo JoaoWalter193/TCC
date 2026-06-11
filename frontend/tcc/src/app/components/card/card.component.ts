@@ -13,6 +13,7 @@ import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
 import { ReacaoService } from 'src/app/services/reacao.service';
 import { ReacaoEventService } from 'src/app/services/reacao-event.service';
 import { ShareService } from 'src/app/services/share.service';
+import { FavoritosService } from 'src/app/services/favoritos.service';
 
 @Component({
   selector: 'app-card',
@@ -39,16 +40,31 @@ export class CardComponent {
   private reacaoService = inject(ReacaoService);
   private reacaoEvent = inject(ReacaoEventService);
   private shareService = inject(ShareService);
+  private favoritosService = inject(FavoritosService);
+
+  starIconName(): string {
+    return this.post.isFavorito ? 'star' : 'star-outline';
+  }
+
+  toggleFavorito(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (this.usuarioId == null) { return; }
+
+    const anterior = this.post.isFavorito;
+    this.post.isFavorito = !anterior;
+
+    const obs = anterior
+      ? this.favoritosService.desfavoritar(this.usuarioId, this.post.id)
+      : this.favoritosService.favoritar(this.usuarioId, this.post.id);
+
+    obs.subscribe({ error: () => { this.post.isFavorito = anterior; } });
+  }
 
   filtrarChip(event: Event, tipo: string) {
     event.stopPropagation();
     event.preventDefault();
     this.tipoFiltrado.emit(tipo);
-  }
-
-  favoritar(event: Event, post: any) {
-    event.stopPropagation();
-    event.preventDefault();
   }
 
   verVerador(event: Event, idVereador: number) {

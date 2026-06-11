@@ -59,4 +59,5 @@ export interface ProposicaoDTO {
   likes: number;
   dislikes: number;
   currentUserReaction: string | null;
+  isFavorito: boolean;
 }

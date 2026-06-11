@@ -1,24 +1,43 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    @if (auth.isLoggedIn()) {
-    <ion-buttons slot="end">
+    <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    } @else {
-    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
-    }
+    <ion-title>Favoritos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  @if (auth.isLoggedIn()) {
+<ion-content class="ion-padding">
 
+  @if (auth.getUsuarioId() == null) {
+    <div class="empty-state">
+      <ion-text color="medium">
+        <p>Faça login para favoritar proposições.</p>
+      </ion-text>
+    </div>
+  } @else if (carregando) {
+    <div class="empty-state">
+      <ion-text color="medium">
+        <p>Carregando...</p>
+      </ion-text>
+    </div>
+  } @else if (favoritos.length === 0) {
+    <div class="empty-state">
+      <ion-text color="medium">
+        <p>Nenhuma proposição favoritada ainda.</p>
+      </ion-text>
+    </div>
   } @else {
-  <ion-col>
-    <ion-icon name="hand-left-outline" size="large"></ion-icon>
-    <p>Conecte-se</p>
-    <p>para se manter informado!</p>
-    <ion-button (click)="navigateToLogin()" fill="clear">Quero me manter informado</ion-button>
-  </ion-col>
+    <div class="favoritos-list">
+      @for (item of favoritos; track trackById($index, item)) {
+        <app-card
+          [post]="item"
+          [link]="['/proposicao', item.id]"
+          [usuarioId]="usuarioId"
+          (verVereador)="verVereador($event)"
+        />
+      }
+    </div>
   }
+
 </ion-content>

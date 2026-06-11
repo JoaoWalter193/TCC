@@ -55,8 +55,8 @@
       <p class="vereador" (click)="verVereador(post.vereador.id)">{{ post.vereador.nome }}</p>
     </div>
 
-    <ion-button fill="clear" class="favorito-btn">
-      <ion-icon name="star-outline"></ion-icon>
+    <ion-button fill="clear" class="favorito-btn" (click)="toggleFavorito()">
+      <ion-icon [name]="post.isFavorito ? 'star' : 'star-outline'" [color]="post.isFavorito ? 'warning' : ''"></ion-icon>
     </ion-button>
   </div>
 
