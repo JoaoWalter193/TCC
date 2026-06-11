@@ -34,6 +34,10 @@ export class PostComponent implements OnInit {
   iaResumo = '';
   iaCarregando = false;
 
+  get usuarioId(): number | null {
+    return this.auth.getUsuarioId();
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
