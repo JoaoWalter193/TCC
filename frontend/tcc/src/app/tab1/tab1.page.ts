@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { AlterarUsuarioDTO } from '../models/dto/alterar-usuario-dto';
 import { UsuarioDTO } from '../models/dto/usuario-dto';
+import { PushService } from '../services/push.service';
 import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
 
 interface FormularioPerfil extends AlterarUsuarioDTO {
@@ -41,7 +42,11 @@ export class Tab1Page implements OnInit {
   mostraConfirmacaoDelecao: boolean = false;
   mostraModalDeletado: boolean = false;
 
-  constructor(private usuarioService: UsuarioService, private router: Router) {}
+  constructor(
+    private usuarioService: UsuarioService,
+    private router: Router,
+    private pushService: PushService,
+  ) {}
 
   ngOnInit() {
     this.carregarDadosDoPerfil();
@@ -146,6 +151,7 @@ export class Tab1Page implements OnInit {
 
           localStorage.setItem('user_info', JSON.stringify(response));
           localStorage.setItem('usuario_id', String(response.id));
+          this.pushService.tentarRegistrarBackend();
         },
         error: (error) => {
           const errorDetails =

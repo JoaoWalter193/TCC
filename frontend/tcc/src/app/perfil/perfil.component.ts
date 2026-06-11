@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardMode } from '../services/dashboard-mode';
 import { UsuarioService } from '../services/usuario.service';
 import { UsuarioPerfilDTO } from '../models/dto/usuario-perfil-dto';
+import { PushService } from '../services/push.service';
 
 @Component({
   selector: 'app-perfil',
@@ -20,6 +21,7 @@ export class PerfilComponent implements OnInit {
     private modoService: DashboardMode,
     private router: Router,
     private usuarioService: UsuarioService,
+    private pushService: PushService,
   ) {}
 
   ngOnInit() {
@@ -39,6 +41,7 @@ export class PerfilComponent implements OnInit {
         this.perfil = data;
         localStorage.setItem('user_info', JSON.stringify(data));
         localStorage.setItem('usuario_id', String(data.id));
+        this.pushService.tentarRegistrarBackend();
         this.carregando = false;
       },
       error: (err) => {

@@ -6,9 +6,18 @@ interface LocalNotificationsPlugin {
   schedule(options: { notifications: Array<{
     id: number; title: string; body: string; extra?: Record<string, unknown>;
     schedule?: { at: Date }; smallIcon?: string; iconColor?: string;
+    channelId?: string;
   }> }): Promise<void>;
   cancel(options: { notifications: Array<{ id: number }> }): Promise<void>;
   addListener(eventName: string, callback: (data: any) => void): Promise<unknown>;
+  createChannel(channel: {
+    id: string;
+    name: string;
+    description?: string;
+    importance?: 1 | 2 | 3 | 4 | 5;
+    vibration?: boolean;
+    lights?: boolean;
+  }): Promise<void>;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -24,6 +33,15 @@ export class LocalNotificationService {
 
       const perm = await this.plugin.requestPermissions();
       if (perm.display !== 'granted') return;
+
+      await this.plugin.createChannel({
+        id: 'push_notifications',
+        name: 'Notificações',
+        description: 'Notificações do Curitiba Ativa',
+        importance: 5,
+        vibration: true,
+        lights: true,
+      });
 
       await this.plugin.addListener('localNotificationActionPerformed', (action) => {
         const extra = action.notification.extra ?? {};
@@ -56,6 +74,8 @@ export class LocalNotificationService {
           extra: extra ?? {},
           schedule: { at: new Date(Date.now() + 1000) },
           iconColor: '#3880ff',
+          smallIcon: 'ic_notification',
+          channelId: 'push_notifications',
         },
       ],
     });

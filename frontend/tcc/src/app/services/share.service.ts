@@ -6,9 +6,9 @@ export class ShareService {
   private platform = inject(Platform);
 
   async compartilharGrafico(elemento: HTMLElement, titulo: string): Promise<void> {
-    const domtoimage = await import('dom-to-image-more');
-
     if (this.platform.is('capacitor')) {
+      const m = await import('dom-to-image-more');
+      const domtoimage = (m as any).default ?? m;
       const blob = await domtoimage.toBlob(elemento, {
         bgcolor: '#ffffff',
         scale: 2,
@@ -16,6 +16,8 @@ export class ShareService {
       if (!blob) return;
       await this.compartilharMobile(blob, titulo);
     } else {
+      const m = await import('dom-to-image-more');
+      const domtoimage = (m as any).default ?? m;
       const dataUrl = await domtoimage.toPng(elemento, {
         bgcolor: '#ffffff',
         scale: 2,
@@ -31,7 +33,7 @@ export class ShareService {
     const base64 = await this.blobToBase64(blob);
     const nomeArquivo = `dashboard-${Date.now()}.png`;
 
-    await Filesystem.writeFile({
+    const result = await Filesystem.writeFile({
       path: nomeArquivo,
       data: base64,
       directory: Directory.Cache,
@@ -40,7 +42,7 @@ export class ShareService {
     await Share.share({
       title: titulo,
       text: 'Confira este dashboard do CuritibAtiva',
-      url: nomeArquivo,
+      url: result.uri,
       dialogTitle: 'Compartilhar dashboard',
     });
   }
