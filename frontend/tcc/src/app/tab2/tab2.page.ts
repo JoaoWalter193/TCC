@@ -8,7 +8,8 @@ import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { VereadorDTO } from '../models/dto/vereador-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { VereadorService } from '../services/vereador';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReacaoEventService } from '../services/reacao-event.service';
 
@@ -65,7 +66,7 @@ export class Tab2Page {
         catchError(() => of([] as VereadorDTO[]))
       )
     ]).subscribe({
-      next: ([proposicoes, vereadores]) => {
+      next: ([proposicoes, vereadores]: [ProposicaoDTO[], VereadorDTO[]]) => {
         const vereadorMap = new Map(
           vereadores.map(v => [v.nome.toLowerCase(), v.id])
         );
