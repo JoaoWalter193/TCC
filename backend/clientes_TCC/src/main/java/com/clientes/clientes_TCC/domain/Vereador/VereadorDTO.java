@@ -1,6 +1,5 @@
 package com.clientes.clientes_TCC.domain.Vereador;
 
-import com.clientes.clientes_TCC.domain.Partido.Partido;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Date;
@@ -13,8 +12,8 @@ public record VereadorDTO(
         @Schema(description = "Nome completo do vereador", example = "João Silva")
         String nome,
 
-        @Schema(description = "Partido político do vereador")
-        Partido partido,
+        @Schema(description = "Sigla do partido político", example = "PT")
+        String partido,
 
         @Schema(description = "Email de contato do vereador", example = "joao.silva@camara.gov.br")
         String email,

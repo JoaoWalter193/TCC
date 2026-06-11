@@ -75,6 +75,25 @@ input.ng-invalid.ng-touched {
   background-color: #ffffff;
 }
 
+.custom-select {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: $color-text;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+    outline: none;
+  }
+}
+
 .readonly-input {
   background-color: #f0f0f0 !important;
   color: #888;

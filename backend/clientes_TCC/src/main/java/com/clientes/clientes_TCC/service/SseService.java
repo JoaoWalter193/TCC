@@ -24,13 +24,19 @@ public class SseService {
         return emitter;
     }
 
-    public void enviarNotificacao(Integer usuarioId, String titulo, String mensagem) {
+    public void enviarNotificacao(Integer usuarioId, String titulo, String mensagem, Long proposicaoCodigo) {
         SseEmitter emitter = emitters.get(usuarioId);
         if (emitter != null) {
             try {
+                String json = String.format(
+                    "{\"titulo\":\"%s\",\"mensagem\":\"%s\",\"proposicaoCodigo\":%d}",
+                    titulo.replace("\"", "\\\""),
+                    mensagem.replace("\"", "\\\""),
+                    proposicaoCodigo == null ? -1 : proposicaoCodigo
+                );
                 emitter.send(SseEmitter.event()
                         .name("notificacao")
-                        .data("{\"titulo\":\"" + titulo + "\",\"mensagem\":\"" + mensagem + "\"}"));
+                        .data(json));
             } catch (IOException e) {
                 emitters.remove(usuarioId);
             }

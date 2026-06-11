@@ -2,13 +2,16 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 
 CREATE TABLE usuario (
-id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-cpf VARCHAR(11) UNIQUE,
-nome VARCHAR(100),
-email VARCHAR(100),
-senha VARCHAR,
-ativo BOOLEAN,
-data_delecao DATE
+    id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
+    cpf VARCHAR(11) UNIQUE,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    cep VARCHAR(8),
+    escolaridade VARCHAR(50),
+    profissao VARCHAR(100),
+    senha VARCHAR,
+    ativo BOOLEAN,
+    data_delecao DATE
 );
 
 CREATE TABLE partido (
@@ -145,6 +148,19 @@ CREATE TABLE notificacao (
     CONSTRAINT fk_notif_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
 );
 
+CREATE TABLE reacao (
+    usuario_id INTEGER NOT NULL,
+    proposicao_codigo BIGINT NOT NULL,
+    tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('LIKE', 'DISLIKE')),
+    criada_em TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (usuario_id, proposicao_codigo),
+    CONSTRAINT fk_reacao_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_reacao_proposicao FOREIGN KEY(proposicao_codigo) REFERENCES proposicao(codigo)
+);
+
+ALTER TABLE proposicao ADD COLUMN IF NOT EXISTS likes INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE proposicao ADD COLUMN IF NOT EXISTS dislikes INTEGER NOT NULL DEFAULT 0;
+
 CREATE TABLE dispositivo_usuario (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     usuario_id INTEGER NOT NULL,
@@ -161,6 +177,16 @@ CREATE TABLE historico_proposicao (
     CONSTRAINT fk_hist_proposicao FOREIGN KEY(proposicao_codigo) REFERENCES proposicao(codigo)
 );
 
+
+CREATE TABLE usuario_dashboard (
+    id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id  INTEGER NOT NULL REFERENCES usuario(id) ON DELETE CASCADE,
+    titulo      VARCHAR(150) NOT NULL,
+    chart_type  VARCHAR(20)  NOT NULL,
+    config      JSONB NOT NULL DEFAULT '{}',
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
 CREATE OR REPLACE FUNCTION notify_proposicao_change()
 RETURNS trigger AS $$

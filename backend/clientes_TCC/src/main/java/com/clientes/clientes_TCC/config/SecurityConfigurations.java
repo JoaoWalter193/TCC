@@ -56,6 +56,18 @@ public class SecurityConfigurations {
                         ).permitAll()
 
                         // Proposições — totalmente públicas
+                        // Verificar status de seguimento não precisa de autenticação (usa path param)
+                        .requestMatchers(HttpMethod.GET,
+                                "/user/*/follow/*/status"
+                        ).permitAll()
+
+                        //Rotas que necessitam autenticação
+                        .requestMatchers(HttpMethod.PUT,
+                                "/user/**"
+                        ).authenticated()
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/user/**"
+                        ).authenticated()
                         .requestMatchers(HttpMethod.GET,
                                 "/prop",
                                 "/prop/**"
@@ -91,7 +103,7 @@ public class SecurityConfigurations {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
 

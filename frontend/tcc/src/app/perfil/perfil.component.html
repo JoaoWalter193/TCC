@@ -1,63 +1,101 @@
 <ion-header collapse="fade" class="perfil-header">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
-    </ion-buttons>
-
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
+    <ion-buttons slot="start"><ion-back-button defaultHref="/tabs/tab2"></ion-back-button></ion-buttons>
+    <ion-buttons slot="end"><ion-menu-button></ion-menu-button></ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="perfil-content">
+  @if (carregando) {
+    <div class="loading-wrapper">
+      <div class="spinner"></div>
+      <span>Carregando perfil...</span>
+    </div>
+  }
 
-  <div class="perfil-topo">
-    <div class="avatar">
-      <ion-icon name="person-outline"></ion-icon>
+  @if (perfil) {
+    <div class="perfil-topo">
+      <div class="avatar"><ion-icon name="person-outline"></ion-icon></div>
+      <h2>{{ perfil.nome }}</h2>
+      <p>{{ perfil.email }}</p>
     </div>
 
-    <h2>Nome</h2>
-    <p>email@exemplo.com</p>
-  </div>
+    @if (perfil.cep || perfil.escolaridade || perfil.profissao) {
+      <div class="perfil-dados-card">
+        @if (perfil.cep) {
+          <div class="dado-item">
+            <ion-icon name="location-outline"></ion-icon>
+            <div>
+              <span class="dado-label">CEP</span>
+              <span class="dado-value">{{ perfil.cep }}</span>
+            </div>
+          </div>
+        }
+        @if (perfil.escolaridade) {
+          <div class="dado-item">
+            <ion-icon name="school-outline"></ion-icon>
+            <div>
+              <span class="dado-label">Escolaridade</span>
+              <span class="dado-value">{{ perfil.escolaridade }}</span>
+            </div>
+          </div>
+        }
+        @if (perfil.profissao) {
+          <div class="dado-item">
+            <ion-icon name="briefcase-outline"></ion-icon>
+            <div>
+              <span class="dado-label">Profissão</span>
+              <span class="dado-value">{{ perfil.profissao }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
 
-  <div class="perfil-info-card">
-
-    <div class="info-item">
-      <strong>Favoritos</strong>
-      <p>12</p>
+    <div class="perfil-engajamento">
+      <div class="engajamento-card">
+        <div class="engajamento-item">
+          <ion-icon name="people-outline"></ion-icon>
+          <div>
+            <span class="engajamento-valor">{{ perfil.totalVereadoresSeguidos }}</span>
+            <span class="engajamento-label">Vereadores seguidos</span>
+          </div>
+        </div>
+        <div class="engajamento-divider"></div>
+        <div class="engajamento-item">
+          <ion-icon name="heart-outline"></ion-icon>
+          <div>
+            <span class="engajamento-valor">{{ perfil.proposicoesFavoritas.length }}</span>
+            <span class="engajamento-label">Proposições favoritas</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="info-divider"></div>
+    @if (perfil.proposicoesFavoritas.length > 0) {
+      <div class="perfil-section">
+        <h3 class="section-title">Proposições favoritadas</h3>
+        <div class="favoritas-list">
+          @for (prop of perfil.proposicoesFavoritas; track prop.codigo) {
+            <div class="favorita-card" (click)="navProposicao(prop.codigo)">
+              <div class="favorita-header">
+                <span class="favorita-tag">{{ prop.tag }}</span>
+                <span class="favorita-codigo">#{{ prop.codigo }}</span>
+              </div>
+              <p class="favorita-ementa">{{ prop.ementa }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
 
-    <div class="info-item">
-      <strong>Seguindo</strong>
-      <p>8</p>
+    <div class="perfil-opcoes">
+      <ion-list lines="none">
+        <ion-item (click)="navEditarPerfil()"><ion-icon name="create-outline" slot="start"></ion-icon><ion-label>Editar Perfil</ion-label></ion-item>
+        <ion-item routerLink="/historico"><ion-icon name="time-outline" slot="start"></ion-icon><ion-label>Histórico</ion-label></ion-item>
+        <ion-item (click)="navMeusDashboards()"><ion-icon name="bar-chart-outline" slot="start"></ion-icon><ion-label>Meus Dashboards</ion-label></ion-item>
+        <ion-item routerLink="/configuracoes"><ion-icon name="settings-outline" slot="start"></ion-icon><ion-label>Configurações</ion-label></ion-item>
+      </ion-list>
     </div>
-
-  </div>
-
-  <div class="perfil-opcoes">
-
-    <ion-list lines="none">
-
-      <ion-item routerLink="/historico">
-        <ion-icon name="time-outline" slot="start"></ion-icon>
-        <ion-label>Histórico</ion-label>
-      </ion-item>
-
-      <ion-item (click)="navMeusDashboards()">
-        <ion-icon name="bar-chart-outline" slot="start"></ion-icon>
-        <ion-label>Meus Dashboards</ion-label>
-      </ion-item>
-
-      <ion-item routerLink="/configuracoes">
-        <ion-icon name="settings-outline" slot="start"></ion-icon>
-        <ion-label>Configurações</ion-label>
-      </ion-item>
-
-    </ion-list>
-
-  </div>
-
+  }
 </ion-content>
