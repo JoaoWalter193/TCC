@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { Component, inject, Injector } from '@angular/core';
+import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { AuthService } from './services/auth.service';
 import { MenuComponent } from "./components/menu/menu.component";
 
@@ -10,7 +10,24 @@ import { MenuComponent } from "./components/menu/menu.component";
   imports: [IonApp, IonRouterOutlet, MenuComponent],
 })
 export class AppComponent {
-  constructor(private authService: AuthService) {
-    this.authService.checkAuth();
+  constructor() {
+    const authService = inject(AuthService);
+    const platform = inject(Platform);
+    const injector = inject(Injector);
+
+    authService.checkAuth();
+
+    platform.ready().then(() => {
+      if (platform.is('capacitor')) {
+        import('./services/push.service').then(m => {
+          const push = injector.get(m.PushService);
+          push.init();
+        });
+        import('./services/local-notification.service').then(m => {
+          const localNotif = injector.get(m.LocalNotificationService);
+          localNotif.init();
+        });
+      }
+    });
   }
 }

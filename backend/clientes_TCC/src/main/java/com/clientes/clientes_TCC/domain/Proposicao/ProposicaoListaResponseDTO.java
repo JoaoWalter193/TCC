@@ -12,6 +12,9 @@ public record ProposicaoListaResponseDTO(
         @Schema(description = "Tipo da proposição", example = "Projeto de Lei")
         String tipo,
 
+        @Schema(description = "ID do vereador autor", example = "1")
+        Integer vereadorId,
+
         @Schema(description = "Nome do vereador autor", example = "João Silva")
         String vereadorNome,
 
@@ -25,6 +28,15 @@ public record ProposicaoListaResponseDTO(
         String tag,
 
         @Schema(description = "Estado atual da tramitação", example = "Em tramitação")
-        String estado
+        String estado,
+
+        @Schema(description = "Quantidade de likes", example = "15")
+        Integer likes,
+
+        @Schema(description = "Quantidade de dislikes", example = "3")
+        Integer dislikes,
+
+        @Schema(description = "Reação do usuário logado (LIKE, DISLIKE ou null)", example = "LIKE")
+        String currentUserReaction
 ) {
 }

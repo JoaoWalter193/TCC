@@ -1,21 +1,21 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent, IonIcon, IonButton, IonList, IonItem,
   IonSelect, IonSelectOption, IonLabel, IonCheckbox,
-  IonSegment, IonSegmentButton, IonChip, IonText,
+  IonSegment, IonSegmentButton, IonChip, IonText, IonInput,
+  AlertController,
 } from "@ionic/angular/standalone";
-import { ModuleRegistry, AllEnterpriseModule } from 'ag-charts-enterprise';
 import { AgChartsModule } from 'ag-charts-angular';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { Dashboard } from 'src/app/services/dashboard';
+import { DashboardItem } from 'src/app/models/dto/dashboard-item';
 import { DashboardMetadata } from 'src/app/models/dto/dashboard-metadata';
 import { DashboardChartConfig } from 'src/app/models/dto/dashboard-chart-config';
-
-ModuleRegistry.registerModules([AllEnterpriseModule]);
+import { ShareService } from 'src/app/services/share.service';
 
 @Component({
   selector: 'app-my-dashboard-view',
@@ -25,16 +25,30 @@ ModuleRegistry.registerModules([AllEnterpriseModule]);
     CommonModule, FormsModule,
     IonContent, IonIcon, IonButton, IonList, IonItem,
     IonSelect, IonSelectOption, IonLabel, IonCheckbox,
-    IonSegment, IonSegmentButton, IonChip, IonText,
+    IonSegment, IonSegmentButton, IonChip, IonText, IonInput,
     AgChartsModule,
   ],
   providers: [DatePipe],
 })
 export class MyDashboardViewComponent implements OnInit {
+  @ViewChild('captureArea', { read: ElementRef })
+  captureAreaRef!: ElementRef;
+
   auth = inject(AuthService);
   dashboard = inject(Dashboard);
   datePipe = inject(DatePipe);
+  shareService = inject(ShareService);
 
+  // ── Modo ──
+  modo: 'list' | 'editor' = 'list';
+
+  // ── Lista ──
+  dashboards: DashboardItem[] = [];
+  carregandoLista = false;
+
+  // ── Editor ──
+  dashboardEditId: number | null = null;
+  tituloPersonalizado = '';
   metadata: DashboardMetadata = {};
   categoricalFields: string[] = [];
   numericFields: string[] = [];
@@ -49,11 +63,106 @@ export class MyDashboardViewComponent implements OnInit {
   chartOptions: any = null;
   loading = false;
   error = '';
+  salvando = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private alertCtrl: AlertController,
+  ) {}
 
   ngOnInit() {
+    this.carregarLista();
+  }
+
+  // ═════════════════════════════════════════════════════════════════════
+  //  LISTA
+  // ═════════════════════════════════════════════════════════════════════
+
+  private getUsuarioId(): number {
+    const raw = localStorage.getItem('usuario_id');
+    return raw ? Number(raw) : 0;
+  }
+
+  carregarLista() {
+    const uid = this.getUsuarioId();
+    if (!uid) {
+      this.dashboards = [];
+      return;
+    }
+    this.carregandoLista = true;
+    this.dashboard.listarDashboards(uid).subscribe({
+      next: (lista) => {
+        this.dashboards = lista;
+        this.carregandoLista = false;
+      },
+      error: () => {
+        this.carregandoLista = false;
+      },
+    });
+  }
+
+  entrarModoCriacao() {
+    this.dashboardEditId = null;
+    this.resetarEditor();
     this.loadMetadata();
+    this.modo = 'editor';
+  }
+
+  entrarModoEdicao(item: DashboardItem) {
+    this.dashboardEditId = item.id;
+    this.carregarConfigNoEditor(item);
+    this.modo = 'editor';
+  }
+
+  voltarParaLista() {
+    this.modo = 'list';
+    this.carregarLista();
+  }
+
+  chartTypeLabel(type: string): string {
+    const map: Record<string, string> = {
+      bar: 'Barras',
+      pie: 'Pizza',
+      sunburst: 'Sunburst',
+    };
+    return map[type] || type;
+  }
+
+  // ═════════════════════════════════════════════════════════════════════
+  //  EDITOR
+  // ═════════════════════════════════════════════════════════════════════
+
+  private resetarEditor() {
+    this.tituloPersonalizado = '';
+    this.chartType = 'bar';
+    this.selectedLevels = [];
+    this.selectedMetric = 'codigo';
+    this.selectedOperation = 'count';
+    this.filters = [];
+    this.previewResult = null;
+    this.chartOptions = null;
+    this.error = '';
+    this.metadata = {};
+  }
+
+  private carregarConfigNoEditor(item: DashboardItem) {
+    this.resetarEditor();
+    this.loadMetadata();
+
+    this.tituloPersonalizado = item.titulo;
+
+    const cfg = item.config;
+    this.chartType = cfg.chart_type || 'bar';
+    this.selectedLevels = cfg.levels ? [...cfg.levels] : [];
+    this.selectedMetric = cfg.metric || 'codigo';
+    this.selectedOperation = cfg.operation || 'count';
+
+    if (cfg.filters) {
+      this.filters = Object.entries(cfg.filters).map(([column, values]) => ({
+        column,
+        values: [...values],
+      }));
+    }
   }
 
   private loadMetadata() {
@@ -282,6 +391,107 @@ export class MyDashboardViewComponent implements OnInit {
 
   objectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
+  }
+
+  async compartilharDashboard() {
+    const el = this.captureAreaRef.nativeElement;
+    await this.shareService.compartilharGrafico(el, 'Meu Dashboard CuritibAtiva');
+  }
+
+  // ═════════════════════════════════════════════════════════════════════
+  //  SALVAR / EXCLUIR
+  // ═════════════════════════════════════════════════════════════════════
+
+  salvarVisualizacao() {
+    if (this.selectedLevels.length === 0) return;
+
+    const config = this.buildConfig();
+    const uid = this.getUsuarioId();
+    if (!uid) {
+      this.error = 'Usuário não identificado. Faça login novamente.';
+      return;
+    }
+
+    this.salvando = true;
+    this.error = '';
+
+    const tituloCustom = this.tituloPersonalizado.trim();
+    const titulo = tituloCustom
+      ? tituloCustom
+      : config.levels
+        ? config.levels.map((l) => this.fieldLabel(l)).join(' > ')
+        : 'Meu Dashboard';
+
+    if (this.dashboardEditId) {
+      // Atualizar existente
+      this.dashboard
+        .atualizarDashboard(this.dashboardEditId, {
+          titulo,
+          chart_type: this.chartType,
+          config,
+        })
+        .subscribe({
+          next: () => {
+            this.salvando = false;
+            this.voltarParaLista();
+          },
+          error: () => {
+            this.error = 'Erro ao salvar dashboard.';
+            this.salvando = false;
+          },
+        });
+    } else {
+      // Criar novo
+      this.dashboard
+        .criarDashboard({
+          usuario_id: uid,
+          titulo,
+          chart_type: this.chartType,
+          config,
+        })
+        .subscribe({
+          next: () => {
+            this.salvando = false;
+            this.voltarParaLista();
+          },
+          error: () => {
+            this.error = 'Erro ao criar dashboard.';
+            this.salvando = false;
+          },
+        });
+    }
+  }
+
+  async confirmarExclusao() {
+    if (!this.dashboardEditId) return;
+
+    const alert = await this.alertCtrl.create({
+      header: 'Excluir visualização',
+      message: 'Tem certeza que deseja excluir este dashboard? Esta ação não pode ser desfeita.',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          handler: () => {
+            this.executarExclusao(this.dashboardEditId!);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  private executarExclusao(id: number) {
+    this.dashboard.excluirDashboard(id).subscribe({
+      next: () => {
+        this.voltarParaLista();
+      },
+      error: () => {
+        this.error = 'Erro ao excluir dashboard.';
+      },
+    });
   }
 
   navigateToLogin() {

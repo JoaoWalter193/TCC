@@ -1,18 +1,50 @@
-import { Component } from '@angular/core';
-import { IonBackButton, IonButtons, IonHeader, IonMenuButton, IonContent } from "@ionic/angular/standalone";
+import { Component, OnInit } from '@angular/core';
+import { IonBackButton, IonButtons, IonHeader, IonToolbar, IonContent, IonIcon, IonText } from "@ionic/angular/standalone";
 import { CardComponent } from "../components/card/card.component";
 import { CardVereadorComponent } from "../components/card-vereador/card-vereador.component";
-import { VisitadosDTO } from '../models/dto/visitados-dto';
+import { HistoricoItem } from '../models/historico.model';
+import { HistoricoService } from '../services/historico.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-historico',
   templateUrl: './historico.component.html',
   styleUrls: ['./historico.component.scss'],
-  imports: [IonBackButton, IonButtons, IonHeader, IonMenuButton, IonContent, CardComponent, CardVereadorComponent],
+  standalone: true,
+  imports: [
+    IonBackButton, IonButtons, IonHeader, IonToolbar, IonContent,
+    IonIcon, IonText,
+    CardComponent, CardVereadorComponent,
+  ],
 })
-export class HistoricoComponent {
-  Visitados: VisitadosDTO[] = [];
+export class HistoricoComponent implements OnInit {
+  historico: HistoricoItem[] = [];
+  carregando = true;
 
-  constructor() { }
+  constructor(
+    private historicoService: HistoricoService,
+    private auth: AuthService,
+  ) {}
 
+  ngOnInit() {
+    this.carregar();
+  }
+
+  get usuarioId(): number | null {
+    return this.auth.getUsuarioId();
+  }
+
+  private carregar(): void {
+    this.historicoService.listar().subscribe({
+      next: (items) => {
+        this.historico = items.sort(
+          (a, b) => new Date(b.dataAcesso).getTime() - new Date(a.dataAcesso).getTime(),
+        );
+        this.carregando = false;
+      },
+      error: () => {
+        this.carregando = false;
+      },
+    });
+  }
 }

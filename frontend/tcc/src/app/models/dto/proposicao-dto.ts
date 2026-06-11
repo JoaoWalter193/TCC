@@ -1,16 +1,21 @@
 export interface ProposicaoListaDTO {
   codigo: number;
   tipo: string;
+  vereadorId: number;
   vereadorNome: string;
   dataEnvio: string;
   ementa: string;
   tag: string;
   estado: string;
+  likes: number;
+  dislikes: number;
+  currentUserReaction: string | null;
 }
 
 export interface ProposicaoDetalheDTO {
   codigo: number;
   tipoNome: string;
+  vereadorId: number;
   vereadorNome: string;
   vereadorPartido: string;
   dataEnvio: string;
@@ -26,6 +31,9 @@ export interface ProposicaoDetalheDTO {
   texto: string;
   justificativa: string;
   tag: string;
+  likes: number;
+  dislikes: number;
+  currentUserReaction: string | null;
 }
 
 export interface ProposicaoDTO {
@@ -50,4 +58,6 @@ export interface ProposicaoDTO {
   };
   likes: number;
   dislikes: number;
+  currentUserReaction: string | null;
+  isFavorito: boolean;
 }

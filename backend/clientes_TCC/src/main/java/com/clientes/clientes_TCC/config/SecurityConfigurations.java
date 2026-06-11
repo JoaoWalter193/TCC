@@ -34,22 +34,31 @@ public class SecurityConfigurations {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        //Rotas liberadas(Autenticação/Cadastro/Vereadores)
+
+                        // ── Rotas públicas ──────────────────────────────────────────
+
+                        // Autenticação e cadastro
                         .requestMatchers(HttpMethod.POST,
                                 "/user",
-                                        "/user/login",
-                                        "/user/recover/**"
+                                "/user/login",
+                                "/user/recover/**"
                         ).permitAll()
-                        // Documentação Swagger/ Testes com full acesso
-                        .requestMatchers("/v3/*",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html",
-                                        "/swagger-resources/**",
-                                        "/webjars/**",
-                                        "/configuration/ui",
-                                        "/configuration/security",
-                                        "/prop"
+
+                        // Swagger
+                        .requestMatchers(
+                                "/v3/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/configuration/ui",
+                                "/configuration/security"
+                        ).permitAll()
+
+                        // Proposições — totalmente públicas
+                        // Verificar status de seguimento não precisa de autenticação (usa path param)
+                        .requestMatchers(HttpMethod.GET,
+                                "/user/*/follow/*/status"
                         ).permitAll()
 
                         //Rotas que necessitam autenticação
@@ -60,11 +69,31 @@ public class SecurityConfigurations {
                                 "/user/**"
                         ).authenticated()
                         .requestMatchers(HttpMethod.GET,
-                                "/user/**"
-                        ).authenticated()
+                                "/prop",
+                                "/prop/**"
+                        ).permitAll()
+
+                        // SSE público (usuário deslogado pode receber notificações gerais futuramente)
+                        .requestMatchers(HttpMethod.GET, "/sse/**").permitAll()
+
+                        // ── Rotas autenticadas ──────────────────────────────────────
+
+                        // Usuário
+                        .requestMatchers(HttpMethod.GET, "/user/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/user/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/user/**").authenticated()
+
+                        // Seguir e favoritar (regalias do usuário logado)
+                        .requestMatchers("/user/*/vereadores-seguindo/**").authenticated()
+                        .requestMatchers("/user/*/fav/**").authenticated()
+                        .requestMatchers("/user/*/follow/**").authenticated()
+
+                        // Notificações, dispositivos e histórico (regalias do usuário logado)
+                        .requestMatchers("/notificacoes/**").authenticated()
+                        .requestMatchers("/dispositivos/**").authenticated()
+                        .requestMatchers("/historico/**").authenticated()
 
                         .anyRequest().permitAll()
-
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -74,7 +103,7 @@ public class SecurityConfigurations {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
 

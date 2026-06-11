@@ -1,4 +1,5 @@
 import pandas as pd
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from app.models.dashboard import Proposicao, Vereador, Partido
 from app.schemas.dashboard import ChartRequest
@@ -9,8 +10,6 @@ def get_flattened_data(db: Session):
         Proposicao.codigo,
         Proposicao.data_envio,
         Proposicao.tag,
-        Proposicao.likes,
-        Proposicao.dislikes,
         Vereador.nome.label("vereador_nome"),
         Vereador.genero,
         Partido.nomepartido.label("partido_nome")
@@ -39,10 +38,24 @@ def get_dashboard_metadata(db: Session):
     return metadata
 
 
-def processar_ranking_vereadores():
+def processar_ranking_vereadores(db: Session):
+    resultado = db.query(
+        Vereador.nome.label("vereador_nome"),
+        func.count(Proposicao.codigo).label("contagem")
+    ).join(Proposicao, Vereador.id == Proposicao.vereador_id) \
+     .group_by(Vereador.id, Vereador.nome) \
+     .order_by(func.count(Proposicao.codigo).desc()) \
+     .all()
+
+    total = sum(row.contagem for row in resultado) if resultado else 0
+
     return [
-        {"vereador_nome": "Angelo Vanhoni", "contagem": 10, "porcentagem": 50.0},
-        {"vereador_nome": "Outro Vereador", "contagem": 10, "porcentagem": 50.0}
+        {
+            "vereador_nome": row.vereador_nome,
+            "contagem": row.contagem,
+            "porcentagem": round((row.contagem / total) * 100, 2) if total > 0 else 0.0
+        }
+        for row in resultado
     ]
 
 

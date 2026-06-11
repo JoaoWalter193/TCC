@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({
   origin: env.cors.origins,
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
@@ -59,6 +59,9 @@ app.use(env.business.prefix, (req, _res, next) => {
     const stripped = req.originalUrl.replace(env.business.prefix, "");
     return stripped;
   },
+  proxyReqOptDecorator: (proxyReqOpts) => {
+    return { ...proxyReqOpts, timeout: 0 };
+  },
   proxyErrorHandler: (err, res, next) => {
     console.error(`[Proxy Error] Business service: ${err.message}`);
     res.status(502).json({ error: "Business service unavailable" });
@@ -74,6 +77,39 @@ app.get("/health", (_req, res) => {
       business: env.business.baseUrl,
     },
   });
+});
+
+// --- PLAYGROUND DE TESTES (notificações fictícias) ---
+app.post("/playground/notificar/:usuarioId", async (req, res) => {
+  const { usuarioId } = req.params;
+  const { titulo, mensagem, proposicaoCodigo } = req.body;
+
+  const payload = {
+    titulo: titulo || "Nova proposição de Vereador Teste",
+    mensagem: mensagem || "Ementa da proposição de teste para validação da UI",
+    proposicaoCodigo: proposicaoCodigo || 1001,
+  };
+
+  try {
+    const upstream = await fetch(
+      `${env.business.baseUrl}/notificacoes/${usuarioId}/teste`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+    );
+    const data = await upstream.json();
+    res.json({ mock: true, enviado: payload, resposta: data });
+  } catch (err: any) {
+    res.status(502).json({
+      error: "Business service unavailable",
+      mock: true,
+      payload,
+      instrucao:
+        "Se o backend não estiver rodando, use o mock do frontend: as notificações de fallback no notificacao.service.ts já funcionam automaticamente.",
+    });
+  }
 });
 
 app.use((_req, res) => {

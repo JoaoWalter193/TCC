@@ -4,6 +4,7 @@ import com.clientes.clientes_TCC.domain.Proposicao.Proposicao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -31,4 +32,12 @@ public interface ProposicaoRepository extends JpaRepository<Proposicao, Long> {
     """, nativeQuery = true)
     List<Proposicao> findBySimilarity(@Param("embedding") String embedding,
                                       @Param("limit") int limit);
+
+    @Modifying
+    @Query("UPDATE Proposicao p SET p.likes = p.likes + :delta WHERE p.codigo = :codigo")
+    void incrementarLikes(@Param("codigo") Long codigo, @Param("delta") int delta);
+
+    @Modifying
+    @Query("UPDATE Proposicao p SET p.dislikes = p.dislikes + :delta WHERE p.codigo = :codigo")
+    void incrementarDislikes(@Param("codigo") Long codigo, @Param("delta") int delta);
 }

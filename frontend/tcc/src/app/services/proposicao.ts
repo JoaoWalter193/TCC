@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, switchMap, of } from 'rxjs';
 import { ProposicaoListaDTO, ProposicaoDetalheDTO, ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ApiGatewayService } from './api-gateway.service';
 
-function mapListaToListaDTO(item: ProposicaoListaDTO): ProposicaoDTO {
+export function mapListaToListaDTO(item: ProposicaoListaDTO): ProposicaoDTO {
   return {
     id: item.codigo,
     tipoProposicao: item.tipo,
@@ -20,16 +20,18 @@ function mapListaToListaDTO(item: ProposicaoListaDTO): ProposicaoDTO {
     texto: '',
     justificativa: '',
     vereador: {
-      id: 0,
+      id: item.vereadorId,
       nome: item.vereadorNome,
       partido: '',
     },
-    likes: 0,
-    dislikes: 0,
+    likes: item.likes ?? 0,
+    dislikes: item.dislikes ?? 0,
+    currentUserReaction: item.currentUserReaction ?? null,
+    isFavorito: false,
   };
 }
 
-function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
+export function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
   return {
     id: item.codigo,
     tipoProposicao: item.tipoNome,
@@ -46,12 +48,14 @@ function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
     texto: item.texto,
     justificativa: item.justificativa,
     vereador: {
-      id: 0,
+      id: item.vereadorId,
       nome: item.vereadorNome,
       partido: item.vereadorPartido,
     },
-    likes: 0,
-    dislikes: 0,
+    likes: item.likes ?? 0,
+    dislikes: item.dislikes ?? 0,
+    currentUserReaction: item.currentUserReaction ?? null,
+    isFavorito: false,
   };
 }
 
@@ -59,18 +63,46 @@ function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
 export class ProposicaoService {
   constructor(private api: ApiGatewayService) {}
 
-  listar(): Observable<ProposicaoDTO[]> {
-    return this.api.v1.get<{ content: ProposicaoListaDTO[] }>('/prop?size=50')
-      .pipe(map(res => res.content.map(mapListaToListaDTO)));
+  private mergeFavoritos(posts: ProposicaoDTO[], usuarioId: number | null): Observable<ProposicaoDTO[]> {
+    if (!usuarioId) return of(posts);
+    return this.api.v1.get<ProposicaoListaDTO[]>(`/user/${usuarioId}/fav`).pipe(
+      map(favs => {
+        const favCodigos = new Set(favs.map(f => f.codigo));
+        return posts.map(p => ({ ...p, isFavorito: favCodigos.has(p.id) }));
+      }),
+      map(favs => favs.sort((a, b) => (a.isFavorito === b.isFavorito ? 0 : a.isFavorito ? -1 : 1))),
+    );
   }
 
-  buscarPorId(id: number): Observable<ProposicaoDTO | undefined> {
-    return this.api.v1.get<ProposicaoDetalheDTO>(`/prop/${id}`)
-      .pipe(map(d => mapDetalheToDTO(d)));
+  listar(usuarioId?: number | null): Observable<ProposicaoDTO[]> {
+    const params: Record<string, string | number> = { size: 50 };
+    if (usuarioId != null) { params['usuarioId'] = usuarioId; }
+    return this.api.v1.get<{ content: ProposicaoListaDTO[] }>('/prop', params).pipe(
+      map(res => res.content.map(mapListaToListaDTO)),
+      switchMap(posts => this.mergeFavoritos(posts, usuarioId ?? null)),
+    );
   }
 
-  buscarPorSimilaridade(q: string, limit = 10): Observable<ProposicaoDTO[]> {
-    return this.api.v1.get<ProposicaoListaDTO[]>('/prop/busca', { q, limit })
-      .pipe(map(lista => lista.map(mapListaToListaDTO)));
+  buscarPorId(id: number, usuarioId?: number | null): Observable<ProposicaoDTO | undefined> {
+    const params: Record<string, string | number> = {};
+    if (usuarioId != null) { params['usuarioId'] = usuarioId; }
+    return this.api.v1.get<ProposicaoDetalheDTO>(`/prop/${id}`, params).pipe(
+      map(d => mapDetalheToDTO(d)),
+      switchMap(post => {
+        if (!post || !usuarioId) return of(post);
+        return this.api.v1.get<ProposicaoListaDTO[]>(`/user/${usuarioId}/fav`).pipe(
+          map(favs => { post.isFavorito = favs.some(f => f.codigo === post.id); return post; }),
+        );
+      }),
+    );
+  }
+
+  buscarPorSimilaridade(q: string, limit = 10, usuarioId?: number | null): Observable<ProposicaoDTO[]> {
+    const params: Record<string, string | number> = { q, limit };
+    if (usuarioId != null) { params['usuarioId'] = usuarioId; }
+    return this.api.v1.get<ProposicaoListaDTO[]>('/prop/busca', params).pipe(
+      map(lista => lista.map(mapListaToListaDTO)),
+      switchMap(posts => this.mergeFavoritos(posts, usuarioId ?? null)),
+    );
   }
 }
