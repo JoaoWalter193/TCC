@@ -31,6 +31,7 @@ public class ProposicaoService {
     @Autowired
     private HistoricoService historicoService;
 
+    @Autowired
     private ReacaoRepository reacaoRepository;
 
     public ResponseEntity<Page<ProposicaoListaResponseDTO>> listarProposicoes(String tag, Pageable pageable, Integer usuarioId) {
@@ -58,6 +59,7 @@ public class ProposicaoService {
         return ResponseEntity.ok(proposicoes.map(p -> new ProposicaoListaResponseDTO(
                 p.getCodigo(),
                 p.getTipo().getTipo(),
+                p.getVereador().getId(),
                 p.getVereador().getNome(),
                 p.getDataEnvio(),
                 p.getEmenta(),
@@ -87,6 +89,7 @@ public class ProposicaoService {
         ProposicaoEspecificaDTO dto = new ProposicaoEspecificaDTO(
                 proposicao.getCodigo(),
                 proposicao.getTipo().getTipo(),
+                proposicao.getVereador().getId(),
                 proposicao.getVereador().getNome(),
                 proposicao.getVereador().getPartido().getNomePartido(),
                 proposicao.getDataEnvio(),
@@ -137,6 +140,7 @@ public class ProposicaoService {
                 .map(p -> new ProposicaoListaResponseDTO(
                         p.getCodigo(),
                         p.getTipo().getTipo(),
+                        p.getVereador().getId(),
                         p.getVereador().getNome(),
                         p.getDataEnvio(),
                         p.getEmenta(),

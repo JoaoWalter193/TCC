@@ -177,6 +177,15 @@ CREATE TABLE historico_proposicao (
     CONSTRAINT fk_hist_proposicao FOREIGN KEY(proposicao_codigo) REFERENCES proposicao(codigo)
 );
 
+CREATE TABLE historico_vereador (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    vereador_id INTEGER NOT NULL,
+    visualizado_em TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT fk_hist_vereador_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_hist_vereador FOREIGN KEY(vereador_id) REFERENCES vereador(id)
+);
+
 
 CREATE TABLE usuario_dashboard (
     id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

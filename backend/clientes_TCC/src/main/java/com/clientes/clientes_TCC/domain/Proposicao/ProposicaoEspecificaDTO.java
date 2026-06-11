@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public record ProposicaoEspecificaDTO(
         Long codigo,
         String tipoNome,
+        Integer vereadorId,
         String vereadorNome,
         String vereadorPartido,
         LocalDateTime dataEnvio,

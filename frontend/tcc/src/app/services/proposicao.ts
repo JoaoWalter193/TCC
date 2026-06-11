@@ -20,7 +20,7 @@ function mapListaToListaDTO(item: ProposicaoListaDTO): ProposicaoDTO {
     texto: '',
     justificativa: '',
     vereador: {
-      id: 0,
+      id: item.vereadorId,
       nome: item.vereadorNome,
       partido: '',
     },
@@ -47,7 +47,7 @@ function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
     texto: item.texto,
     justificativa: item.justificativa,
     vereador: {
-      id: 0,
+      id: item.vereadorId,
       nome: item.vereadorNome,
       partido: item.vereadorPartido,
     },

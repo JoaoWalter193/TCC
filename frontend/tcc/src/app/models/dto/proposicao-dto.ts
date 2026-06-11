@@ -1,6 +1,7 @@
 export interface ProposicaoListaDTO {
   codigo: number;
   tipo: string;
+  vereadorId: number;
   vereadorNome: string;
   dataEnvio: string;
   ementa: string;
@@ -14,6 +15,7 @@ export interface ProposicaoListaDTO {
 export interface ProposicaoDetalheDTO {
   codigo: number;
   tipoNome: string;
+  vereadorId: number;
   vereadorNome: string;
   vereadorPartido: string;
   dataEnvio: string;
