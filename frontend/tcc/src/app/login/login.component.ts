@@ -9,9 +9,11 @@ import { UsuarioService } from '../services/usuario.service';
 import { catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { LoginResponseDTO } from '../models/dto/response-dto';
 import { ResponseDTO } from '../models/dto/response-dto';
 import { LoginRequest } from '../models/dto/login-request';
 import { AuthService } from '../services/auth.service';
+import { PushService } from '../services/push.service';
 import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
 
 @Component({
@@ -40,7 +42,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private pushService: PushService
   ) {}
 
   ngOnInit() {
@@ -101,7 +104,8 @@ export class LoginComponent implements OnInit {
           this.carregando = false;
           console.error('Erro na recuperação:', error);
           this.mensagemErro =
-            error.error?.mensagem ||
+            error.error?.message ||
+            error.error?.desc ||
             'Falha ao enviar e-mail. Verifique o endereço.';
           return of(null);
         })
@@ -109,8 +113,7 @@ export class LoginComponent implements OnInit {
       .subscribe((response: ResponseDTO | null) => {
         this.carregando = false;
         if (response) {
-          this.mensagemSucesso =
-            response.mensagem || 'E-mail de recuperação enviado com sucesso!';
+          this.mensagemSucesso = 'E-mail de recuperação enviado com sucesso!';
           this.recoveryForm.reset();
         }
       });
@@ -136,25 +139,27 @@ export class LoginComponent implements OnInit {
           console.error('Erro no login:', error);
 
           this.mensagemErro =
-            error.error?.mensagem ||
+            error.error?.message ||
+            error.error?.desc ||
             'Falha ao realizar login. Verifique suas credenciais.';
           return of(null);
         })
       )
-      .subscribe((response: ResponseDTO | null) => {
+      .subscribe((response: LoginResponseDTO | null) => {
         this.carregando = false;
 
         if (response && response.token) {
           localStorage.setItem('auth_token', response.token);
           if (response.usuario) {
             localStorage.setItem('user_info', JSON.stringify(response.usuario));
+            localStorage.setItem('usuario_id', String(response.usuario.id));
+            this.pushService.tentarRegistrarBackend();
           }
 
           this.auth.checkAuth();
           this.router.navigate(['/tabs/tab2']);
         } else if (response) {
-          this.mensagemErro =
-            response.mensagem || 'Resposta de login inválida ou incompleta.';
+          this.mensagemErro = 'Resposta de login inválida ou incompleta.';
         }
       });
   }

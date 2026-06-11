@@ -19,7 +19,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//TEM QUE MUDAR O ID INICIAL QUE NN PODE SER O CPF, PODE NÃO MUDAR MAS NN PODE SER A PRIMARY KEY/ID
 public class Usuario {
 
     @Id
@@ -39,6 +38,15 @@ public class Usuario {
 
     @Column(name = "data_delecao", nullable = false)
     private Instant dataDelecao;
+
+    @Column(length = 8)
+    private String cep;
+
+    @Column(length = 50)
+    private String escolaridade;
+
+    @Column(length = 100)
+    private String profissao;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));

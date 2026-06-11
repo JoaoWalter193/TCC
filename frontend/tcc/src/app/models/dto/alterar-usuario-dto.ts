@@ -4,4 +4,7 @@ export interface AlterarUsuarioDTO {
   senhaAntiga?: string;
   senhaNova?: string;
   senhaNovaNovamente?: string;
+  cep?: string | null;
+  escolaridade?: string | null;
+  profissao?: string | null;
 }

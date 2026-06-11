@@ -2,24 +2,295 @@
 
   @if (auth.isLoggedIn()) {
 
-    <div class="dashboard-container">
-      <h2>Bem-vindo</h2>
-    </div>
+    @if (modo === 'list') {
+
+      <!-- ═══════════ LISTA ═══════════ -->
+
+      <div class="lista-container">
+        <div class="lista-header">
+          <h2>Meus Dashboards</h2>
+          <ion-button fill="solid" color="primary" mode="ios" (click)="entrarModoCriacao()">
+            <ion-icon slot="start" name="add-outline"></ion-icon>
+            Adicionar Dashboard
+          </ion-button>
+        </div>
+
+        @if (carregandoLista) {
+          <div class="loading-container"><div class="spinner"></div></div>
+        }
+
+        @if (!carregandoLista && dashboards.length === 0) {
+          <div class="empty-state">
+            <ion-icon name="bar-chart-outline"></ion-icon>
+            <p>Nenhum dashboard criado ainda.</p>
+            <ion-button fill="clear" color="primary" (click)="entrarModoCriacao()">
+              Criar primeiro dashboard
+            </ion-button>
+          </div>
+        }
+
+        <div class="dashboard-grid">
+          @for (item of dashboards; track item.id) {
+            <div class="dashboard-card">
+              <div class="card-body">
+                <span class="card-chart-badge">{{ chartTypeLabel(item.chart_type) }}</span>
+                <h3 class="card-title">{{ item.titulo }}</h3>
+                @if (item.updated_at) {
+                  <p class="card-date">Atualizado em {{ item.updated_at | date:'dd/MM/yyyy' }}</p>
+                }
+              </div>
+              <div class="card-actions">
+                <ion-button fill="clear" color="medium" size="small"
+                  (click)="entrarModoEdicao(item)">
+                  <ion-icon slot="start" name="create-outline"></ion-icon>
+                  Editar
+                </ion-button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+    } @else {
+
+      <!-- ═══════════ EDITOR ═══════════ -->
+
+      <div class="builder-container">
+
+        <div class="editor-topbar">
+          <ion-button fill="clear" color="medium" mode="ios" (click)="voltarParaLista()">
+            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+            Voltar
+          </ion-button>
+          <h3>{{ dashboardEditId ? 'Editar' : 'Novo' }} Dashboard</h3>
+        </div>
+
+        @if (loading) {
+          <div class="loading-container">
+            <p>Processando dados...</p>
+          </div>
+        }
+
+        <div class="card builder-card">
+          <div class="card-header">
+            <h3>Construtor de Gráficos</h3>
+            <p>Escolha as dimensões e métricas para sua visualização</p>
+          </div>
+
+          <div class="builder-section">
+            <ion-label class="section-label" for="tituloInput">Título Personalizado</ion-label>
+            <ion-input
+              id="tituloInput"
+              [(ngModel)]="tituloPersonalizado"
+              placeholder="Dê um nome para sua visualização..."
+              mode="ios"
+              class="titulo-input"
+              clearInput
+            />
+          </div>
+
+          <div class="builder-section">
+            <ion-label class="section-label">Tipo de Gráfico</ion-label>
+            <ion-segment [value]="chartType" mode="ios"
+              (ionChange)="chartType = $any($event.detail.value)">
+              <ion-segment-button value="bar">
+                <ion-label>Barras</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="pie">
+                <ion-label>Pizza</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="sunburst">
+                <ion-label>Sunburst</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </div>
+
+          <div class="builder-section">
+            <ion-label class="section-label">
+              Dimensões (Níveis de Agrupamento)
+              @if (selectedLevels.length) {
+                <span class="level-order">— {{ selectedLevels.length }} selecionado(s)</span>
+              }
+            </ion-label>
+            <p class="section-hint">
+              Selecione na ordem desejada. A ordem define a hierarquia do gráfico.
+            </p>
+
+            <ion-list class="level-list">
+              @for (field of categoricalFields; track field) {
+                <ion-item class="level-item" (click)="toggleLevel(field)">
+                  <ion-checkbox
+                    [checked]="isLevelSelected(field)"
+                    slot="start"
+                    mode="ios"
+                  />
+                  <ion-label>{{ fieldLabel(field) }}</ion-label>
+                  @if (isLevelSelected(field)) {
+                    <ion-chip slot="end" class="level-chip" mode="ios">
+                      {{ levelIndex(field) }}º
+                    </ion-chip>
+                  }
+                </ion-item>
+              }
+            </ion-list>
+          </div>
+
+          <div class="builder-section">
+            <ion-label class="section-label">Operação</ion-label>
+            <ion-select
+              [value]="selectedOperation"
+              (ionChange)="selectedOperation = $event.detail.value"
+              mode="ios" interface="popover"
+            >
+              <ion-select-option value="count">Contagem</ion-select-option>
+              <ion-select-option value="sum">Soma</ion-select-option>
+              <ion-select-option value="mean">Média</ion-select-option>
+            </ion-select>
+          </div>
+
+          @if (selectedOperation !== 'count') {
+            <div class="builder-section">
+              <ion-label class="section-label">Métrica (coluna numérica)</ion-label>
+              <ion-select
+                [value]="selectedMetric"
+                (ionChange)="selectedMetric = $event.detail.value"
+                mode="ios" interface="popover"
+              >
+                @for (field of numericFields; track field) {
+                  <ion-select-option [value]="field">{{ fieldLabel(field) }}</ion-select-option>
+                }
+              </ion-select>
+            </div>
+          }
+
+          <div class="builder-section">
+            <div class="filter-header">
+              <ion-label class="section-label">Filtros</ion-label>
+              <ion-button fill="clear" size="small" (click)="addFilter()">
+                + Adicionar filtro
+              </ion-button>
+            </div>
+
+            @for (filter of filters; track filter; let i = $index) {
+              <div class="filter-row">
+                <ion-select
+                  [value]="filter.column"
+                  (ionChange)="filter.column = $event.detail.value; onFilterColumnChange(i)"
+                  mode="ios" interface="popover" placeholder="Coluna"
+                >
+                  @for (field of categoricalFields; track field) {
+                    <ion-select-option [value]="field">{{ fieldLabel(field) }}</ion-select-option>
+                  }
+                </ion-select>
+
+                <ion-select
+                  [value]="filter.values"
+                  (ionChange)="filter.values = $event.detail.value"
+                  mode="ios" multiple="true" interface="popover" placeholder="Valores"
+                >
+                  @for (opt of getFilterOptions(filter.column); track opt) {
+                    <ion-select-option [value]="opt">{{ opt }}</ion-select-option>
+                  }
+                </ion-select>
+
+                <ion-button fill="clear" color="danger" size="small"
+                  (click)="removeFilter(i)">
+                  <ion-icon name="close" slot="icon-only" />
+                </ion-button>
+              </div>
+            }
+          </div>
+
+          <ion-button expand="block" mode="ios" (click)="preview()"
+            [disabled]="selectedLevels.length === 0">
+            Pré-visualizar
+          </ion-button>
+        </div>
+
+        @if (error) {
+          <div class="card builder-card error-card">
+            <ion-text color="danger">{{ error }}</ion-text>
+          </div>
+        }
+
+        @if (chartOptions) {
+          <div class="capture-area" #captureArea>
+            <div class="card builder-card">
+              <div class="card-header">
+                <h3>Pré-visualização</h3>
+                <p>Gráfico gerado com base na configuração atual</p>
+              </div>
+              <div class="chart-container">
+                <ag-charts [options]="chartOptions"></ag-charts>
+              </div>
+            </div>
+
+            @if (previewResult?.chart_data?.flat?.length) {
+              <div class="card builder-card">
+                <div class="card-header">
+                  <h3>Dados Detalhados</h3>
+                </div>
+                <div class="table-wrapper">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        @for (key of objectKeys(previewResult.chart_data.flat[0]); track key) {
+                          <th>{{ fieldLabel(key) }}</th>
+                        }
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of previewResult.chart_data.flat; track $index) {
+                        <tr>
+                          @for (key of objectKeys(row); track key) {
+                            <td>{{ formatCellValue(key, row[key]) }}</td>
+                          }
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="editor-actions">
+            <ion-button fill="outline" color="primary" size="small"
+              (click)="compartilharDashboard()">
+              <ion-icon slot="start" name="share-outline"></ion-icon>
+              Compartilhar
+            </ion-button>
+
+            <ion-button fill="solid" color="primary" mode="ios"
+              (click)="salvarVisualizacao()"
+              [disabled]="salvando || selectedLevels.length === 0">
+              @if (salvando) {
+                <span>Salvando...</span>
+              } @else {
+                Salvar Visualização
+              }
+            </ion-button>
+
+            @if (dashboardEditId) {
+              <ion-button fill="outline" color="danger" mode="ios"
+                (click)="confirmarExclusao()">
+                <ion-icon slot="start" name="trash-outline"></ion-icon>
+                Excluir Visualização
+              </ion-button>
+            }
+          </div>
+        }
+
+      </div>
+    }
 
   } @else {
 
     <div class="login-required-container">
-
       <ion-icon name="bar-chart-outline" size="large"></ion-icon>
-
       <h2>Meus Dashboards</h2>
-
-      <p>Faça login para acessar seus dashboards personalizados</p>
-
-      <ion-button fill="clear" (click)="navigateToLogin()">
-        Entrar para continuar
-      </ion-button>
-
+      <p>Faça login para construir seus próprios dashboards</p>
+      <ion-button fill="clear" (click)="navigateToLogin()">Entrar para continuar</ion-button>
     </div>
 
   }

@@ -33,7 +33,7 @@ public class NotificacaoService {
         notif.setProposicaoCodigo(proposicaoCodigo);
         notificacaoRepository.save(notif);
 
-        sseService.enviarNotificacao(usuarioId, titulo, mensagem);
+        sseService.enviarNotificacao(usuarioId, titulo, mensagem, proposicaoCodigo);
 
         List<String> tokens = dispositivoRepository.findTokensByUsuarioId(usuarioId);
         for (String token : tokens) {
@@ -55,6 +55,24 @@ public class NotificacaoService {
         } catch (Exception e) {
             System.err.println("Erro ao enviar push: " + e.getMessage());
         }
+    }
+
+    public Notificacao criarNotificacao(Integer usuarioId, String titulo, String mensagem, Long proposicaoCodigo) {
+        Notificacao notif = new Notificacao();
+        notif.setUsuarioId(usuarioId);
+        notif.setTitulo(titulo);
+        notif.setMensagem(mensagem);
+        notif.setProposicaoCodigo(proposicaoCodigo);
+        notificacaoRepository.save(notif);
+
+        sseService.enviarNotificacao(usuarioId, titulo, mensagem, proposicaoCodigo);
+
+        List<String> tokens = dispositivoRepository.findTokensByUsuarioId(usuarioId);
+        for (String token : tokens) {
+            enviarPushAndroid(token, titulo, mensagem);
+        }
+
+        return notif;
     }
 
     // chamados pelo NotificacaoController

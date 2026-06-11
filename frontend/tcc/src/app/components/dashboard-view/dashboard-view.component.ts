@@ -1,35 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { IonContent, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
-import {
-  AllCommunityModule,
-  ModuleRegistry as GridModuleRegistry,
-  ColDef,
-} from 'ag-grid-community';
-import {
-  ModuleRegistry as ChartsModuleRegistry,
-  AllCommunityModule as ChartsAllCommunityModule,
-} from 'ag-charts-community';
+import { ColDef } from 'ag-grid-community';
 import { AgChartsModule } from 'ag-charts-angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { Dashboard } from 'src/app/services/dashboard';
-
-GridModuleRegistry.registerModules([AllCommunityModule]);
-
-ChartsModuleRegistry.registerModules([ChartsAllCommunityModule]);
+import { ShareService } from 'src/app/services/share.service';
 
 @Component({
   selector: 'app-dashboard-view',
   templateUrl: './dashboard-view.component.html',
   styleUrls: ['./dashboard-view.component.scss'],
-  imports: [IonContent, CommonModule, AgGridModule, AgChartsModule],
+  imports: [IonContent, IonButton, IonIcon, CommonModule, AgGridModule, AgChartsModule],
 })
 export class DashboardViewComponent implements OnInit {
+  @ViewChild('captureArea', { read: ElementRef })
+  captureAreaRef!: ElementRef;
+
   columnDefs: ColDef[] = [];
   rowData: any[] = [];
   chartOptions: any = { data: [], series: [] };
+  showChart = false;
 
-  constructor(private dashboardService: Dashboard) {}
+  constructor(
+    private dashboardService: Dashboard,
+    private shareService: ShareService,
+  ) {}
 
   ngOnInit() {
     this.loadDashboard();
@@ -54,6 +50,9 @@ export class DashboardViewComponent implements OnInit {
   }
 
   initChart() {
+    this.showChart = this.chartData.length > 0;
+    if (!this.showChart) return;
+
     this.chartOptions = {
       data: this.chartData,
       series: [
@@ -65,5 +64,10 @@ export class DashboardViewComponent implements OnInit {
         },
       ],
     };
+  }
+
+  async compartilharDashboard() {
+    const el = this.captureAreaRef.nativeElement;
+    await this.shareService.compartilharGrafico(el, 'Dashboard CuritibAtiva');
   }
 }

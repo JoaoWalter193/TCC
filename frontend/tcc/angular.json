@@ -69,6 +69,14 @@
             },
             "ci": {
               "progress": false
+            },
+            "device": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.device.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
