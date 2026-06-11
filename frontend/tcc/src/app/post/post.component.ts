@@ -52,8 +52,8 @@ export class PostComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  get usuarioId(): number | null {
-    return this.auth.getUsuarioId();
+  verVereador(idVereador: number) {
+    this.router.navigate(['/vereador', idVereador]);
   }
 
   carregarPost() {

@@ -11,6 +11,31 @@
   background: white;
   padding: 28px 20px 20px;
   border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar-wrapper {
+  margin-bottom: 14px;
+}
+
+.vereador-avatar {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+}
+
+.avatar-iniciais {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .vereador-topo h2 {
@@ -20,10 +45,17 @@
   color: #111827;
 }
 
-.vereador-topo p {
-  margin-top: 6px;
+.vereador-topo .partido {
+  margin-top: 4px;
   color: #6b7280;
   font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+.btn-seguir {
+  --border-radius: 20px;
+  font-weight: 600;
+  text-transform: none;
 }
 
 .vereador-card {

@@ -52,7 +52,7 @@
       <p class="tipo">{{ post.tipoProposicao }}</p>
       <h2>{{ post.razao }}</h2>
       <p class="subtag">{{ post.tag }}</p>
-      <p class="vereador">{{ post.vereador.nome }}</p>
+      <p class="vereador" (click)="verVereador(post.vereador.id)">{{ post.vereador.nome }}</p>
     </div>
 
     <ion-button fill="clear" class="favorito-btn">

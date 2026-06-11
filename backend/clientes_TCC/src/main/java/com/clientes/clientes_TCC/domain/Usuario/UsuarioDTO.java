@@ -4,6 +4,9 @@ public record UsuarioDTO(
         Integer id,
         String cpf,
         String nome,
-        String email
+        String email,
+        String cep,
+        String escolaridade,
+        String profissao
 ) {
 }
