@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonBackButton, IonButtons, IonHeader, IonToolbar, IonContent, IonIcon, IonText } from "@ionic/angular/standalone";
 import { CardComponent } from "../components/card/card.component";
 import { CardVereadorComponent } from "../components/card-vereador/card-vereador.component";
@@ -24,6 +25,7 @@ export class HistoricoComponent implements OnInit {
   constructor(
     private historicoService: HistoricoService,
     private auth: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -32,6 +34,10 @@ export class HistoricoComponent implements OnInit {
 
   get usuarioId(): number | null {
     return this.auth.getUsuarioId();
+  }
+
+  irParaVereador(id: number) {
+    this.router.navigate(['/vereador', id]);
   }
 
   private carregar(): void {

@@ -23,12 +23,13 @@
         <app-card
           [post]="item.componente"
           [usuarioId]="usuarioId"
-          [link]="['/proposicao', item.componente.id]">
+          [link]="['/proposicao', item.componente.id]"
+          (verVereador)="irParaVereador($event)">
         </app-card>
       } @else if (item.tipo === 'VEREADOR') {
         <app-card-vereador
           [post]="item.componente"
-          [link]="['/vereador', item.componente.id, item.componente.nome]">
+          [link]="['/vereador', item.componente.id]">
         </app-card-vereador>
       }
     }
