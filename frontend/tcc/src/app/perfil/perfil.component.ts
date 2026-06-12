@@ -69,4 +69,8 @@ export class PerfilComponent implements OnInit {
   navFavoritos() {
     this.router.navigate(['/tabs/tab5']);
   }
+
+  navSeguindo() {
+    this.router.navigate(['/seguindo']);
+  }
 }
