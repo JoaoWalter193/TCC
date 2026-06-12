@@ -20,4 +20,11 @@ export class AuthService {
         const id = localStorage.getItem('usuario_id');
         return id ? Number(id) : null;
     }
+
+    logout(): void {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_info');
+        localStorage.removeItem('usuario_id');
+        this.loggedIn.set(false);
+    }
 }
