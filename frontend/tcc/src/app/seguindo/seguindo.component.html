@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/perfil"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Seguindo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if (auth.getUsuarioId() == null) {
+    <div class="empty-state">
+      <ion-text color="medium">
+        <p>Faça login para acompanhar vereadores.</p>
+      </ion-text>
+    </div>
+  } @else if (carregando) {
+    <div class="empty-state">
+      <ion-text color="medium">
+        <p>Carregando...</p>
+      </ion-text>
+    </div>
+  } @else if (vereadores.length === 0) {
+    <div class="empty-state">
+      <ion-icon name="people-outline" class="empty-icon"></ion-icon>
+      <ion-text color="medium">
+        <p>Você ainda não está seguindo nenhum vereador.</p>
+        <p class="sub">Visite o perfil deles para acompanhar o mandato!</p>
+      </ion-text>
+    </div>
+  } @else {
+    <div class="seguindo-list">
+      @for (item of vereadores; track trackById($index, item)) {
+        <div class="vereador-card" (click)="irParaVereador(item.id)">
+          <div class="vereador-info">
+            <div class="avatar">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <div class="dados">
+              <span class="nome">{{ item.nome }}</span>
+              <span class="partido">{{ item.partido }}</span>
+            </div>
+          </div>
+          <ion-button
+            color="medium"
+            fill="outline"
+            class="btn-seguindo"
+            (click)="deixarDeSeguir($event, item.id)">
+            <ion-icon slot="start" name="heart-dislike-outline"></ion-icon>
+            Seguindo
+          </ion-button>
+        </div>
+      }
+    </div>
+  }
+</ion-content>
