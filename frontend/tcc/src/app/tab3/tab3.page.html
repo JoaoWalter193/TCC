@@ -1,117 +1,96 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      @if (carregando) {
-        Notificações
-      } @else if (temNaoLidas) {
-        {{ naoLidas }} nova{{ naoLidas > 1 ? 's' : '' }} notificação{{ naoLidas > 1 ? 'ões' : '' }}
-      } @else if (todasLidas) {
-        Todas lidas
-      } @else {
-        Notificações
-      }
-    </ion-title>
-
     <ion-buttons slot="end">
       @if (auth.isLoggedIn()) {
-        @if (temNaoLidas) {
-          <ion-button fill="clear" (click)="marcarTodas()">
-            <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
-            Marcar todas
-          </ion-button>
-        }
-        <ion-menu-button></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
       } @else {
-        <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
+      <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
       }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  @if (temNaoLidas) {
+  <ion-button fill="clear" (click)="marcarTodas()">
+    <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+    Marcar todas
+  </ion-button>
+  }
   @if (!auth.isLoggedIn()) {
-    <div class="empty-state">
-      <ion-icon name="hand-left-outline" size="large"></ion-icon>
-      <p>Conecte-se</p>
-      <p>para receber notificações!</p>
-      <ion-button (click)="navigateToLogin()" fill="clear">
-        Quero me manter informado
-      </ion-button>
-    </div>
+  <div class="empty-state">
+    <ion-icon name="hand-left-outline" size="large"></ion-icon>
+    <p>Conecte-se</p>
+    <p>para receber notificações!</p>
+    <ion-button (click)="navigateToLogin()" fill="clear">
+      Quero me manter informado
+    </ion-button>
+  </div>
   } @else if (carregando) {
-    <div class="empty-state">
-      <ion-icon name="hourglass-outline" size="large"></ion-icon>
-      <p>Carregando notificações...</p>
-    </div>
+  <div class="empty-state">
+    <ion-icon name="hourglass-outline" size="large"></ion-icon>
+    <p>Carregando notificações...</p>
+  </div>
   } @else if (notificacoes.length === 0) {
-    <div class="empty-state">
-      <ion-icon name="notifications-off-outline" size="large"></ion-icon>
-      <p>Nenhuma notificação</p>
-      <p>Você receberá notificações de vereadores que seguir e proposições que favoritar.</p>
-    </div>
+  <div class="empty-state">
+    <ion-icon name="notifications-off-outline" size="large"></ion-icon>
+    <p>Nenhuma notificação</p>
+    <p>Você receberá notificações de vereadores que seguir e proposições que favoritar.</p>
+  </div>
   } @else {
-    <ion-list>
-      @for (n of notificacoes; track n.id) {
-        @if (n.tipo === 'proposicao') {
-          <ion-card
-            button
-            [class.nao-lida]="!n.lida"
-            (click)="clicarNotificacao(n)"
-          >
-            <ion-card-header>
-              <div class="notif-header-top">
-                <ion-card-title>
-                  <ion-icon name="document-text-outline" class="tipo-icon"></ion-icon>
-                  Proposição Atualizada
-                </ion-card-title>
-                <span class="tempo">{{ n.tempoRelativo }}</span>
-              </div>
-              <div class="subinfo">
-                <span class="ementa-text">{{ n.mensagem }}</span>
-              </div>
-            </ion-card-header>
-            <ion-card-content>
-              <div class="chips-row">
-                <ion-chip>
-                  <ion-label>Atualização</ion-label>
-                </ion-chip>
-                @if (!n.lida) {
-                  <ion-chip color="primary" class="tag-chip">
-                    <ion-label>Não lida</ion-label>
-                  </ion-chip>
-                }
-              </div>
-            </ion-card-content>
-          </ion-card>
-        } @else {
-          <ion-item
-            button
-            [class.nao-lida]="!n.lida"
-            (click)="clicarNotificacao(n)"
-            class="vereador-notif"
-          >
-            <ion-avatar slot="start">
-              <div class="avatar-placeholder">
-                <ion-icon name="person-outline"></ion-icon>
-              </div>
-            </ion-avatar>
-            <ion-label>
-              <h3 [class.titulo-nova]="n.proposicaoCodigo">
-                {{ n.titulo }}
-              </h3>
-              @if (n.proposicaoCodigo) {
-                <p class="subtexto">
-                  {{ n.mensagem }}
-                </p>
-              }
-              <span class="tempo-item">{{ n.tempoRelativo }}</span>
-            </ion-label>
-            @if (!n.lida) {
-              <ion-badge color="primary" slot="end" class="lida-badge"></ion-badge>
-            }
-          </ion-item>
+  <ion-list>
+    @for (n of notificacoes; track n.id) {
+    @if (n.tipo === 'proposicao') {
+    <ion-card button [class.nao-lida]="!n.lida" (click)="clicarNotificacao(n)">
+      <ion-card-header>
+        <div class="notif-header-top">
+          <ion-card-title>
+            <ion-icon name="document-text-outline" class="tipo-icon"></ion-icon>
+            Proposição Atualizada
+          </ion-card-title>
+          <span class="tempo">{{ n.tempoRelativo }}</span>
+        </div>
+        <div class="subinfo">
+          <span class="ementa-text">{{ n.mensagem }}</span>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="chips-row">
+          <ion-chip>
+            <ion-label>Atualização</ion-label>
+          </ion-chip>
+          @if (!n.lida) {
+          <ion-chip color="primary" class="tag-chip">
+            <ion-label>Não lida</ion-label>
+          </ion-chip>
+          }
+        </div>
+      </ion-card-content>
+    </ion-card>
+    } @else {
+    <ion-item button [class.nao-lida]="!n.lida" (click)="clicarNotificacao(n)" class="vereador-notif">
+      <ion-avatar slot="start">
+        <div class="avatar-placeholder">
+          <ion-icon name="person-outline"></ion-icon>
+        </div>
+      </ion-avatar>
+      <ion-label>
+        <h3 [class.titulo-nova]="n.proposicaoCodigo">
+          {{ n.titulo }}
+        </h3>
+        @if (n.proposicaoCodigo) {
+        <p class="subtexto">
+          {{ n.mensagem }}
+        </p>
         }
+        <span class="tempo-item">{{ n.tempoRelativo }}</span>
+      </ion-label>
+      @if (!n.lida) {
+      <ion-badge color="primary" slot="end" class="lida-badge"></ion-badge>
       }
-    </ion-list>
+    </ion-item>
+    }
+    }
+  </ion-list>
   }
 </ion-content>

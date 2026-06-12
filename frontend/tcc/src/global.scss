@@ -128,6 +128,10 @@ input {
   ion-label {
     color: var(--ion-text-color) !important;
   }
+  // Keep chip labels dark regardless of dark mode
+  ion-chip ion-label {
+    color: initial !important;
+  }
   ion-item {
     --color: var(--ion-text-color);
     color: var(--ion-text-color);
