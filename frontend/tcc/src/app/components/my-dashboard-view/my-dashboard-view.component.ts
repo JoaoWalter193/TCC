@@ -294,7 +294,7 @@ export class MyDashboardViewComponent implements OnInit {
     if (data.type === 'hierarchy' && data.tree) {
       if (this.chartType === 'sunburst') {
         this.chartOptions = {
-          data: [{ name: 'root', children: data.tree }],
+          data: [{ name: ' ', children: data.tree }],
           series: [{
             type: 'sunburst',
             labelKey: 'name',
