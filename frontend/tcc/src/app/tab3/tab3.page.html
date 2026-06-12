@@ -1,13 +1,5 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      @if (auth.isLoggedIn()) {
-        <ion-menu-button></ion-menu-button>
-      } @else {
-        <ion-button fill="clear" (click)="navigateToLogin()">Entrar</ion-button>
-      }
-    </ion-buttons>
-
     <ion-title>
       @if (carregando) {
         Notificações
@@ -21,11 +13,16 @@
     </ion-title>
 
     <ion-buttons slot="end">
-      @if (temNaoLidas) {
-        <ion-button fill="clear" (click)="marcarTodas()">
-          <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
-          Marcar todas
-        </ion-button>
+      @if (auth.isLoggedIn()) {
+        @if (temNaoLidas) {
+          <ion-button fill="clear" (click)="marcarTodas()">
+            <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+            Marcar todas
+          </ion-button>
+        }
+        <ion-menu-button></ion-menu-button>
+      } @else {
+        <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
       }
     </ion-buttons>
   </ion-toolbar>

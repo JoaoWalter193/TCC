@@ -6,6 +6,7 @@ import {
   IonTitle,
   IonContent,
   IonText,
+  IonButton,
   IonButtons,
   IonMenuButton,
 } from '@ionic/angular/standalone';
@@ -24,6 +25,7 @@ import { CardComponent } from '../components/card/card.component';
     IonTitle,
     IonContent,
     IonText,
+    IonButton,
     IonButtons,
     IonMenuButton,
     CardComponent,
@@ -63,6 +65,10 @@ export class Tab5Page {
         this.carregando = false;
       },
     });
+  }
+
+  irParaLogin() {
+    this.router.navigate(['/login']);
   }
 
   verProposicao(id: number) {
