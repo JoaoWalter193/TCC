@@ -49,7 +49,7 @@ export class Tab2Page {
       .subscribe(() => this.carregarPosts());
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.carregarPosts();
   }
 
@@ -59,7 +59,7 @@ export class Tab2Page {
 
   carregarPosts() {
     forkJoin([
-      this.proposicaoService.listar().pipe(
+      this.proposicaoService.listar(this.usuarioId).pipe(
         catchError(() => of([] as ProposicaoDTO[]))
       ),
       this.vereadorService.listar().pipe(
