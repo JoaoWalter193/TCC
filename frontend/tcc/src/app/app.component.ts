@@ -1,6 +1,7 @@
 import { Component, inject, Injector } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { AuthService } from './services/auth.service';
+import { ThemeService } from './services/theme.service';
 import { MenuComponent } from "./components/menu/menu.component";
 
 @Component({
@@ -11,6 +12,7 @@ import { MenuComponent } from "./components/menu/menu.component";
 })
 export class AppComponent {
   constructor() {
+    inject(ThemeService);
     const authService = inject(AuthService);
     const platform = inject(Platform);
     const injector = inject(Injector);

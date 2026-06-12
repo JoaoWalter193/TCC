@@ -1,17 +1,17 @@
 .perfil-content {
-  --background: #f8f9fb;
+  --background: var(--ion-background-color);
 }
 
 .perfil-header ion-toolbar {
-  --background: white;
-  --border-color: #e5e7eb;
+  --background: var(--ion-toolbar-background);
+  --border-color: var(--ion-border-color);
 }
 
 .perfil-topo {
-  background: white;
+  background: var(--ion-card-background);
   padding: 32px 20px 24px;
   text-align: center;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--ion-border-color);
 }
 
 .avatar {
@@ -19,7 +19,7 @@
   height: 84px;
   margin: 0 auto 16px;
   border-radius: 50%;
-  background: #f1f5f9;
+  background: var(--ion-color-step-100);
 
   display: flex;
   align-items: center;
@@ -28,26 +28,26 @@
 
 .avatar ion-icon {
   font-size: 42px;
-  color: #64748b;
+  color: var(--ion-color-step-500);
 }
 
 .perfil-topo h2 {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--ion-text-color);
 }
 
 .perfil-topo p {
   margin-top: 6px;
   font-size: 0.95rem;
-  color: #6b7280;
+  color: var(--ion-color-step-600);
 }
 
 .perfil-dados-card {
   margin: 0 16px;
   margin-top: 20px;
-  background: white;
+  background: var(--ion-card-background);
   border-radius: 16px;
   padding: 16px 18px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
@@ -63,7 +63,7 @@
 
   ion-icon {
     font-size: 22px;
-    color: #64748b;
+    color: var(--ion-color-step-500);
     flex-shrink: 0;
   }
 
@@ -76,14 +76,14 @@
 .dado-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: var(--ion-color-step-500);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .dado-value {
   font-size: 0.95rem;
-  color: #111827;
+  color: var(--ion-text-color);
   margin-top: 2px;
 }
 
@@ -92,7 +92,7 @@
 }
 
 .engajamento-card {
-  background: white;
+  background: var(--ion-card-background);
   border-radius: 16px;
   padding: 18px 12px;
   display: flex;
@@ -110,7 +110,7 @@
 
   ion-icon {
     font-size: 28px;
-    color: #1da1f2;
+    color: var(--ion-color-primary);
     flex-shrink: 0;
   }
 
@@ -123,14 +123,14 @@
 .engajamento-valor {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #111827;
+  color: var(--ion-text-color);
   line-height: 1.2;
 }
 
 .engajamento-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: var(--ion-color-step-500);
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
@@ -138,7 +138,7 @@
 .engajamento-divider {
   width: 1px;
   height: 40px;
-  background: #e5e7eb;
+  background: var(--ion-border-color);
 }
 
 .engajamento-item.clickable {
@@ -147,7 +147,7 @@
 
 .perfil-opcoes {
   margin: 0 16px 24px;
-  background: white;
+  background: var(--ion-card-background);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
@@ -161,7 +161,7 @@
 }
 
 .perfil-opcoes ion-icon {
-  color: #64748b;
+  color: var(--ion-color-step-500);
   margin-right: 12px;
 }
 
@@ -172,15 +172,15 @@
   justify-content: center;
   padding: 80px 20px;
   gap: 12px;
-  color: #9ca3af;
+  color: var(--ion-color-step-500);
   font-size: 0.9rem;
 }
 
 .spinner {
   width: 36px;
   height: 36px;
-  border: 4px solid #e5e7eb;
-  border-top-color: #1da1f2;
+  border: 4px solid var(--ion-border-color);
+  border-top-color: var(--ion-color-primary);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }

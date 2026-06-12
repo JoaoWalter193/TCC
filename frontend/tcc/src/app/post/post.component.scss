@@ -1,5 +1,5 @@
 .post-content {
-  --background: #f8f9fb;
+  --background: var(--ion-background-color);
   padding: 16px;
 }
 
@@ -80,11 +80,11 @@
 }
 
 .cinza {
-  background: #f1f3f5;
+  background: var(--ion-color-step-100);
 }
 
 .estado {
-  background: #fff4d6;
+  background: var(--ion-color-warning-tint);
 }
 
 .bloco h3 {
@@ -98,7 +98,7 @@
   font-size: 14px;
   line-height: 1.6;
   margin: 0;
-  color: #2d2d2d;
+  color: var(--ion-text-color);
 }
 
 .datas-grid {
@@ -109,7 +109,7 @@
 
 .info-coluna {
   flex: 1;
-  background: white;
+  background: var(--ion-card-background);
   border-radius: 16px;
   padding: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);

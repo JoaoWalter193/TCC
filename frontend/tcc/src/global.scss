@@ -33,7 +33,7 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import "@ionic/angular/css/palettes/dark.class.css";
 // @import '@ionic/angular/css/palettes/dark.system.css';
 
 .ion-page {
@@ -70,4 +70,229 @@ input {
   position: absolute;
   top: 2px;
   right: calc(50% - 18px);
+}
+
+// ── DARK MODE OVERRIDES ──────────────────────────────────────────────
+
+.ion-palette-dark {
+  // ── Inputs ──────────────────────────────────────
+  input,
+  input.ng-valid.ng-touched,
+  input.ng-invalid.ng-touched {
+    background-color: var(--ion-card-background) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  // ── Searchbar ───────────────────────────────────
+  ion-searchbar {
+    --color: var(--ion-text-color);
+    --placeholder-color: var(--ion-color-step-500);
+    --icon-color: var(--ion-color-step-500);
+    --background: var(--ion-color-step-100);
+  }
+
+  // ── Select ──────────────────────────────────────
+  ion-select {
+    --color: var(--ion-text-color);
+    --placeholder-color: var(--ion-color-step-500);
+  }
+  ion-select::part(text) {
+    color: var(--ion-text-color);
+  }
+  ion-select::part(placeholder) {
+    color: var(--ion-color-step-500);
+  }
+  ion-select::part(icon) {
+    color: var(--ion-color-step-500);
+  }
+
+  // ── Select popover ──────────────────────────────
+  .select-popover ion-item {
+    --color: var(--ion-text-color);
+    color: var(--ion-text-color);
+  }
+  .select-popover ion-label {
+    color: var(--ion-text-color) !important;
+  }
+  ion-select-option {
+    color: var(--ion-text-color);
+  }
+
+  // ── Chips / Tags ────────────────────────────────
+  ion-chip.tag-chip {
+    --background: var(--ion-color-step-200) !important;
+    --color: var(--ion-text-color) !important;
+  }
+
+  // ── Generic ion-label ──────────────────────────
+  ion-label {
+    color: var(--ion-text-color) !important;
+  }
+  ion-item {
+    --color: var(--ion-text-color);
+    color: var(--ion-text-color);
+  }
+
+  // ── Menu ────────────────────────────────────────
+  ion-menu {
+    ion-item {
+      --color: var(--ion-text-color);
+      color: var(--ion-text-color);
+    }
+    ion-label {
+      color: var(--ion-text-color) !important;
+    }
+    ion-icon {
+      color: var(--ion-color-step-500) !important;
+    }
+  }
+
+  // ── Card action counters (likes/dislikes) ─────
+  .acao {
+    color: var(--ion-color-step-600) !important;
+  }
+  .acao ion-icon {
+    color: var(--ion-color-step-500) !important;
+  }
+  .acao span {
+    color: var(--ion-color-step-600) !important;
+  }
+
+  // ── Card subtitle / subinfo ────────────────────
+  .subinfo,
+  .subinfo span {
+    color: var(--ion-color-step-500) !important;
+  }
+
+  // ── Perfil / Config / Vereador shared ──────────
+  .perfil-topo h2,
+  .config-topo h2,
+  .vereador-topo h2 {
+    color: var(--ion-text-color) !important;
+  }
+
+  .perfil-opcoes ion-item {
+    --color: var(--ion-text-color);
+    color: var(--ion-text-color);
+  }
+  .perfil-opcoes ion-label {
+    color: var(--ion-text-color) !important;
+  }
+  .perfil-opcoes ion-icon {
+    color: var(--ion-color-step-500) !important;
+  }
+
+  .config-card ion-item {
+    --color: var(--ion-text-color);
+    color: var(--ion-text-color);
+  }
+  .config-card ion-label {
+    color: var(--ion-text-color) !important;
+  }
+  .config-card ion-icon {
+    color: var(--ion-color-step-500) !important;
+  }
+
+  // ── Card-vereador (Historico) ──────────────────
+  app-card-vereador ion-card-title {
+    color: var(--ion-text-color) !important;
+  }
+  app-card-vereador ion-card-subtitle {
+    color: var(--ion-color-step-600) !important;
+  }
+  app-card-vereador .info-row span {
+    color: var(--ion-color-step-600) !important;
+  }
+
+  // ── Dashboard backgrounds ──────────────────────
+  .lista-container,
+  .builder-container {
+    background: var(--ion-background-color) !important;
+  }
+  .dashboard-card,
+  .builder-card {
+    background: var(--ion-card-background) !important;
+  }
+
+  .card-header h3,
+  .card-title,
+  .lista-header h2,
+  .editor-topbar h3,
+  .card-header h3 {
+    color: var(--ion-text-color) !important;
+  }
+
+  .card-header p,
+  .card-date,
+  .section-hint,
+  .level-order {
+    color: var(--ion-color-step-500) !important;
+  }
+
+  // ── Dashboard table ────────────────────────────
+  .data-table th {
+    background: var(--ion-color-step-100) !important;
+    color: var(--ion-text-color) !important;
+    border-bottom-color: var(--ion-border-color) !important;
+  }
+  .data-table td {
+    color: var(--ion-color-step-700) !important;
+    border-bottom-color: var(--ion-color-step-200) !important;
+  }
+  .data-table tr:hover td {
+    background: var(--ion-color-step-50) !important;
+  }
+
+  // ── Dashboard dimension / level items ──────────
+  .level-item {
+    --color: var(--ion-text-color);
+    color: var(--ion-text-color);
+  }
+  .level-item ion-label {
+    color: var(--ion-text-color) !important;
+  }
+  .level-item ion-checkbox {
+    --checkmark-color: var(--ion-text-color);
+  }
+  .level-chip {
+    --background: var(--ion-color-step-200) !important;
+    --color: var(--ion-text-color) !important;
+  }
+  .section-label {
+    color: var(--ion-text-color) !important;
+  }
+
+  // ── Dashboard login required ───────────────────
+  .login-required-container h2 {
+    color: var(--ion-text-color) !important;
+  }
+
+  // ── Empty states ───────────────────────────────
+  .empty-state p,
+  .search-state-container p {
+    color: var(--ion-color-step-500) !important;
+  }
+  .empty-state h3 {
+    color: var(--ion-color-step-700) !important;
+  }
+  .empty-state ion-icon {
+    color: var(--ion-color-step-400) !important;
+  }
+
+  // ── Loading containers ─────────────────────────
+  .loading-wrapper,
+  .loading-container {
+    color: var(--ion-color-step-500) !important;
+  }
+
+  // ── Spinner ────────────────────────────────────
+  .spinner {
+    border-color: var(--ion-color-step-200) !important;
+    border-top-color: var(--ion-color-primary) !important;
+  }
+
+  // ── Engajamento divider ────────────────────────
+  .engajamento-divider {
+    background: var(--ion-border-color) !important;
+  }
 }
