@@ -1,34 +1,34 @@
 .config-content {
-  --background: #f8f9fb;
+  --background: var(--ion-background-color);
 }
 
 .config-header ion-toolbar {
-  --background: white;
-  --border-color: #e5e7eb;
+  --background: var(--ion-toolbar-background);
+  --border-color: var(--ion-border-color);
 }
 
 .config-topo {
-  background: white;
+  background: var(--ion-card-background);
   padding: 28px 20px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--ion-border-color);
 }
 
 .config-topo h2 {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--ion-text-color);
 }
 
 .config-topo p {
   margin-top: 6px;
   font-size: 0.95rem;
-  color: #6b7280;
+  color: var(--ion-color-step-600);
 }
 
 .config-card {
   margin: 20px 16px;
-  background: white;
+  background: var(--ion-card-background);
   border-radius: 16px;
   overflow: hidden;
 
@@ -43,7 +43,7 @@
 }
 
 .config-card ion-icon {
-  color: #64748b;
+  color: var(--ion-color-step-500);
   margin-right: 12px;
 }
 
