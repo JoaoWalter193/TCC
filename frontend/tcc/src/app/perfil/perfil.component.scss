@@ -141,74 +141,8 @@
   background: #e5e7eb;
 }
 
-.perfil-section {
-  margin: 0 16px 20px;
-}
-
-.section-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #374151;
-  margin: 0 0 12px 4px;
-}
-
-.favoritas-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.favorita-card {
-  background: white;
-  border-radius: 14px;
-  padding: 14px 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+.engajamento-item.clickable {
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  }
-
-  &:active {
-    transform: scale(0.99);
-  }
-}
-
-.favorita-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.favorita-tag {
-  background: #eff6ff;
-  color: #1d4ed8;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.favorita-codigo {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #9ca3af;
-}
-
-.favorita-ementa {
-  margin: 0;
-  font-size: 0.88rem;
-  color: #374151;
-  line-height: 1.45;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .perfil-opcoes {

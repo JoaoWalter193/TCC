@@ -66,7 +66,7 @@ export class PerfilComponent implements OnInit {
     this.router.navigate(['/tabs/tab1']);
   }
 
-  navProposicao(codigo: number) {
-    this.router.navigate(['/proposicao', codigo]);
+  navFavoritos() {
+    this.router.navigate(['/tabs/tab5']);
   }
 }
