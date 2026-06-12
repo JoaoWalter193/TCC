@@ -25,6 +25,17 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+// ── Safe area (native only) ─────────────────────
+// Em vez de modificar o ion-tab-bar (Shadow DOM do Ionic),
+// aplicamos padding-bottom no pai ion-tabs. Isso empurra
+// a tab bar para cima e cria um espaço vazio abaixo dela
+// onde os botões nativos do Android se acomodam.
+// A tab-bar mantém 56px limpos, ícones centralizados sem esforço.
+ion-tabs {
+  box-sizing: border-box !important;
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), var(--safe-inset-bottom, 0px));
+}
+
 /**
  * Ionic Dark Mode
  * -----------------------------------------------------
