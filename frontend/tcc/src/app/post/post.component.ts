@@ -196,4 +196,24 @@ export class PostComponent implements OnInit {
     this.iaResumo = '';
     this.iaCarregando = false;
   }
+
+  formatarData(data: string): string {
+    if (!data) return '';
+    const d = new Date(data);
+    const agora = new Date();
+    const diffMs = Math.abs(agora.getTime() - d.getTime());
+    const diffDias = Math.floor(diffMs / 86400000);
+
+    if (diffDias === 0) return 'Hoje';
+    if (diffDias === 1) return 'Ontem';
+    if (diffDias < 7) return `Há ${diffDias} dias`;
+
+    const dia = String(d.getDate()).padStart(2, '0');
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const mes = meses[d.getMonth()];
+    const ano = d.getFullYear();
+    const anoAtual = agora.getFullYear();
+
+    return ano === anoAtual ? `${dia} ${mes}` : `${dia} ${mes} ${ano}`;
+  }
 }
