@@ -12,10 +12,10 @@
 
   @if (tipoFiltroAtivo) {
   <div class="header-filtro-container">
-    <ion-chip class="filtro-header" (click)="limparFiltro()">
-      <ion-label>{{ tipoFiltroAtivo }}</ion-label>
+    <div class="tipo-tag filtro-header" (click)="limparFiltro()">
+      {{ tipoFiltroAtivo }}
       <ion-icon name="close"></ion-icon>
-    </ion-chip>
+    </div>
   </div>
   }
 

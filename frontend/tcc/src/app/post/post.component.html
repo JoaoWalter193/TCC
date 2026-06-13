@@ -120,7 +120,7 @@
         <ion-icon name="calendar-outline"></ion-icon>
         <div>
           <span class="info-label">Emissão</span>
-          <span class="info-value">{{ post.dataDeEnvio }} · {{ post.dataEfetivo }}</span>
+          <span class="info-value">{{ formatarData(post.dataDeEnvio) }} · {{ formatarData(post.dataEfetivo) }}</span>
         </div>
       </div>
 
@@ -128,7 +128,7 @@
         <ion-icon name="location-outline"></ion-icon>
         <div>
           <span class="info-label">Último trâmite</span>
-          <span class="info-value">{{ post.localizacao }} · {{ post.ultimoTramite }}</span>
+          <span class="info-value">{{ post.localizacao }} · {{ formatarData(post.ultimoTramite) }}</span>
         </div>
       </div>
 
