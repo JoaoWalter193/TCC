@@ -3,7 +3,7 @@
 }
 
 ion-toolbar {
-  --background: #fff;
+  --background: var(--ion-toolbar-background);
   --border-width: 0;
 }
 

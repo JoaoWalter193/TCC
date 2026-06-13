@@ -14,7 +14,7 @@ import { ResponseDTO } from '../models/dto/response-dto';
 import { LoginRequest } from '../models/dto/login-request';
 import { AuthService } from '../services/auth.service';
 import { PushService } from '../services/push.service';
-import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
+import { IonButtons, IonBackButton, IonButton } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,8 @@ import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
     ReactiveFormsModule,
     CommonModule,
     IonButtons,
-    IonBackButton
+    IonBackButton,
+    IonButton
 ],
 })
 export class LoginComponent implements OnInit {

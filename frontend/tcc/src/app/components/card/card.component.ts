@@ -6,10 +6,9 @@ import {
   IonCardTitle,
   IonCardContent,
   IonIcon,
-  IonChip,
-  IonLabel,
 } from '@ionic/angular/standalone';
 import { ProposicaoDTO } from 'src/app/models/dto/proposicao-dto';
+import { AuthService } from 'src/app/services/auth.service';
 import { ReacaoService } from 'src/app/services/reacao.service';
 import { ReacaoEventService } from 'src/app/services/reacao-event.service';
 import { ShareService } from 'src/app/services/share.service';
@@ -26,8 +25,6 @@ import { FavoritosService } from 'src/app/services/favoritos.service';
     IonCardContent,
     RouterLink,
     IonIcon,
-    IonChip,
-    IonLabel,
   ],
 })
 export class CardComponent {
@@ -37,6 +34,7 @@ export class CardComponent {
   @Output() tipoFiltrado = new EventEmitter<string>();
   @Output() verVereador = new EventEmitter<number>();
 
+  private auth = inject(AuthService);
   private reacaoService = inject(ReacaoService);
   private reacaoEvent = inject(ReacaoEventService);
   private shareService = inject(ShareService);
@@ -49,7 +47,7 @@ export class CardComponent {
   toggleFavorito(event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    if (this.usuarioId == null) { return; }
+    if (this.usuarioId == null) { this.auth.showLoginPrompt(); return; }
 
     const anterior = this.post.isFavorito;
     this.post.isFavorito = !anterior;
@@ -95,7 +93,7 @@ export class CardComponent {
   reagir(event: Event, tipo: 'LIKE' | 'DISLIKE') {
     event.stopPropagation();
     event.preventDefault();
-    if (this.usuarioId == null) { return; }
+    if (this.usuarioId == null) { this.auth.showLoginPrompt(); return; }
 
     const estadoAnterior = this.post.currentUserReaction;
     const likesAnterior = this.post.likes;

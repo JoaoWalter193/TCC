@@ -7,7 +7,7 @@ import { catchError, of } from 'rxjs';
 import { AlterarUsuarioDTO } from '../models/dto/alterar-usuario-dto';
 import { UsuarioDTO } from '../models/dto/usuario-dto';
 import { PushService } from '../services/push.service';
-import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
+import { IonButtons, IonBackButton, IonButton, IonIcon, IonSpinner, IonHeader, IonToolbar, IonContent, IonMenuButton } from "@ionic/angular/standalone";
 
 interface FormularioPerfil extends AlterarUsuarioDTO {
   senhaNovaNovamente: string;
@@ -17,7 +17,7 @@ interface FormularioPerfil extends AlterarUsuarioDTO {
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
-  imports: [FormsModule, CommonModule, IonButtons, IonBackButton],
+  imports: [FormsModule, CommonModule, IonButtons, IonBackButton, IonButton, IonIcon, IonSpinner, IonHeader, IonToolbar, IonContent, IonMenuButton],
   standalone: true,
 })
 export class Tab1Page implements OnInit {

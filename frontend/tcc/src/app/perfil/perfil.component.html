@@ -54,7 +54,7 @@
 
     <div class="perfil-engajamento">
       <div class="engajamento-card">
-        <div class="engajamento-item">
+        <div class="engajamento-item clickable" (click)="navSeguindo()">
           <ion-icon name="people-outline"></ion-icon>
           <div>
             <span class="engajamento-valor">{{ perfil.totalVereadoresSeguidos }}</span>
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="engajamento-divider"></div>
-        <div class="engajamento-item">
+        <div class="engajamento-item clickable" (click)="navFavoritos()">
           <ion-icon name="heart-outline"></ion-icon>
           <div>
             <span class="engajamento-valor">{{ perfil.proposicoesFavoritas.length }}</span>
@@ -71,23 +71,6 @@
         </div>
       </div>
     </div>
-
-    @if (perfil.proposicoesFavoritas.length > 0) {
-      <div class="perfil-section">
-        <h3 class="section-title">Proposições favoritadas</h3>
-        <div class="favoritas-list">
-          @for (prop of perfil.proposicoesFavoritas; track prop.codigo) {
-            <div class="favorita-card" (click)="navProposicao(prop.codigo)">
-              <div class="favorita-header">
-                <span class="favorita-tag">{{ prop.tag }}</span>
-                <span class="favorita-codigo">#{{ prop.codigo }}</span>
-              </div>
-              <p class="favorita-ementa">{{ prop.ementa }}</p>
-            </div>
-          }
-        </div>
-      </div>
-    }
 
     <div class="perfil-opcoes">
       <ion-list lines="none">

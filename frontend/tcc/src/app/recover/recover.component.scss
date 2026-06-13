@@ -1,6 +1,3 @@
-$color-primary: var(--ion-color-primary, #1d9bf0);
-$color-text: var(--ion-text-color, #333333);
-$color-background: var(--ion-background-color, #f4f5f8);
 $color-error: #dc3545;
 $color-success: #28a745;
 
@@ -14,28 +11,27 @@ $color-success: #28a745;
   padding-block: 5%;
 
   text-align: center;
-  color: $color-text;
-  background-color: #ebebeb;
+  color: var(--ion-text-color);
+  background-color: var(--ion-background-color);
+  position: relative;
 }
 
 .content {
   width: 100%;
-  max-width: 400px;
-  height: 100vh;
+  max-width: 450px;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
-  background-color: #fff;
+  background-color: var(--ion-card-background);
   padding: 1rem;
   padding-inline: 2rem;
+  padding-bottom: 2rem;
 }
-
-
 
 .logo {
   font-family: "Poppins", sans-serif;
   font-size: 2rem;
   font-weight: 700;
-  color: $color-primary;
+  color: var(--ion-color-primary);
 
   margin-bottom: 3rem;
   margin-top: 3rem;
@@ -50,33 +46,30 @@ $color-success: #28a745;
   margin-bottom: 2rem;
   margin-top: 1rem;
 
+  h2 {
+    color: var(--ion-text-color);
+  }
+
   p {
     font-family: "Poppins", sans-serif;
     font-size: 1rem;
     margin-top: .25rem;
     font-weight: 500;
+    color: var(--ion-color-step-600);
   }
 }
 
-.back-button-container {
+ion-buttons {
   position: absolute;
-  top: 15px;
-  left: 15px;
+  top: 12px;
+  left: 12px;
   z-index: 10;
-}
-
-ion-icon {
-  font-size: 28px;
-  color: var(
-    --ion-color-step-850,
-    #A1A1A1
-  )
 }
 
 .instrucao {
   font-size: 0.95rem;
   margin-bottom: 24px;
-  color: $color-text;
+  color: var(--ion-text-color);
 }
 
 .alert {
@@ -98,23 +91,24 @@ ion-icon {
 
 input {
   width: 100%;
-  padding: 12px 10px;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
+  padding: 12px 14px;
+  border: 1px solid var(--ion-color-light-shade, #ccc);
+  border-radius: 8px;
+  box-sizing: border-box;
   font-size: 1rem;
-  background-color: #ffffff;
-  color: $color-text;
+  background-color: var(--ion-card-background);
+  color: var(--ion-text-color);
 
   &:focus {
-    border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.2);
     outline: none;
   }
 }
 
 input.is-invalid {
   border-color: $color-error !important;
-  background-color: #fffafa;
+  background-color: var(--ion-card-background);
 }
 
 .text-danger {
@@ -124,31 +118,6 @@ input.is-invalid {
   text-align: left;
 }
 
-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
+ion-button[type="submit"] {
   margin-top: 25px;
-  transition: background-color 0.3s, opacity 0.3s;
-  background-color: $color-primary;
-  color: #ffffff;
-
-  span {
-    color: #ffffff;
-    font-weight: 600;
-  }
-
-  &:hover:not(:disabled) {
-    background-color: $color-primary;
-  }
-
-  &:disabled {
-    background-color: $color-primary;
-    opacity: 0.8;
-    cursor: not-allowed;
-  }
 }

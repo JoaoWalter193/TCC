@@ -1,12 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CardComponent } from '../components/card/card.component';
 import {
   IonContent, IonButtons, IonMenuButton, IonBackButton,
   IonHeader, IonToolbar, IonButton, IonIcon, IonAvatar,
 } from '@ionic/angular/standalone';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { VereadorDTO } from '../models/dto/vereador-dto';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
-import { ActivatedRoute, Router } from '@angular/router';
 import { VereadorService } from '../services/vereador';
 import { ProposicaoService } from '../services/proposicao';
 import { AuthService } from '../services/auth.service';
@@ -18,9 +17,9 @@ import { catchError } from 'rxjs/operators';
   templateUrl: './vereador.component.html',
   styleUrls: ['./vereador.component.scss'],
   imports: [
-    CardComponent,
     IonContent, IonButtons, IonMenuButton, IonBackButton,
     IonHeader, IonToolbar, IonButton, IonIcon, IonAvatar,
+    RouterLink,
   ],
 })
 export class VereadorComponent implements OnInit {
@@ -62,7 +61,7 @@ export class VereadorComponent implements OnInit {
   toggleSeguir() {
     const uid = this.usuarioId;
     if (!uid) {
-      this.router.navigate(['/login']);
+      this.auth.showLoginPrompt();
       return;
     }
 
@@ -75,6 +74,38 @@ export class VereadorComponent implements OnInit {
         this.seguindo = !this.seguindo;
       },
     });
+  }
+
+  timelineIcon(tipo: string): string {
+    const mapa: Record<string, string> = {
+      'PROJETO_DE_LEI': 'document-text-outline',
+      'REQUERIMENTO': 'chatbox-ellipses-outline',
+      'INDICACAO': 'bulb-outline',
+      'EMENDA': 'create-outline',
+      'MOÇÃO': 'megaphone-outline',
+      'PEDIDO_DE_INFORMACAO': 'search-outline',
+    };
+    return mapa[tipo] || 'document-outline';
+  }
+
+  formatarData(data: string): string {
+    if (!data) return '';
+    const d = new Date(data);
+    const agora = new Date();
+    const diffMs = Math.abs(agora.getTime() - d.getTime());
+    const diffDias = Math.floor(diffMs / 86400000);
+
+    if (diffDias === 0) return 'Hoje';
+    if (diffDias === 1) return 'Ontem';
+    if (diffDias < 7) return `Há ${diffDias} dias`;
+
+    const dia = String(d.getDate()).padStart(2, '0');
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const mes = meses[d.getMonth()];
+    const ano = d.getFullYear();
+    const anoAtual = agora.getFullYear();
+
+    return ano === anoAtual ? `${dia} ${mes}` : `${dia} ${mes} ${ano}`;
   }
 
   carregarDados() {

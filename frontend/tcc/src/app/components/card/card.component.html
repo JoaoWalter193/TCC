@@ -21,13 +21,9 @@
   <ion-card-content>
 
     <div class="chips-row">
-      <ion-chip (click)="filtrarChip($event, post.tipoProposicao)">
-        <ion-label>{{ post.tipoProposicao }}</ion-label>
-      </ion-chip>
+      <div class="tipo-tag" (click)="filtrarChip($event, post.tipoProposicao)">{{ post.tipoProposicao }}</div>
 
-      <ion-chip class="tag-chip">
-        <ion-label>{{ post.tag }}</ion-label>
-      </ion-chip>
+      <div class="tag-chip">{{ post.tag }}</div>
     </div>
 
     <p>{{ post.texto }}</p>
@@ -35,12 +31,12 @@
     <div class="acoes">
 
       <div class="acao" (click)="reagir($event, 'LIKE')">
-        <ion-icon [name]="likeIconName()"></ion-icon>
+        <ion-icon [name]="likeIconName()" [class.active]="post.currentUserReaction === 'LIKE'"></ion-icon>
         <span>{{ post.likes }}</span>
       </div>
 
       <div class="acao" (click)="reagir($event, 'DISLIKE')">
-        <ion-icon [name]="dislikeIconName()"></ion-icon>
+        <ion-icon [name]="dislikeIconName()" [class.active]="post.currentUserReaction === 'DISLIKE'"></ion-icon>
         <span>{{ post.dislikes }}</span>
       </div>
 

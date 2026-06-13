@@ -47,6 +47,11 @@ export class VereadorService {
       .pipe(map(v => mapToDTO(v)));
   }
 
+  listarSeguindo(usuarioId: number): Observable<VereadorDTO[]> {
+    return this.api.v1.get<VereadorBackend[]>(`/user/${usuarioId}/follow`)
+      .pipe(map(lista => lista.map(mapToDTO)));
+  }
+
   verificarStatusSeguindo(usuarioId: number, vereadorId: number): Observable<boolean> {
     return this.api.v1.get<boolean>(`/user/${usuarioId}/follow/${vereadorId}/status`);
   }

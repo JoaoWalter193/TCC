@@ -52,13 +52,14 @@
         <a (click)="goToRecuperarSenha()">Esqueceu sua senha?</a>
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid || carregando">
+      <ion-button type="submit" fill="solid" color="primary" mode="ios" expand="block"
+        [disabled]="loginForm.invalid || carregando">
         @if (carregando) {
         <span>Entrando...</span>
         } @else {
         <span>Entrar</span>
         }
-      </button>
+      </ion-button>
     </form>
 
     <div class="cadastro-prompt">
