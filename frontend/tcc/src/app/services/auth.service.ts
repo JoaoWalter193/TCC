@@ -1,10 +1,15 @@
-import { Injectable, signal } from "@angular/core";
+import { Injectable, signal, inject } from "@angular/core";
+import { ModalController } from "@ionic/angular/standalone";
+import { Router } from "@angular/router";
+import { LoginPromptComponent } from "../components/login-prompt/login-prompt.component";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     private loggedIn = signal(false);
+    private modalCtrl = inject(ModalController);
+    private router = inject(Router);
 
     isLoggedIn = this.loggedIn.asReadonly();
 
@@ -26,5 +31,13 @@ export class AuthService {
         localStorage.removeItem('user_info');
         localStorage.removeItem('usuario_id');
         this.loggedIn.set(false);
+    }
+
+    async showLoginPrompt(): Promise<void> {
+        const modal = await this.modalCtrl.create({
+            component: LoginPromptComponent,
+            cssClass: 'login-prompt-modal',
+        });
+        await modal.present();
     }
 }

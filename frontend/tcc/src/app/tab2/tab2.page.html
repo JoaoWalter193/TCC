@@ -6,7 +6,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     } @else {
-    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
+    <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="navigateToLogin()">Entrar</ion-button>
     }
   </ion-toolbar>
 
@@ -21,8 +21,10 @@
 
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  @for (post of postsFiltrados; track post.id) {
-  <app-card [post]="post" [usuarioId]="usuarioId" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
-  }
+<ion-content [fullscreen]="false">
+  <div class="feed-container">
+    @for (post of postsFiltrados; track post.id) {
+    <app-card [post]="post" [usuarioId]="usuarioId" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
+    }
+  </div>
 </ion-content>

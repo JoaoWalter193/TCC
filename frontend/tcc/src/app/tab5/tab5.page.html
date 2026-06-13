@@ -5,7 +5,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     } @else {
-    <ion-button slot="end" (click)="irParaLogin()">Entrar</ion-button>
+    <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="irParaLogin()">Entrar</ion-button>
     }
   </ion-toolbar>
 </ion-header>
@@ -14,21 +14,22 @@
 
   @if (auth.getUsuarioId() == null) {
   <div class="empty-state">
-    <ion-text color="medium">
-      <p>Faça login para favoritar proposições.</p>
-    </ion-text>
+    <ion-icon name="star-outline" class="empty-icon"></ion-icon>
+    <p>Conecte-se para favoritar proposições</p>
+    <ion-button (click)="irParaLogin()" fill="solid" color="primary" mode="ios">
+      Quero favoritar
+    </ion-button>
   </div>
   } @else if (carregando) {
   <div class="empty-state">
-    <ion-text color="medium">
-      <p>Carregando...</p>
-    </ion-text>
+    <ion-icon name="hourglass-outline" class="empty-icon"></ion-icon>
+    <p>Carregando...</p>
   </div>
   } @else if (favoritos.length === 0) {
   <div class="empty-state">
-    <ion-text color="medium">
-      <p>Nenhuma proposição favoritada ainda.</p>
-    </ion-text>
+    <ion-icon name="star-outline" class="empty-icon"></ion-icon>
+    <p>Nenhuma proposição favoritada ainda</p>
+    <p class="sub">As proposições que você favoritar aparecerão aqui.</p>
   </div>
   } @else {
   <div class="favoritos-list">

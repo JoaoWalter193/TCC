@@ -59,8 +59,7 @@
 
         <div class="editor-topbar">
           <ion-button fill="clear" color="medium" mode="ios" (click)="voltarParaLista()">
-            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-            Voltar
+            <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
           </ion-button>
           <h3>{{ dashboardEditId ? 'Editar' : 'Novo' }} Dashboard</h3>
         </div>
@@ -135,33 +134,43 @@
             </ion-list>
           </div>
 
-          <div class="builder-section">
-            <ion-label class="section-label">Operação</ion-label>
-            <ion-select
-              [value]="selectedOperation"
-              (ionChange)="selectedOperation = $event.detail.value"
-              mode="ios" interface="popover"
-            >
-              <ion-select-option value="count">Contagem</ion-select-option>
-              <ion-select-option value="sum">Soma</ion-select-option>
-              <ion-select-option value="mean">Média</ion-select-option>
-            </ion-select>
-          </div>
+          <ion-grid class="builder-grid">
+            <ion-row>
+              <ion-col size="12" size-md="6">
+                <div class="builder-section">
+                  <ion-label class="section-label">Operação</ion-label>
+                  <ion-select
+                    [value]="selectedOperation"
+                    (ionChange)="selectedOperation = $event.detail.value"
+                    mode="ios" interface="popover"
+                    class="builder-select"
+                  >
+                    <ion-select-option value="count">Contagem</ion-select-option>
+                    <ion-select-option value="sum">Soma</ion-select-option>
+                    <ion-select-option value="mean">Média</ion-select-option>
+                  </ion-select>
+                </div>
+              </ion-col>
 
-          @if (selectedOperation !== 'count') {
-            <div class="builder-section">
-              <ion-label class="section-label">Métrica (coluna numérica)</ion-label>
-              <ion-select
-                [value]="selectedMetric"
-                (ionChange)="selectedMetric = $event.detail.value"
-                mode="ios" interface="popover"
-              >
-                @for (field of numericFields; track field) {
-                  <ion-select-option [value]="field">{{ fieldLabel(field) }}</ion-select-option>
-                }
-              </ion-select>
-            </div>
-          }
+              @if (selectedOperation !== 'count') {
+                <ion-col size="12" size-md="6">
+                  <div class="builder-section">
+                    <ion-label class="section-label">Métrica (coluna numérica)</ion-label>
+                    <ion-select
+                      [value]="selectedMetric"
+                      (ionChange)="selectedMetric = $event.detail.value"
+                      mode="ios" interface="popover"
+                      class="builder-select"
+                    >
+                      @for (field of numericFields; track field) {
+                        <ion-select-option [value]="field">{{ fieldLabel(field) }}</ion-select-option>
+                      }
+                    </ion-select>
+                  </div>
+                </ion-col>
+              }
+            </ion-row>
+          </ion-grid>
 
           <div class="builder-section">
             <div class="filter-header">

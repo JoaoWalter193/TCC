@@ -9,6 +9,7 @@ import { ReacaoEventService } from '../services/reacao-event.service';
 import { ShareService } from '../services/share.service';
 import { IaService } from '../services/ia.service';
 import { FavoritosService } from '../services/favoritos.service';
+import { VereadorService } from '../services/vereador';
 
 @Component({
   selector: 'app-post',
@@ -31,6 +32,8 @@ import { FavoritosService } from '../services/favoritos.service';
 export class PostComponent implements OnInit {
   auth = inject(AuthService);
   post!: ProposicaoDTO;
+  seguindo = false;
+  carregandoStatusSeg = true;
   isIaModalOpen = false;
   iaResumo = '';
   iaCarregando = false;
@@ -48,6 +51,7 @@ export class PostComponent implements OnInit {
     private shareService: ShareService,
     private iaService: IaService,
     private favoritosService: FavoritosService,
+    private vereadorService: VereadorService,
   ) {}
 
   ngOnInit() {
@@ -66,7 +70,10 @@ export class PostComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.proposicaoService.buscarPorId(id, this.usuarioId).subscribe({
       next: (data) => {
-        if (data) { this.post = data; }
+        if (data) {
+          this.post = data;
+          this.carregarStatusSeg();
+        }
       },
       error: (err) => {
         console.error('Erro ao carregar proposição', err);
@@ -74,8 +81,34 @@ export class PostComponent implements OnInit {
     });
   }
 
+  carregarStatusSeg() {
+    const uid = this.usuarioId;
+    if (!uid || !this.post) {
+      this.carregandoStatusSeg = false;
+      return;
+    }
+    this.vereadorService.verificarStatusSeguindo(uid, this.post.vereador.id).subscribe({
+      next: (status) => { this.seguindo = status; this.carregandoStatusSeg = false; },
+      error: () => { this.carregandoStatusSeg = false; },
+    });
+  }
+
+  toggleSeguir() {
+    const uid = this.usuarioId;
+    if (!uid || !this.post) { this.auth.showLoginPrompt(); return; }
+
+    const anterior = this.seguindo;
+    this.seguindo = !anterior;
+
+    const obs = anterior
+      ? this.vereadorService.deixarDeSeguir(uid, this.post.vereador.id)
+      : this.vereadorService.seguir(uid, this.post.vereador.id);
+
+    obs.subscribe({ error: () => { this.seguindo = anterior; } });
+  }
+
   toggleFavorito() {
-    if (this.usuarioId == null || !this.post) { return; }
+    if (this.usuarioId == null || !this.post) { this.auth.showLoginPrompt(); return; }
 
     const anterior = this.post.isFavorito;
     this.post.isFavorito = !anterior;
@@ -96,7 +129,7 @@ export class PostComponent implements OnInit {
   }
 
   reagir(tipo: 'LIKE' | 'DISLIKE') {
-    if (this.usuarioId == null || !this.post) { return; }
+    if (this.usuarioId == null || !this.post) { this.auth.showLoginPrompt(); return; }
 
     const estadoAnterior = this.post.currentUserReaction;
     const likesAnterior = this.post.likes;

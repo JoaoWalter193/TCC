@@ -34,18 +34,22 @@ public class HistoricoService {
     private ReacaoRepository reacaoRepository;
 
     public void registrarVisualizacao(Long proposicaoCodigo) {
-        Usuario usuario = (Usuario) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        try {
+            Usuario usuario = (Usuario) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
 
-        historicoProposicaoRepository.findAll().stream()
-                .filter(h -> h.getUsuarioId().equals(usuario.getId())
-                        && h.getProposicaoCodigo().equals(proposicaoCodigo))
-                .forEach(h -> historicoProposicaoRepository.delete(h));
+            historicoProposicaoRepository.findAll().stream()
+                    .filter(h -> h.getUsuarioId().equals(usuario.getId())
+                            && h.getProposicaoCodigo().equals(proposicaoCodigo))
+                    .forEach(h -> historicoProposicaoRepository.delete(h));
 
-        HistoricoProposicao historico = new HistoricoProposicao();
-        historico.setUsuarioId(usuario.getId());
-        historico.setProposicaoCodigo(proposicaoCodigo);
-        historicoProposicaoRepository.save(historico);
+            HistoricoProposicao historico = new HistoricoProposicao();
+            historico.setUsuarioId(usuario.getId());
+            historico.setProposicaoCodigo(proposicaoCodigo);
+            historicoProposicaoRepository.save(historico);
+        } catch (Exception e) {
+            // Usuário não autenticado — não registra histórico
+        }
     }
 
     public void registrarVisualizacaoVereador(Integer vereadorId) {

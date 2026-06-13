@@ -1,62 +1,68 @@
-ion-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-}
-
-ion-title {
-  font-size: 1rem;
-  font-weight: 600;
-}
+// ── Empty State ──────────────────────────────────────────────────────
 
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 70vh;
+  height: 60vh;
   text-align: center;
-  padding: 2rem;
-  color: var(--ion-color-medium);
+  gap: 8px;
 
-  ion-icon {
-    margin-bottom: 1rem;
-    opacity: 0.5;
+  .empty-icon {
+    font-size: 3rem;
+    opacity: 0.4;
+    margin-bottom: 4px;
   }
 
-  p {
-    margin: 0.25rem 0;
-    font-size: 0.95rem;
-
-    &:first-of-type {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--ion-color-dark);
-    }
+  .sub {
+    font-size: 0.85rem;
+    opacity: 0.7;
   }
 }
 
-ion-list {
-  padding: 0.5rem;
+// ── Acões ─────────────────────────────────────────────────────────────
+
+.notif-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 0;
+
+  ion-button {
+    font-size: 0.82rem;
+    text-transform: none;
+    font-weight: 600;
+  }
 }
+
+// ── Lista ─────────────────────────────────────────────────────────────
+
+.notif-list {
+  padding: 0;
+  background: transparent;
+}
+
+// ── Card (Proposição) ─────────────────────────────────────────────────
 
 ion-card {
-  margin: 0.75rem 0;
+  margin: 12px 0;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  transition: background 0.2s ease;
+  box-shadow: none;
+  border: 1px solid var(--ion-border-color);
+  background: var(--ion-card-background);
+  transition: background 0.18s ease;
 
   &.nao-lida {
-    background: rgba(var(--ion-color-primary-rgb), 0.04);
     border-left: 3px solid var(--ion-color-primary);
   }
 }
 
 ion-card-header {
-  padding-bottom: 0.5rem;
+  padding: 14px 16px 6px;
+}
+
+ion-card-content {
+  padding: 0 16px 14px;
 }
 
 .notif-header-top {
@@ -68,7 +74,8 @@ ion-card-header {
     font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 6px;
+    font-weight: 600;
   }
 }
 
@@ -79,17 +86,17 @@ ion-card-header {
 
 .tempo {
   font-size: 0.75rem;
-  color: var(--ion-color-medium);
+  color: var(--ion-color-step-500);
   white-space: nowrap;
 }
 
 .subinfo {
-  margin-top: 0.25rem;
+  margin-top: 4px;
 }
 
 .ementa-text {
   font-size: 0.85rem;
-  color: var(--ion-color-dark);
+  color: var(--ion-text-color);
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -97,35 +104,60 @@ ion-card-header {
   overflow: hidden;
 }
 
-ion-card-content {
-  padding-top: 0.25rem;
-}
-
 .chips-row {
   display: flex;
-  gap: 0.4rem;
+  gap: 6px;
   flex-wrap: wrap;
 
   ion-chip {
-    font-size: 0.7rem;
-    height: 1.6rem;
+    height: 22px;
+    min-height: 22px;
+    border-radius: 12px;
     margin: 0;
+    padding-inline: 4px;
+  }
+
+  ion-chip ion-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    line-height: 1;
   }
 }
 
+.update-chip {
+  --background: #ffc67c;
+  --color: #5c3b00;
+}
+
+
+
+.nao-lida-chip {
+  --background: var(--ion-color-step-100);
+  --color: var(--ion-color-step-600);
+}
+
+// ── Item (Vereador) ──────────────────────────────────────────────────
+
 ion-item.vereador-notif {
-  --padding-start: 0.75rem;
-  --padding-end: 0.75rem;
-  --padding-top: 0.5rem;
-  --padding-bottom: 0.5rem;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
   --inner-padding-end: 0;
-  margin: 0.25rem 0;
-  border-radius: 12px;
-  --background-hover: rgba(var(--ion-color-primary-rgb), 0.03);
+  --border-color: var(--ion-border-color);
+  --background: var(--ion-card-background);
+  --background-hover: var(--ion-color-step-50);
+  --min-height: 44px;
 
   &.nao-lida {
-    --background: rgba(var(--ion-color-primary-rgb), 0.04);
+    --background: rgba(var(--ion-color-primary-rgb), 0.03);
     border-left: 3px solid var(--ion-color-primary);
+  }
+
+  &::part(native) {
+    border-radius: 12px;
+    border: 1px solid var(--ion-border-color);
+    margin: 4px 0;
   }
 
   ion-label {
@@ -133,9 +165,10 @@ ion-item.vereador-notif {
 
     h3 {
       font-size: 0.9rem;
-      font-weight: 500;
-      margin: 0 0 0.2rem;
+      font-weight: 600;
+      margin: 0 0 2px;
       white-space: normal;
+      color: var(--ion-text-color);
 
       &.titulo-nova {
         margin-bottom: 0;
@@ -143,9 +176,9 @@ ion-item.vereador-notif {
     }
 
     .subtexto {
-      font-size: 0.8rem;
-      color: var(--ion-color-medium);
-      margin: 0.1rem 0;
+      font-size: 0.82rem;
+      color: var(--ion-color-step-600);
+      margin: 2px 0;
       white-space: normal;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -154,10 +187,10 @@ ion-item.vereador-notif {
     }
 
     .tempo-item {
-      font-size: 0.7rem;
-      color: var(--ion-color-medium-shade);
+      font-size: 0.72rem;
+      color: var(--ion-color-step-500);
       display: block;
-      margin-top: 0.15rem;
+      margin-top: 2px;
     }
   }
 }
@@ -171,14 +204,14 @@ ion-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--ion-color-light-tint);
+  background: var(--ion-color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ion-icon {
     font-size: 1.4rem;
-    color: var(--ion-color-medium);
+    color: var(--ion-color-primary-contrast);
   }
 }
 
@@ -188,5 +221,37 @@ ion-avatar {
   border-radius: 50%;
   padding: 0;
   min-width: 8px;
-  margin-right: 0.5rem;
+  margin-right: 4px;
+}
+
+// ── Responsive ────────────────────────────────────────────────────────
+
+@media (min-width: 768px) {
+  .feed-container {
+    max-width: 672px;
+    margin: 0 auto;
+  }
+
+  ion-card {
+    border-radius: 16px;
+    border: 1px solid var(--ion-border-color);
+    margin: 14px auto;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  ion-item.vereador-notif::part(native) {
+    border-radius: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .feed-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .feed-container {
+    max-width: 780px;
+  }
 }

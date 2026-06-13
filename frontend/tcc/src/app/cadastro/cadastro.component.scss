@@ -13,6 +13,14 @@ $color-success: #28a745;
   text-align: center;
   color: var(--ion-text-color);
   background-color: var(--ion-background-color);
+  position: relative;
+}
+
+ion-buttons {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
 }
 
 .logo {
@@ -30,19 +38,22 @@ $color-success: #28a745;
   flex-direction: column;
   align-items: flex-start;
 
-  width: 400px;
-  max-width: 400px;
+  width: 100%;
   margin-bottom: 2rem;
   margin-top: 1rem;
 
+  h2 {
+    color: var(--ion-text-color);
+  }
+
   p {
     font-family: "Poppins", sans-serif;
+    color: var(--ion-color-step-600);
   }
 }
 
 .alert {
   width: 100%;
-  max-width: 400px;
   padding: 12px 15px;
   margin-bottom: 15px;
   border-radius: 8px;
@@ -66,12 +77,12 @@ $color-success: #28a745;
 .content {
   width: 100%;
   max-width: 450px;
-  height: 100vh;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   background-color: var(--ion-card-background);
   padding: 1rem;
   padding-inline: 2rem;
+  padding-bottom: 2rem;
 }
 
 .form-group {
@@ -81,9 +92,9 @@ $color-success: #28a745;
 
 input {
   width: 100%;
-  padding: 12px 10px;
-  border: 1px solid var(--ion-border-color);
-  border-radius: 0.25rem;
+  padding: 12px 14px;
+  border: 1px solid var(--ion-color-light-shade, #ccc);
+  border-radius: 8px;
   box-sizing: border-box;
   font-size: 1rem;
   transition: border-color 0.3s, box-shadow 0.3s;
@@ -92,7 +103,7 @@ input {
 
   &:focus {
     border-color: var(--ion-color-primary);
-    box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.2);
     outline: none;
   }
 }
@@ -100,12 +111,6 @@ input {
 input.ng-invalid.ng-touched {
   border-color: $color-error;
   background-color: var(--ion-card-background);
-}
-
-:host ::ng-deep {
-  input.ng-valid.ng-touched {
-    background-color: var(--ion-card-background) !important;
-  }
 }
 
 .erro {
@@ -118,64 +123,28 @@ input.ng-invalid.ng-touched {
   }
 }
 
-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: background-color 0.3s, opacity 0.3s;
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: var(--ion-color-primary-tint);
-  }
-}
-
-.btn-primary {
-  background-color: var(--ion-color-primary);
-  color: #ffffff;
-
-  &:hover:not(:disabled) {
-    background-color: var(--ion-color-primary-shade);
-  }
-}
-
-.btn-secondary {
-  background-color: var(--ion-color-step-100);
-  color: var(--ion-text-color);
-  border: 1px solid var(--ion-border-color);
-
-  &:hover:not(:disabled) {
-    background-color: var(--ion-color-step-200);
-  }
-}
-
-form > div:nth-child(2) .btn-primary {
-  margin-top: 10px;
+ion-button {
+  margin-top: 12px;
 }
 
 .custom-select {
   width: 100%;
-  padding: 12px 10px;
-  border: 1px solid var(--ion-border-color);
-  border-radius: 0.25rem;
+  padding: 12px 14px;
+  border: 1px solid var(--ion-color-light-shade, #ccc);
+  border-radius: 8px;
   box-sizing: border-box;
   font-size: 1rem;
   background-color: var(--ion-card-background);
   color: var(--ion-text-color);
   transition: border-color 0.3s, box-shadow 0.3s;
+  appearance: auto;
 
   &:focus {
     border-color: var(--ion-color-primary);
-    box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.2);
     outline: none;
   }
-}
+  }
 
 .custom-select.ng-invalid.ng-touched {
   border-color: $color-error;
@@ -193,7 +162,6 @@ label {
   display: flex;
   justify-content: center;
   width: 100%;
-  max-width: 400px;
   margin-top: 25px;
   font-size: 0.95rem;
 

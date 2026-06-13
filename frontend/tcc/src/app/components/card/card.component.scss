@@ -26,21 +26,18 @@ ion-card-content {
   padding: 0 16px 14px 16px;
 }
 
-ion-chip {
-  --background: #ffc67c;
-  --color: #5c3b00;
-  height: 22px;
-  min-height: 22px;
+.tipo-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
   border-radius: 12px;
-  margin-bottom: 8px;
-  padding-inline: 4px;
+  background: #ffc67c;
+  color: #5c3b00;
+  cursor: pointer;
 }
 
-ion-chip ion-label {
-  font-size: 0.72rem;
-  font-weight: 500;
-  line-height: 1;
-}
+
 
 p {
   font-size: 0.9rem;
@@ -57,6 +54,8 @@ strong {
 ion-icon {
   color: var(--ion-color-step-500);
   font-size: 1.1rem;
+  min-width: 22px;
+  min-height: 22px;
 }
 
 .chips-row {
@@ -66,8 +65,13 @@ ion-icon {
 }
 
 .tag-chip {
-  --background: var(--ion-color-step-100);
-  --color: var(--ion-color-step-600);
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: var(--ion-color-step-100);
+  color: var(--ion-color-step-600);
 }
 
 .header-top {
@@ -115,4 +119,10 @@ ion-icon {
 
 .acao ion-icon {
   font-size: 1rem;
+  min-width: 22px;
+  min-height: 22px;
+}
+
+.acao ion-icon.active {
+  color: var(--ion-color-primary);
 }
