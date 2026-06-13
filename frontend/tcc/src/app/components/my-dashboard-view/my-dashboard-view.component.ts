@@ -6,6 +6,7 @@ import {
   IonContent, IonIcon, IonButton, IonList, IonItem,
   IonSelect, IonSelectOption, IonLabel, IonCheckbox,
   IonSegment, IonSegmentButton, IonChip, IonText, IonInput,
+  IonGrid, IonRow, IonCol,
   AlertController,
 } from "@ionic/angular/standalone";
 import { AgChartsModule } from 'ag-charts-angular';
@@ -26,6 +27,7 @@ import { ShareService } from 'src/app/services/share.service';
     IonContent, IonIcon, IonButton, IonList, IonItem,
     IonSelect, IonSelectOption, IonLabel, IonCheckbox,
     IonSegment, IonSegmentButton, IonChip, IonText, IonInput,
+    IonGrid, IonRow, IonCol,
     AgChartsModule,
   ],
   providers: [DatePipe],
@@ -294,7 +296,7 @@ export class MyDashboardViewComponent implements OnInit {
     if (data.type === 'hierarchy' && data.tree) {
       if (this.chartType === 'sunburst') {
         this.chartOptions = {
-          data: [{ name: 'root', children: data.tree }],
+          data: [{ name: ' ', children: data.tree }],
           series: [{
             type: 'sunburst',
             labelKey: 'name',

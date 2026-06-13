@@ -1,5 +1,5 @@
 .dashboard-content {
-  --background: #f8f9fb;
+  --background: var(--ion-background-color);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,7 @@
 }
 
 .dashboard-card {
-  background: #ffffff;
+  background: var(--ion-card-background);
   border-radius: 18px;
   padding: 18px;
 
@@ -21,12 +21,12 @@
     font-size: 16px;
     font-weight: 700;
     margin: 0;
-    color: #111827;
+    color: var(--ion-text-color);
   }
 
   p {
     font-size: 13px;
-    color: #6b7280;
+    color: var(--ion-color-step-600);
     margin: 4px 0 0 0;
   }
 }
@@ -34,11 +34,14 @@
 .chart-container {
   height: 280px;
   width: 100%;
-
+  max-width: 100%;
+  overflow: hidden;
   display: flex;
-  justify-content: center;  
-  align-items: center; 
-  
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--ion-color-step-50);
+
   ag-charts {
     width: 100%;
     max-width: 100%;

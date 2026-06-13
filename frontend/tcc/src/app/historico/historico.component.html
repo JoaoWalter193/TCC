@@ -3,34 +3,50 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    Histórico
+    <ion-title>Histórico</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (carregando) {
-    <p>Carregando...</p>
+    <div class="timeline-loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Carregando...</p>
+    </div>
   } @else if (historico.length === 0) {
-    <div class="empty-state">
-      <ion-icon name="time-outline" class="empty-icon"></ion-icon>
-      <ion-text>
-        <p>Nenhum item visitado ainda.</p>
-      </ion-text>
+    <div class="timeline-empty">
+      <ion-icon name="time-outline"></ion-icon>
+      <p>Nenhum item visitado ainda.</p>
     </div>
   } @else {
-    @for (item of historico; track item.id + '-' + item.tipo) {
-      @if (item.tipo === 'PROPOSICAO') {
-        <app-card
-          [post]="item.componente"
-          [usuarioId]="usuarioId"
-          [link]="['/proposicao', item.componente.id]">
-        </app-card>
-      } @else if (item.tipo === 'VEREADOR') {
-        <app-card-vereador
-          [post]="item.componente"
-          [link]="['/vereador', item.componente.id, item.componente.nome]">
-        </app-card-vereador>
+    <div class="timeline">
+      <div class="timeline-line"></div>
+
+      @for (item of historico; track item.id + '-' + item.tipo) {
+        <div class="timeline-item" [routerLink]="item.tipo === 'PROPOSICAO'
+          ? ['/proposicao', item.componente.id]
+          : ['/vereador', item.componente.id]">
+
+          <div class="timeline-dot">
+            <ion-icon [name]="item.tipo === 'PROPOSICAO' ? 'document-text-outline' : 'person-outline'"></ion-icon>
+          </div>
+
+          <div class="timeline-content">
+            <div class="timeline-meta">
+              <span class="timeline-type">{{ item.tipo === 'PROPOSICAO' ? 'Proposição' : 'Vereador' }}</span>
+              <span class="timeline-date">{{ formatarData(item.dataAcesso) }}</span>
+            </div>
+
+            @if (item.tipo === 'PROPOSICAO') {
+              <h4 class="timeline-title">{{ item.componente.razao }}</h4>
+              <p class="timeline-text">{{ item.componente.ementa }}</p>
+            } @else {
+              <h4 class="timeline-title">{{ item.componente.nome }}</h4>
+              <p class="timeline-text">{{ item.componente.partido }}</p>
+            }
+          </div>
+        </div>
       }
-    }
+    </div>
   }
 </ion-content>

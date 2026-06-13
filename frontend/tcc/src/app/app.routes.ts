@@ -47,6 +47,13 @@ export const routes: Routes = [
       import('./perfil/perfil.component').then((m) => m.PerfilComponent),
   },
   {
+    path: 'seguindo',
+    loadComponent: () =>
+      import('./seguindo/seguindo.component').then(
+        (m) => m.SeguindoComponent,
+      ),
+  },
+  {
     path: 'historico',
     loadComponent: () =>
       import('./historico/historico.component').then(
@@ -69,5 +76,10 @@ export const routes: Routes = [
     path: 'vereador/:id',
     loadComponent: () =>
       import('./vereador/vereador.component').then((m) => m.VereadorComponent)
-  }
+  },
+  {
+    path: 'editar-perfil',
+    loadComponent: () =>
+      import('./tab1/tab1.page').then((m) => m.Tab1Page),
+  },
 ];

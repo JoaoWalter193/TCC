@@ -5,9 +5,10 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonText,
+  IonButton,
   IonButtons,
   IonMenuButton,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { FavoritosService } from '../services/favoritos.service';
@@ -23,9 +24,10 @@ import { CardComponent } from '../components/card/card.component';
     IonToolbar,
     IonTitle,
     IonContent,
-    IonText,
+    IonButton,
     IonButtons,
     IonMenuButton,
+    IonIcon,
     CardComponent,
   ],
 })
@@ -63,6 +65,10 @@ export class Tab5Page {
         this.carregando = false;
       },
     });
+  }
+
+  irParaLogin() {
+    this.router.navigate(['/login']);
   }
 
   verProposicao(id: number) {

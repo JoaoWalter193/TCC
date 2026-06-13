@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 
 import { CriarUsuarioDTO } from '../models/dto/criar-usuario-dto';
 import { ResponseDTO } from '../models/dto/response-dto';
-import { IonButtons, IonBackButton } from "@ionic/angular/standalone";
+import { IonButtons, IonBackButton, IonButton } from "@ionic/angular/standalone";
 
 
 export const PasswordsMatchValidator: ValidatorFn = (
@@ -38,7 +38,7 @@ export const PasswordsMatchValidator: ValidatorFn = (
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, IonButtons, IonBackButton],
+  imports: [ReactiveFormsModule, CommonModule, IonButtons, IonBackButton, IonButton],
 })
 export class CadastroComponent implements OnInit {
   cadastroForm!: FormGroup;
@@ -76,7 +76,7 @@ export class CadastroComponent implements OnInit {
           '',
           [
             Validators.required,
-            Validators.pattern(/^[0-9]{11}$/),
+            Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/),
           ],
         ],
 
@@ -92,7 +92,7 @@ export class CadastroComponent implements OnInit {
       ),
 
       stepThreeGroup: this.fb.group({
-        cep: ['', [Validators.pattern(/^[0-9]{8}$/)]],
+        cep: ['', [Validators.pattern(/^\d{5}-\d{3}$/)]],
         escolaridade: [''],
         profissao: [''],
       }),
@@ -166,12 +166,12 @@ export class CadastroComponent implements OnInit {
     const stepThreeValue = this.stepThreeGroup.value;
 
     const dadosParaBackend: CriarUsuarioDTO = {
-      cpf: stepOneValue.cpf,
+      cpf: stepOneValue.cpf.replace(/\D/g, ''),
       nome: stepOneValue.nome,
       email: stepOneValue.email,
       senha: stepTwoValue.senha,
       senhaNovamente: stepTwoValue.senhaNovamente,
-      cep: stepThreeValue.cep || undefined,
+      cep: stepThreeValue.cep ? stepThreeValue.cep.replace(/\D/g, '') : undefined,
       escolaridade: stepThreeValue.escolaridade || undefined,
       profissao: stepThreeValue.profissao || undefined,
     };
@@ -204,5 +204,21 @@ export class CadastroComponent implements OnInit {
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  onCpfInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '').slice(0, 11);
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    this.stepOneGroup.get('cpf')?.setValue(value, { emitEvent: false });
+  }
+
+  onCepInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '').slice(0, 8);
+    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+    this.stepThreeGroup.get('cep')?.setValue(value, { emitEvent: false });
   }
 }

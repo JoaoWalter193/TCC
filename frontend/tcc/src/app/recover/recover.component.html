@@ -1,7 +1,7 @@
 <div class="container">
-  <div class="back-button-container">
-    <a (click)="goToLogin()"><ion-icon name="arrow-back"></ion-icon></a>
-  </div>
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/login" slot="start"></ion-back-button>
+  </ion-buttons>
 
   <h1 class="logo">CuritibAtiva</h1>
 
@@ -41,13 +41,14 @@
         </div>
       }
 
-      <button type="submit" [disabled]="loading || formulario.invalid">
+      <ion-button type="submit" fill="solid" color="primary" mode="ios" expand="block"
+        [disabled]="loading || formulario.invalid">
         @if (loading) {
         <span>Processando...</span>
         } @else {
         <span> Enviar email </span>
         }
-      </button>
+      </ion-button>
     </form>
   </div>
 </div>

@@ -2,13 +2,13 @@ ion-card {
   margin: 0;
   border-radius: 0;
   box-shadow: none;
-  border-bottom: 1px solid #eef1f4;
-  background: #ffffff;
+  border-bottom: 1px solid var(--ion-border-color);
+  background: var(--ion-card-background);
   transition: background 0.18s ease;
 }
 
 ion-card:active {
-  background: #f8f9fb;
+  background: var(--ion-color-step-50);
 }
 
 ion-card-header {
@@ -19,44 +19,43 @@ ion-card-title {
   font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.4;
-  color: #1c1c1c;
+  color: var(--ion-text-color);
 }
 
 ion-card-content {
   padding: 0 16px 14px 16px;
 }
 
-ion-chip {
-  --background: #ffc67c;
-  --color: #5c3b00;
-  height: 22px;
-  min-height: 22px;
+.tipo-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
   border-radius: 12px;
-  margin-bottom: 8px;
-  padding-inline: 4px;
+  background: #ffc67c;
+  color: #5c3b00;
+  cursor: pointer;
 }
 
-ion-chip ion-label {
-  font-size: 0.72rem;
-  font-weight: 500;
-  line-height: 1;
-}
+
 
 p {
   font-size: 0.9rem;
   line-height: 1.45;
-  color: #444;
+  color: var(--ion-color-step-600);
   margin-top: 6px;
 }
 
 strong {
-  color: #1f5eff;
+  color: var(--ion-color-primary);
   font-weight: 600;
 }
 
 ion-icon {
-  color: #9a9a9a;
+  color: var(--ion-color-step-500);
   font-size: 1.1rem;
+  min-width: 22px;
+  min-height: 22px;
 }
 
 .chips-row {
@@ -66,8 +65,13 @@ ion-icon {
 }
 
 .tag-chip {
-  --background: #f6f7f8;
-  --color: #666;
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: var(--ion-color-step-100);
+  color: var(--ion-color-step-600);
 }
 
 .header-top {
@@ -80,7 +84,7 @@ ion-icon {
 .subinfo {
   margin-top: 6px;
   font-size: 0.8rem;
-  color: #666;
+  color: var(--ion-color-step-600);
 }
 
 .vereador {
@@ -95,7 +99,7 @@ ion-icon {
 
 .tipo {
   margin-left: 6px;
-  color: #888;
+  color: var(--ion-color-step-500);
 }
 
 .acoes {
@@ -110,9 +114,15 @@ ion-icon {
   align-items: center;
   gap: 4px;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--ion-color-step-600);
 }
 
 .acao ion-icon {
   font-size: 1rem;
+  min-width: 22px;
+  min-height: 22px;
+}
+
+.acao ion-icon.active {
+  color: var(--ion-color-primary);
 }

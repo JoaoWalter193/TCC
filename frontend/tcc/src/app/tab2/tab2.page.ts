@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonChip, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
@@ -25,8 +25,6 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     CardComponent,
     IonButtons,
     IonMenuButton,
-    IonChip,
-    IonLabel,
     IonIcon
 ],
 })
@@ -49,7 +47,7 @@ export class Tab2Page {
       .subscribe(() => this.carregarPosts());
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.carregarPosts();
   }
 
@@ -59,7 +57,7 @@ export class Tab2Page {
 
   carregarPosts() {
     forkJoin([
-      this.proposicaoService.listar().pipe(
+      this.proposicaoService.listar(this.usuarioId).pipe(
         catchError(() => of([] as ProposicaoDTO[]))
       ),
       this.vereadorService.listar().pipe(

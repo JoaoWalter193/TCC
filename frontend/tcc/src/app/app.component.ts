@@ -1,6 +1,7 @@
 import { Component, inject, Injector } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { AuthService } from './services/auth.service';
+import { ThemeService } from './services/theme.service';
 import { MenuComponent } from "./components/menu/menu.component";
 
 @Component({
@@ -11,6 +12,7 @@ import { MenuComponent } from "./components/menu/menu.component";
 })
 export class AppComponent {
   constructor() {
+    inject(ThemeService);
     const authService = inject(AuthService);
     const platform = inject(Platform);
     const injector = inject(Injector);
@@ -27,7 +29,34 @@ export class AppComponent {
           const localNotif = injector.get(m.LocalNotificationService);
           localNotif.init();
         });
+
+        if (platform.is('android')) {
+          this.aplicarSafeAreaAndroid();
+        }
       }
     });
+  }
+
+  private aplicarSafeAreaAndroid(): void {
+    const setInset = (px: number) => {
+      document.documentElement.style.setProperty('--safe-inset-bottom', `${px}px`);
+    };
+
+    if (!window.visualViewport) {
+      setInset(48);
+      return;
+    }
+
+    // Mede uma vez só — safe area não muda em runtime,
+    // e o evento resize do visualViewport é contaminado pelo teclado.
+    const vv = window.visualViewport!;
+    const measured = Math.max(0, window.innerHeight - vv.height);
+
+    if (measured > 2) {
+      setInset(measured);
+    } else {
+      // visualViewport não acusou insets (ex: MIUI), fallback fixo
+      setInset(48);
+    }
   }
 }

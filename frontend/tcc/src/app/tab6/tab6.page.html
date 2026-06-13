@@ -17,18 +17,18 @@
   </ion-list>
   } @else {
   <ion-toolbar>
-    <ion-button slot="end" (click)="navigateToLogin()">Entrar</ion-button>
-
-    <ion-list>
-      <ion-item>
-        <ion-select aria-label="Dashboard" value="dashboard" cancelText="Cancelar" mode="ios"
-          (ionChange)="mudarModo($event)">
-          <ion-select-option value="dashboard">Dashboard</ion-select-option>
-          <ion-select-option value="my-dashboard">Meus Dashboards</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
+    <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="navigateToLogin()">Entrar</ion-button>
   </ion-toolbar>
+
+  <ion-list>
+    <ion-item>
+      <ion-select aria-label="Dashboard" value="dashboard" cancelText="Cancelar" mode="ios"
+        (ionChange)="mudarModo($event)">
+        <ion-select-option value="dashboard">Dashboard</ion-select-option>
+        <ion-select-option value="my-dashboard">Meus Dashboards</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
   }
 </ion-header>
 

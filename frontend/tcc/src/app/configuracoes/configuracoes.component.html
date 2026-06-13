@@ -21,7 +21,7 @@
 
     <ion-list lines="none">
 
-      <ion-item routerLink="/tabs/tab1">
+      <ion-item routerLink="/editar-perfil">
         <ion-icon name="person-outline" slot="start"></ion-icon>
         <ion-label>Editar Perfil</ion-label>
       </ion-item>
@@ -51,7 +51,7 @@
   </div>
 
   <div class="logout-area">
-    <ion-button mode="ios" fill="clear" color="danger">
+    <ion-button mode="ios" fill="clear" color="danger" (click)="sair()">
       <ion-icon name="log-out-outline" slot="start"></ion-icon>
       Sair
     </ion-button>
