@@ -64,14 +64,6 @@ hr {
   background-color: #c9c9c9;
 }
 
-input.ng-valid.ng-touched {
-  background-color: #ffffff !important;
-}
-
-input {
-  background-color: #ffffff !important;
-}
-
 .badge-dot {
   width: 10px;
   height: 10px;
@@ -83,15 +75,36 @@ input {
   right: calc(50% - 18px);
 }
 
+// ── Toolbar / Header spacing ─────────────────────
+ion-toolbar {
+  padding: 0 8px;
+}
+
+ion-header ion-toolbar:first-of-type {
+  padding-top: 4px;
+}
+
+// ── "Entrar" button ──────────────────────────────
+.btn-entrar {
+  --padding-start: 14px;
+  --padding-end: 14px;
+  height: 30px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.3px;
+  --border-radius: 14px;
+  margin: 0;
+}
+
 // ── DARK MODE OVERRIDES ──────────────────────────────────────────────
 
 .ion-palette-dark {
   // ── Inputs ──────────────────────────────────────
-  input,
-  input.ng-valid.ng-touched,
-  input.ng-invalid.ng-touched {
-    background-color: var(--ion-card-background) !important;
-    color: var(--ion-text-color) !important;
+  input {
+    background-color: var(--ion-card-background);
+    border: 1px solid var(--ion-color-step-300);
+    color: var(--ion-text-color);
   }
 
   // ── Searchbar ───────────────────────────────────
@@ -127,6 +140,18 @@ input {
   }
   ion-select-option {
     color: var(--ion-text-color);
+  }
+
+  // ── Auth alerts (login/cadastro/recover) ─────────
+  .alert-danger {
+    background-color: rgba(var(--ion-color-danger-rgb), 0.12) !important;
+    color: var(--ion-color-danger) !important;
+    border-color: rgba(var(--ion-color-danger-rgb), 0.25) !important;
+  }
+  .alert-success {
+    background-color: rgba(var(--ion-color-success-rgb), 0.12) !important;
+    color: var(--ion-color-success) !important;
+    border-color: rgba(var(--ion-color-success-rgb), 0.25) !important;
   }
 
   // ── Chips / Tags ────────────────────────────────
@@ -311,3 +336,245 @@ input {
     background: var(--ion-border-color) !important;
   }
 }
+
+// ── RESPONSIVE WEB ────────────────────────────────────────────────────
+// Mobile-First: tudo já é mobile. As regras abaixo ativam em telas maiores.
+
+// Tablet (≥768px): centraliza conteúdo, escala tipografia
+@media (min-width: 768px) {
+  app-tab5 ion-content,
+  app-seguindo ion-content,
+  app-historico ion-content {
+    max-width: 672px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .feed-container {
+    width: 100%;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  app-tab4 .search-container {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  app-tab4 .trend-section {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  app-card ion-card {
+    border-radius: 16px;
+    border: 1px solid var(--ion-border-color);
+    margin: 14px auto;
+    transition: box-shadow 0.18s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  app-card ion-card:active {
+    background: var(--ion-card-background);
+  }
+
+  app-card ion-card:hover {
+    background: var(--ion-color-step-50);
+  }
+
+  .perfil-content {
+    max-width: 672px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  app-card {
+    ion-card-title {
+      font-size: 1.05rem;
+    }
+    p {
+      font-size: 0.95rem;
+    }
+    ion-chip ion-label {
+      font-size: 0.78rem;
+    }
+    .acao {
+      font-size: 0.92rem;
+    }
+  }
+}
+
+// Desktop (≥1024px): layout 3 colunas, sidebars visuais
+@media (min-width: 1024px) {
+  html {
+    font-size: 17px;
+  }
+
+  .feed-container {
+    max-width: 720px;
+  }
+
+  app-tab4 .search-container {
+    max-width: 720px;
+  }
+
+  app-tab4 .trend-section {
+    max-width: 720px;
+  }
+
+  ion-content::part(scroll) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .editor-topbar h3 {
+    font-size: 1.15rem;
+  }
+
+  .data-table {
+    font-size: 14px;
+  }
+
+  .builder-container {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dashboard-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+}
+
+// Desktop ≥1024px: centraliza login/cadastro/recover, escala cards
+@media (min-width: 1024px) {
+  app-login .content,
+  app-cadastro .content,
+  app-recover .content,
+  app-tab1 .content {
+    max-width: 520px;
+    margin: 0 auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// Full HD (≥1400px)
+@media (min-width: 1400px) {
+  html {
+    font-size: 18px;
+  }
+
+  .feed-container {
+    max-width: 780px;
+  }
+
+  app-tab4 .search-container {
+    max-width: 780px;
+  }
+
+  app-tab4 .trend-section {
+    max-width: 780px;
+  }
+
+  app-card ion-card,
+  app-tab5 ion-content,
+  app-seguindo ion-content,
+  app-historico ion-content,
+  .perfil-content {
+    max-width: 780px;
+  }
+}
+
+
+// ── Post page: engagement bar (dark mode) ─────────
+.ion-palette-dark app-post .engagement-action {
+  color: #fff !important;
+}
+.ion-palette-dark app-post .engagement-action span {
+  color: #fff !important;
+}
+.ion-palette-dark app-post .engagement-action ion-icon {
+  color: #fff !important;
+}
+.ion-palette-dark app-post .engagement-action ion-icon.active {
+  color: var(--ion-color-primary) !important;
+}
+.ion-palette-dark app-post .engagement-action.ia-action {
+  color: var(--ion-color-primary);
+}
+.ion-palette-dark app-post .engagement-action.ia-action ion-icon {
+  color: var(--ion-color-primary) !important;
+}
+.ion-palette-dark app-post .engagement-action:hover {
+  background: var(--ion-color-step-100);
+}
+
+// ── Post page: IA entry card (dark mode) ─────────
+.ion-palette-dark app-post .ia-entry-glow {
+  background: linear-gradient(135deg, rgba(105, 59, 220, 0.15), rgba(59, 130, 246, 0.1));
+  border-color: rgba(105, 59, 220, 0.25);
+}
+.ion-palette-dark app-post .ia-entry-content {
+  background: rgba(105, 59, 220, 0.06);
+}
+.ion-palette-dark app-post .ia-modal-footer {
+  background: var(--ion-color-step-100);
+}
+.ion-palette-dark app-post .similares-list li {
+  background: var(--ion-color-step-100);
+}
+
+// ── Timeline (vereador / historico) (dark mode) ──
+.ion-palette-dark app-vereador .timeline-type,
+.ion-palette-dark app-historico .timeline-type {
+  background: #c4943f;
+  color: #5c3b00;
+}
+.ion-palette-dark app-vereador .timeline-dot,
+.ion-palette-dark app-historico .timeline-dot {
+  background: var(--ion-color-step-200);
+}
+.ion-palette-dark app-vereador .timeline-item:hover .timeline-content,
+.ion-palette-dark app-historico .timeline-item:hover .timeline-content {
+  background: var(--ion-color-step-100);
+}
+
+// ── Card: active like/dislike icons (dark mode) ──
+.ion-palette-dark app-card .acao ion-icon.active {
+  color: var(--ion-color-primary) !important;
+}
+
+// ── Card: tipo-tag (dark mode) ──────────────────
+.ion-palette-dark app-card .tipo-tag {
+  background: #c4943f;
+  color: #5c3b00;
+}
+
+// ── Notificações: update-chip (dark mode) ────────
+.ion-palette-dark app-tab3 .update-chip {
+  --background: #c4943f;
+  --color: #5c3b00;
+}
+
+// ── Icon Minimum Size ─────────────────────────────────────────────────
+
+ion-icon {
+  min-width: 22px;
+  min-height: 22px;
+}
+
+// ── Login Prompt Modal ────────────────────────────────────────────────
+
+ion-modal.login-prompt-modal {
+  --border-radius: 20px;
+  --width: 320px;
+  --height: auto;
+}
+
+// ── FIM ───────────────────────────────────────────────────────────────

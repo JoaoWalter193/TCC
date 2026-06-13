@@ -6,6 +6,7 @@ import {
   IonContent, IonIcon, IonButton, IonList, IonItem,
   IonSelect, IonSelectOption, IonLabel, IonCheckbox,
   IonSegment, IonSegmentButton, IonChip, IonText, IonInput,
+  IonGrid, IonRow, IonCol,
   AlertController,
 } from "@ionic/angular/standalone";
 import { AgChartsModule } from 'ag-charts-angular';
@@ -26,6 +27,7 @@ import { ShareService } from 'src/app/services/share.service';
     IonContent, IonIcon, IonButton, IonList, IonItem,
     IonSelect, IonSelectOption, IonLabel, IonCheckbox,
     IonSegment, IonSegmentButton, IonChip, IonText, IonInput,
+    IonGrid, IonRow, IonCol,
     AgChartsModule,
   ],
   providers: [DatePipe],

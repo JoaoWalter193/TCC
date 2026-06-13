@@ -1,136 +1,196 @@
 <ion-header class="post-header">
   <ion-toolbar>
-
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/tabs2"></ion-back-button>
     </ion-buttons>
 
-    <ion-buttons slot="end">
       @if (auth.isLoggedIn()) {
-      <ion-menu-button></ion-menu-button>
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
       } @else {
-      <ion-button fill="clear" (click)="navigateToLogin()">Entrar</ion-button>
+      <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="navigateToLogin()">Entrar</ion-button>
       }
-
-    </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="post-content">
 
   @if(post) {
-    <div class="acoes-topo">
-    <div class="acoes-esquerda">
-      <div class="acao-item">
-        <ion-button fill="clear" (click)="reagir('LIKE')">
-          <ion-icon [name]="likeIconName()"></ion-icon>
+
+  <div class="post-card">
+
+    <!-- ── Author Header ── -->
+    <div class="author-header">
+      <div class="author-avatar" (click)="verVereador(post.vereador.id)">
+        <span>{{ post.vereador.nome.charAt(0) }}</span>
+      </div>
+      <div class="author-info" (click)="verVereador(post.vereador.id)">
+        <span class="author-name">{{ post.vereador.nome }}</span>
+        <span class="author-party">{{ post.vereador.partido }}</span>
+      </div>
+
+      @if (usuarioId) {
+        <ion-button
+          fill="outline"
+          [color]="seguindo ? 'medium' : 'primary'"
+          size="small"
+          mode="ios"
+          class="follow-btn"
+          (click)="toggleSeguir()"
+        >
+          <ion-icon slot="start" [name]="seguindo ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
+          {{ seguindo ? 'Seguindo' : 'Seguir' }}
         </ion-button>
+      }
+    </div>
+
+    <!-- ── Post Body ── -->
+    <div class="post-body">
+      <h1 class="post-title">{{ post.razao }}</h1>
+      <div class="tipo-tag">{{ post.tipoProposicao }}</div>
+      <p class="post-text">{{ post.ementa }}</p>
+    </div>
+
+    <!-- ── Engagement Bar ── -->
+    <div class="engagement-bar">
+      <div class="engagement-action" (click)="reagir('LIKE')">
+        <ion-icon [name]="likeIconName()" [class.active]="post.currentUserReaction === 'LIKE'"></ion-icon>
         <span>{{ post.likes }}</span>
       </div>
 
-      <div class="acao-item">
-        <ion-button fill="clear" (click)="reagir('DISLIKE')">
-          <ion-icon [name]="dislikeIconName()"></ion-icon>
-        </ion-button>
+      <div class="engagement-action" (click)="reagir('DISLIKE')">
+        <ion-icon [name]="dislikeIconName()" [class.active]="post.currentUserReaction === 'DISLIKE'"></ion-icon>
         <span>{{ post.dislikes }}</span>
+      </div>
+
+      <div class="engagement-action" (click)="toggleFavorito()">
+        <ion-icon [name]="post.isFavorito ? 'star' : 'star-outline'" [class.active]="post.isFavorito"></ion-icon>
+      </div>
+
+      <div class="engagement-action" (click)="compartilhar()">
+        <ion-icon name="send-outline"></ion-icon>
+      </div>
+
+      <div class="engagement-action ia-action" (click)="abrirIaModal()">
+        <ion-icon name="sparkles"></ion-icon>
       </div>
     </div>
 
-    <ion-button fill="outline" color="primary" (click)="abrirIaModal()">
-      <ion-icon name="sparkles" slot="start"></ion-icon>
-      Resumo simplificado
-    </ion-button>
+    <!-- ── Separator ── -->
+    <div class="section-divider"></div>
 
-    <ion-button fill="clear" (click)="compartilhar()">
-      <ion-icon name="send-outline"></ion-icon>
-    </ion-button>
-  </div>
-
-  <div class="titulo-area">
-    <div>
-      <p class="tipo">{{ post.tipoProposicao }}</p>
-      <h2>{{ post.razao }}</h2>
-      <p class="subtag">{{ post.tag }}</p>
-      <p class="vereador" (click)="verVereador(post.vereador.id)">{{ post.vereador.nome }}</p>
+    <!-- ── IA Resumo (entry card) ── -->
+    <div class="ia-entry-card" (click)="abrirIaModal()">
+      <div class="ia-entry-glow"></div>
+      <div class="ia-entry-content">
+        <div class="ia-entry-icon">
+          <ion-icon name="sparkles"></ion-icon>
+        </div>
+        <div class="ia-entry-text">
+          <span class="ia-entry-title">Resumo Inteligente</span>
+          <span class="ia-entry-hint">Resumo simplificado da proposição por IA</span>
+        </div>
+        <ion-icon name="chevron-forward" class="ia-entry-arrow"></ion-icon>
+      </div>
     </div>
 
-    <ion-button fill="clear" class="favorito-btn" (click)="toggleFavorito()">
-      <ion-icon [name]="post.isFavorito ? 'star' : 'star-outline'" [color]="post.isFavorito ? 'warning' : ''"></ion-icon>
-    </ion-button>
-  </div>
+    <div class="section-divider"></div>
 
-  <div class="bloco cinza">
-    <h3>Ementa</h3>
-    <p>{{ post.ementa }}</p>
-  </div>
+    <!-- ── Status ── -->
+    <div class="info-section">
+      <div class="info-row">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <div>
+          <span class="info-label">Situação</span>
+          <span class="info-value">
+            @if (post.encerrouTramitacao) {
+            Tramitação encerrada
+            } @else {
+            Em tramitação
+            }
+            @if (post.tramiteAlternativo) {
+            · Trâmite alternativo
+            }
+          </span>
+        </div>
+      </div>
 
-  <div class="bloco estado">
-    <h3>Estado</h3>
+      <div class="info-row">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <div>
+          <span class="info-label">Emissão</span>
+          <span class="info-value">{{ post.dataDeEnvio }} · {{ post.dataEfetivo }}</span>
+        </div>
+      </div>
 
-    @if (post.encerrouTramitacao) {
-    <p>Tramitação encerrada</p>
-    } @else {
-    <p>Em tramitação</p>
-    }
+      <div class="info-row">
+        <ion-icon name="location-outline"></ion-icon>
+        <div>
+          <span class="info-label">Último trâmite</span>
+          <span class="info-value">{{ post.localizacao }} · {{ post.ultimoTramite }}</span>
+        </div>
+      </div>
 
-    @if (post.tramiteAlternativo) {
-    <p>Possui trâmite alternativo</p>
-    }
-  </div>
-
-  <div class="datas-grid">
-    <div class="info-coluna">
-      <h4>Emissão</h4>
-      <p>{{ post.dataDeEnvio }}</p>
-      <p>{{ post.dataEfetivo }}</p>
+      <div class="info-row">
+        <ion-icon name="pricetag-outline"></ion-icon>
+        <div>
+          <span class="info-label">Categoria</span>
+          <span class="info-value">{{ post.tag }}</span>
+        </div>
+      </div>
     </div>
-
-    <div class="info-coluna">
-      <h4>Último trâmite</h4>
-      <p>{{ post.localizacao }}</p>
-      <p>{{ post.ultimoTramite }}</p>
-    </div>
-  </div>
-
-  <div class="bloco cinza">
-    <h3>Proposições semelhantes</h3>
 
     @if (post.leisSimilares.length > 0) {
-    <ul>
-      @for (lei of post.leisSimilares; track lei) {
-      <li>{{ lei }}</li>
-      }
-    </ul>
-    } @else {
-    <p>Nenhuma proposição semelhante cadastrada.</p>
+    <div class="section-divider"></div>
+
+    <div class="similares-section">
+      <h3 class="section-title">Proposições semelhantes</h3>
+      <ul class="similares-list">
+        @for (lei of post.leisSimilares; track lei) {
+        <li>{{ lei }}</li>
+        }
+      </ul>
+    </div>
     }
+
   </div>
+
   }
 
 </ion-content>
 
-<ion-modal [isOpen]="isIaModalOpen" (didDismiss)="fecharIaModal()">
+<ion-modal [isOpen]="isIaModalOpen" (didDismiss)="fecharIaModal()" class="ia-modal">
   <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Explicação por IA</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="fecharIaModal()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ia-content">
-      @if (iaCarregando) {
-        <div class="ia-loading">
-          <ion-spinner></ion-spinner>
-          <p>Gerando explicação...</p>
+    <div class="ia-modal-container">
+      <!-- Header -->
+      <div class="ia-modal-header">
+        <div class="ia-modal-header-left">
+          <ion-icon name="sparkles"></ion-icon>
+          <span>Resumo Inteligente</span>
         </div>
+        <ion-button fill="clear" (click)="fecharIaModal()" class="ia-modal-close">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Body -->
+      @if (iaCarregando) {
+      <div class="ia-loading">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Gerando explicação...</p>
+      </div>
       } @else {
-        <div class="ia-message">{{ iaResumo }}</div>
+      <div class="ia-modal-body">
+        <p class="ia-modal-text">{{ iaResumo }}</p>
+      </div>
       }
-    </ion-content>
+
+      <!-- Footer -->
+      <div class="ia-modal-footer">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <span>Gerado por IA &mdash; verifique informações importantes com fontes oficiais</span>
+      </div>
+    </div>
   </ng-template>
 </ion-modal>

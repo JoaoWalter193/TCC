@@ -34,11 +34,14 @@
 .chart-container {
   height: 280px;
   width: 100%;
-
+  max-width: 100%;
+  overflow: hidden;
   display: flex;
-  justify-content: center;  
-  align-items: center; 
-  
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--ion-color-step-50);
+
   ag-charts {
     width: 100%;
     max-width: 100%;

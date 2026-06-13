@@ -4,19 +4,21 @@
       <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
     </ion-buttons>
 
-    <ion-buttons slot="end">
       @if (auth.isLoggedIn()) {
-      <ion-menu-button></ion-menu-button>
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
       } @else {
-      <ion-button fill="clear" (click)="navigateToLogin()">Entrar</ion-button>
+      <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="navigateToLogin()">Entrar</ion-button>
       }
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="vereador-content">
 
   @if (vereador) {
+
+  <div class="vereador-container">
 
   <div class="vereador-topo">
     <div class="avatar-wrapper">
@@ -68,15 +70,39 @@
 
   </div>
 
-  <div class="secao-posts">
+  <div class="timeline-header">
     <h3>Proposições do vereador</h3>
+    <span class="timeline-count">{{ proposicoes.length }} registro(s)</span>
   </div>
 
-  @for (post of proposicoes; track post.id) {
-  <app-card [post]="post" [link]="['/proposicao', post.id]">
-  </app-card>
+  @if (proposicoes.length > 0) {
+  <div class="timeline">
+    <div class="timeline-line"></div>
+
+    @for (post of proposicoes; track post.id) {
+    <div class="timeline-item" [routerLink]="['/proposicao', post.id]">
+      <div class="timeline-dot">
+        <ion-icon [name]="timelineIcon(post.tipoProposicao)"></ion-icon>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-meta">
+          <span class="timeline-type">{{ post.tipoProposicao }}</span>
+          <span class="timeline-date">{{ formatarData(post.dataDeEnvio) }}</span>
+        </div>
+        <h4 class="timeline-title">{{ post.razao }}</h4>
+        <p class="timeline-text">{{ post.ementa }}</p>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="timeline-empty">
+    <ion-icon name="document-text-outline"></ion-icon>
+    <p>Nenhuma proposição encontrada para este vereador.</p>
+  </div>
   }
 
+  </div>
   }
 
 </ion-content>

@@ -8,7 +8,7 @@ ion-toolbar {
   padding: 4px 8px;
 }
 
-ion-button {
+ion-button[fill="clear"] {
   --color: var(--ion-color-primary);
   font-weight: 500;
   font-size: 0.92rem;
@@ -21,8 +21,8 @@ ion-button {
 }
 
 .filtro-header {
-  --background: var(--ion-color-primary-tint);
-  --color: var(--ion-color-primary);
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
   --border-color: var(--ion-color-primary-shade);
   height: 26px;
   font-size: 0.75rem;

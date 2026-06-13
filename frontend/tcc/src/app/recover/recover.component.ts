@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../services/usuario.service';
-import { IonIcon } from "@ionic/angular/standalone";
+import { IonIcon, IonButton, IonBackButton, IonButtons } from "@ionic/angular/standalone";
 
 type AcaoTipo = 'senha' | 'reativar';
 
@@ -16,7 +16,7 @@ type AcaoTipo = 'senha' | 'reativar';
   selector: 'app-recover',
   templateUrl: './recover.component.html',
   styleUrls: ['./recover.component.scss'],
-  imports: [ReactiveFormsModule, IonIcon],
+  imports: [ReactiveFormsModule, IonIcon, IonButton, IonBackButton, IonButtons],
 })
 export class RecoverComponent implements OnInit {
   public acaoTipo: AcaoTipo = 'senha';
@@ -43,11 +43,9 @@ export class RecoverComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       const tipo = params['tipo'] as AcaoTipo;
-      console.log('✅ [INIT] Parâmetros de URL recebidos:', params);
 
       if (tipo === 'senha' || tipo === 'reativar') {
         this.acaoTipo = tipo;
-        console.log(`✅ [INIT] Ação detectada e definida: ${this.acaoTipo}`);
       } else {
         console.warn(
           `⚠️ [INIT] Parâmetro 'tipo' ausente ou inválido (${tipo}). Usando padrão: ${this.acaoTipo}`
@@ -55,9 +53,6 @@ export class RecoverComponent implements OnInit {
       }
 
       this.configurarConteudoTela();
-      console.log(
-        `✅ [INIT] Título da tela configurado para: ${this.tituloTela}`
-      );
     });
   }
 
@@ -99,8 +94,6 @@ export class RecoverComponent implements OnInit {
           error.error?.message ||
           'Ocorreu um erro ao processar sua solicitação. Tente novamente.';
         this.loading = false;
-        console.error('❌ [ENVIAR AÇÃO] Erro na requisição:', error);
-        console.log(`   Mensagem Erro Exibida: ${this.mensagemErro}`);
       },
     });
   }

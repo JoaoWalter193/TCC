@@ -1,0 +1,17 @@
+<div class="login-prompt-container">
+  <ion-button fill="clear" size="small" (click)="dismiss()"
+    style="position: absolute; top: 8px; right: 8px; --padding-start: 4px; --padding-end: 4px; margin: 0;">
+    <ion-icon name="close" slot="icon-only"></ion-icon>
+  </ion-button>
+
+  <ion-icon name="log-in-outline" class="login-prompt-icon"></ion-icon>
+
+  <p class="login-prompt-text">
+    Você precisa estar conectado para realizar esta ação.
+  </p>
+
+  <ion-button (click)="fazerLogin()" fill="solid" color="primary" mode="ios"
+    class="login-prompt-btn">
+    Fazer Login
+  </ion-button>
+</div>
