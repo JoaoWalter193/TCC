@@ -63,7 +63,7 @@ export class PerfilComponent implements OnInit {
   }
 
   navEditarPerfil() {
-    this.router.navigate(['/tabs/tab1']);
+    this.router.navigate(['/editar-perfil']);
   }
 
   navFavoritos() {

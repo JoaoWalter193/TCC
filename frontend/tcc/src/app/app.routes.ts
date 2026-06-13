@@ -76,5 +76,10 @@ export const routes: Routes = [
     path: 'vereador/:id',
     loadComponent: () =>
       import('./vereador/vereador.component').then((m) => m.VereadorComponent)
-  }
+  },
+  {
+    path: 'editar-perfil',
+    loadComponent: () =>
+      import('./tab1/tab1.page').then((m) => m.Tab1Page),
+  },
 ];

@@ -455,8 +455,7 @@ ion-header ion-toolbar:first-of-type {
 @media (min-width: 1024px) {
   app-login .content,
   app-cadastro .content,
-  app-recover .content,
-  app-tab1 .content {
+  app-recover .content {
     max-width: 520px;
     margin: 0 auto;
     border-radius: 1rem;
