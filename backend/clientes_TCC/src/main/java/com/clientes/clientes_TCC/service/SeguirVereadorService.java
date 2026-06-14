@@ -4,6 +4,9 @@ import com.clientes.clientes_TCC.domain.Default.ResponseDTO;
 import com.clientes.clientes_TCC.domain.Notificacao.UsuarioVereadorSeguindo;
 import com.clientes.clientes_TCC.domain.Vereador.Vereador;
 import com.clientes.clientes_TCC.domain.Vereador.VereadorSeguindoDTO;
+import com.clientes.clientes_TCC.exceptions.UsuarioInexistenteException;
+import com.clientes.clientes_TCC.exceptions.VereadorInexistenteException;
+import com.clientes.clientes_TCC.exceptions.VereadorNaoSeguidoException;
 import com.clientes.clientes_TCC.repositories.UsuarioRepository;
 import com.clientes.clientes_TCC.repositories.UsuarioVereadorSeguindoRepository;
 import com.clientes.clientes_TCC.repositories.VereadorRepository;
@@ -28,12 +31,10 @@ public class SeguirVereadorService {
 
     public ResponseEntity<ResponseDTO> seguirVereador(Integer usuarioId, Integer vereadorId) {
         if (!usuarioRepository.existsById(usuarioId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Usuário não encontrado!"));
+            throw new UsuarioInexistenteException();
         }
         if (!vereadorRepository.existsById(vereadorId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Vereador não encontrado!"));
+            throw new VereadorInexistenteException();
         }
 
         UsuarioVereadorSeguindo.UsuarioVereadorId id =
@@ -53,20 +54,17 @@ public class SeguirVereadorService {
 
     public ResponseEntity<ResponseDTO> deixarDeSeguirVereador(Integer usuarioId, Integer vereadorId) {
         if (!usuarioRepository.existsById(usuarioId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Usuário não encontrado!"));
+            throw new UsuarioInexistenteException();
         }
         if (!vereadorRepository.existsById(vereadorId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Vereador não encontrado!"));
+            throw new VereadorInexistenteException();
         }
 
         UsuarioVereadorSeguindo.UsuarioVereadorId id =
                 new UsuarioVereadorSeguindo.UsuarioVereadorId(usuarioId, vereadorId);
 
         if (!seguindoRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Vereador não seguido!"));
+            throw new VereadorNaoSeguidoException();
         }
 
         seguindoRepository.deleteById(id);

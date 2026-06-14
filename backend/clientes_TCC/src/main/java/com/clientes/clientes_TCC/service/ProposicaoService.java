@@ -4,13 +4,13 @@ import com.clientes.clientes_TCC.domain.Notificacao.Reacao;
 import com.clientes.clientes_TCC.domain.Proposicao.Proposicao;
 import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoEspecificaDTO;
 import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoListaResponseDTO;
+import com.clientes.clientes_TCC.exceptions.ProposicaoInexistenteException;
 import com.clientes.clientes_TCC.repositories.ProposicaoRepository;
 import com.clientes.clientes_TCC.repositories.ReacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -74,7 +74,7 @@ public class ProposicaoService {
     public ResponseEntity<ProposicaoEspecificaDTO> buscarProposicao(Long codigo, Integer usuarioId) {
         Optional<Proposicao> optProposicao = proposicaoRepository.findByCodigo(codigo);
         if (optProposicao.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ProposicaoInexistenteException();
         }
         Proposicao proposicao = optProposicao.get();
 

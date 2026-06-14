@@ -1,6 +1,7 @@
 package com.clientes.clientes_TCC.service;
 
 import com.clientes.clientes_TCC.domain.Notificacao.Notificacao;
+import com.clientes.clientes_TCC.exceptions.NotificacaoInexistenteException;
 import com.clientes.clientes_TCC.repositories.DispositivoUsuarioRepository;
 import com.clientes.clientes_TCC.repositories.NotificacaoRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -89,10 +90,10 @@ public class NotificacaoService {
     }
 
     public ResponseEntity<Void> marcarComoLida(Integer id) {
-        notificacaoRepository.findById(id).ifPresent(n -> {
-            n.setLida(true);
-            notificacaoRepository.save(n);
-        });
+        Notificacao notificacao = notificacaoRepository.findById(id)
+                .orElseThrow(NotificacaoInexistenteException::new);
+        notificacao.setLida(true);
+        notificacaoRepository.save(notificacao);
         return ResponseEntity.noContent().build();
     }
 
