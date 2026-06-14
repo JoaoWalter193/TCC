@@ -72,6 +72,7 @@ services:
         npm install &&
         npx tsx watch server.ts
       "
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./backend/api-gateway:/app
     ports:
