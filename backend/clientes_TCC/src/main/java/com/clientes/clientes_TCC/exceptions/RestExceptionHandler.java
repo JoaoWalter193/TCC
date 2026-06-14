@@ -97,4 +97,53 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    //EXCEÇÕES DE PROPOSIÇÃO
+
+    @ExceptionHandler(ProposicaoInexistenteException.class)
+    private ResponseEntity<ResponseDTO> erroProposicaoInexistente(ProposicaoInexistenteException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseDTO(HttpStatus.NOT_FOUND.toString(), ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(ProposicaoNaoFavoritadaException.class)
+    private ResponseEntity<ResponseDTO> erroProposicaoNaoFavoritada(ProposicaoNaoFavoritadaException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseDTO(HttpStatus.NOT_FOUND.toString(), ex.getMessage())
+        );
+    }
+
+    //EXCEÇÕES DE REAÇÃO
+
+    @ExceptionHandler(ReacaoInexistenteException.class)
+    private ResponseEntity<ResponseDTO> erroReacaoInexistente(ReacaoInexistenteException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseDTO(HttpStatus.NOT_FOUND.toString(), ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(TipoReacaoInvalidoException.class)
+    private ResponseEntity<ResponseDTO> erroTipoReacaoInvalido(TipoReacaoInvalidoException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ResponseDTO(HttpStatus.BAD_REQUEST.toString(), ex.getMessage())
+        );
+    }
+
+    //EXCEÇÕES DE NOTIFICAÇÃO
+
+    @ExceptionHandler(NotificacaoInexistenteException.class)
+    private ResponseEntity<ResponseDTO> erroNotificacaoInexistente(NotificacaoInexistenteException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseDTO(HttpStatus.NOT_FOUND.toString(), ex.getMessage())
+        );
+    }
+
+    //EXCEÇÕES DE VEREADOR SEGUIDO
+
+    @ExceptionHandler(VereadorNaoSeguidoException.class)
+    private ResponseEntity<ResponseDTO> erroVereadorNaoSeguido(VereadorNaoSeguidoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseDTO(HttpStatus.NOT_FOUND.toString(), ex.getMessage())
+        );
+    }
 }
