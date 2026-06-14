@@ -1,0 +1,14 @@
+tcc/node_modules
+tcc/.angular
+tcc/dist
+tcc/www
+tcc/platforms
+tcc/.git
+tcc/.gitignore
+tcc/.vscode
+tcc/.idea
+tcc/android/.gradle
+tcc/android/build
+tcc/ios/build
+tcc/*.log
+tcc/.DS_Store
