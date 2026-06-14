@@ -4,6 +4,7 @@ import com.clientes.clientes_TCC.domain.Default.ResponseDTO;
 import com.clientes.clientes_TCC.domain.Notificacao.UsuarioProposicaoFavorita;
 import com.clientes.clientes_TCC.domain.Proposicao.Proposicao;
 import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoListaResponseDTO;
+import com.clientes.clientes_TCC.exceptions.ProposicaoNaoFavoritadaException;
 import com.clientes.clientes_TCC.repositories.UsuarioProposicaoFavoritaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,8 +40,7 @@ public class FavoritarProposicaoService {
                 new UsuarioProposicaoFavorita.UsuarioProposicaoId(usuarioId, proposicaoCodigo);
 
         if (!favoritaRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(HttpStatus.NOT_FOUND.toString(), "Proposição não favoritada!"));
+            throw new ProposicaoNaoFavoritadaException();
         }
 
         favoritaRepository.deleteById(id);

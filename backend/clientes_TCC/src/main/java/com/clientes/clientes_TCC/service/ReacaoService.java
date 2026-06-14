@@ -4,6 +4,9 @@ import com.clientes.clientes_TCC.domain.Default.ResponseDTO;
 import com.clientes.clientes_TCC.domain.Notificacao.Reacao;
 import com.clientes.clientes_TCC.domain.Notificacao.ReacaoResponseDTO;
 import com.clientes.clientes_TCC.domain.Notificacao.TipoReacao;
+import com.clientes.clientes_TCC.exceptions.ProposicaoInexistenteException;
+import com.clientes.clientes_TCC.exceptions.ReacaoInexistenteException;
+import com.clientes.clientes_TCC.exceptions.TipoReacaoInvalidoException;
 import com.clientes.clientes_TCC.repositories.ProposicaoRepository;
 import com.clientes.clientes_TCC.repositories.ReacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +31,14 @@ public class ReacaoService {
     @Transactional
     public ResponseEntity<ResponseDTO> reagir(Integer usuarioId, Long proposicaoCodigo, String tipo) {
         if (!proposicaoRepository.existsById(proposicaoCodigo)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO("404", "Proposição não encontrada"));
+            throw new ProposicaoInexistenteException();
         }
 
         TipoReacao novoTipo;
         try {
             novoTipo = TipoReacao.valueOf(tipo.toUpperCase());
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(new ResponseDTO("400", "Tipo inválido. Use LIKE ou DISLIKE"));
+            throw new TipoReacaoInvalidoException();
         }
 
         Reacao.ReacaoId id = new Reacao.ReacaoId(usuarioId, proposicaoCodigo);
@@ -77,8 +78,7 @@ public class ReacaoService {
 
         Optional<Reacao> reacao = reacaoRepository.findById(id);
         if (reacao.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO("404", "Reação não encontrada"));
+            throw new ReacaoInexistenteException();
         }
 
         atualizarContador(proposicaoCodigo, reacao.get().getTipo(), -1);
@@ -104,7 +104,7 @@ public class ReacaoService {
         Optional<Reacao> reacao = reacaoRepository.findByIdUsuarioIdAndIdProposicaoCodigo(usuarioId, proposicaoCodigo);
 
         if (reacao.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ReacaoInexistenteException();
         }
 
         Reacao r = reacao.get();
