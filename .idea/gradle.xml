@@ -7,6 +7,22 @@
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/frontend/tcc/android" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/frontend/tcc/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/android/app" />
+            <option value="$PROJECT_DIR$/frontend/tcc/android/capacitor-cordova-android-plugins" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/android/capacitor" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/app/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/filesystem/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/haptics/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/keyboard/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/local-notifications/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/push-notifications/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/share/android" />
+            <option value="$PROJECT_DIR$/frontend/tcc/node_modules/@capacitor/status-bar/android" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
