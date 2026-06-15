@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  gatewayUrl: 'http://192.168.15.12:3000',
+  gatewayUrl: 'http://100.81.137.43:3000',
   mockApiUrl: 'assets/mock-api'
 };
