@@ -7,7 +7,13 @@ import { env } from "./config/environment";
 const app = express();
 
 app.use(cors({
-  origin: env.cors.origins,
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (env.cors.origins.indexOf(origin) !== -1) return callback(null, true);
+    if (origin.includes('100.81.137.43')) return callback(null, true);
+    console.warn(`[CORS] Blocked origin: ${origin}`);
+    callback(null, false);
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
