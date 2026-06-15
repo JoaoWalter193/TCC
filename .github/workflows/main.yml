@@ -17,8 +17,8 @@ jobs:
           echo "UID=$(id -u)" >> $GITHUB_ENV
           echo "GID=$(id -g)" >> $GITHUB_ENV
 
-      - name: Rebuild and restart containers
+      - name: Rebuild and restart containers (production)
         run: |
-          docker compose down
-          docker compose build --no-cache
-          docker compose up -d --build
+          docker compose -f compose.yaml -f compose.prod.yaml down
+          docker compose -f compose.yaml -f compose.prod.yaml build --no-cache
+          docker compose -f compose.yaml -f compose.prod.yaml up -d --build
