@@ -11,6 +11,7 @@ app.use(cors({
     if (!origin) return callback(null, true);
     if (env.cors.origins.indexOf(origin) !== -1) return callback(null, true);
     if (origin.includes('100.81.137.43')) return callback(null, true);
+    if (origin.includes('app.curitibativa.online')) return callback(null, true);
     console.warn(`[CORS] Blocked origin: ${origin}`);
     callback(null, false);
   },
