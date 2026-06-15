@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  gatewayUrl: 'http://100.81.137.43:3000',
+  gatewayUrl: 'https://app.curitibativa.online',
   mockApiUrl: 'assets/mock-api'
 };
