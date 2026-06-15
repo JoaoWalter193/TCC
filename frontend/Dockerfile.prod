@@ -1,0 +1,10 @@
+FROM node:20-alpine AS build
+WORKDIR /build
+COPY tcc/package*.json ./
+RUN npm ci
+COPY tcc/ .
+RUN npx ng build --configuration=production
+
+FROM nginx:alpine
+COPY --from=build /build/www /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
