@@ -4,6 +4,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
     command: ["nginx", "-g", "daemon off;"]
+    depends_on:
+      - api-gateway
 
   api-gateway:
     command: >
@@ -12,7 +14,7 @@ services:
         npx tsx server.ts
       "
     environment:
-      CORS_ORIGINS: "http://100.81.137.43:80,http://100.81.137.43,capacitor://localhost,http://localhost"
+      CORS_ORIGINS: "https://app.curitibativa.online,capacitor://localhost,http://localhost"
 
   clientes:
     command: "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dspring-boot.run.profiles=prod'"
