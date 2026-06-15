@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    command: ["nginx", "-g", "daemon off;"]
+
+  api-gateway:
+    command: >
+      sh -c "
+        npm install &&
+        npx tsx server.ts
+      "
+    environment:
+      CORS_ORIGINS: "http://100.81.137.43:80,http://100.81.137.43,capacitor://localhost,http://localhost"
+
+  clientes:
+    command: "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dspring-boot.run.profiles=prod'"
