@@ -51,7 +51,8 @@
           <div class="feed-container">
             <div class="highlight-list">
               @for (post of searchResults; track post.id) {
-                <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"></app-card>
+                <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"
+                  (verVereador)="irParaVereador($event)"></app-card>
               }
             </div>
           </div>
@@ -66,7 +67,8 @@
         <div class="feed-container">
           <div class="highlight-list">
             @for (post of postsDestaque; track post.id) {
-              <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"></app-card>
+              <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"
+                (verVereador)="irParaVereador($event)"></app-card>
             }
           </div>
         </div>
