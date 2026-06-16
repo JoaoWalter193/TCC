@@ -369,18 +369,6 @@ ion-header ion-toolbar:first-of-type {
     margin-right: auto;
   }
 
-  app-card ion-card {
-    border-radius: 16px;
-    border: 1px solid var(--ion-border-color);
-    margin: 14px auto;
-    transition: box-shadow 0.18s ease;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-  }
-
-  app-card ion-card:active {
-    background: var(--ion-card-background);
-  }
-
   app-card ion-card:hover {
     background: var(--ion-color-step-50);
   }

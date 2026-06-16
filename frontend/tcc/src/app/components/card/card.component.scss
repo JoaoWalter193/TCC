@@ -2,7 +2,7 @@ ion-card {
   margin: 0;
   border-radius: 0;
   box-shadow: none;
-  border-bottom: 1px solid var(--ion-border-color);
+  border-bottom: 1px solid var(--ion-color-light-shade, #e0e0e0);
   background: var(--ion-card-background);
   transition: background 0.18s ease;
 }
