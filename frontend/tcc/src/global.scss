@@ -335,6 +335,15 @@ ion-header ion-toolbar:first-of-type {
   .engajamento-divider {
     background: var(--ion-border-color) !important;
   }
+
+  // ── Login Prompt Modal ──────────────────────────
+  ion-modal.login-prompt-modal {
+    --background: var(--ion-card-background);
+
+    ion-button[fill="clear"] {
+      --color: var(--ion-color-step-500);
+    }
+  }
 }
 
 // ── RESPONSIVE WEB ────────────────────────────────────────────────────
