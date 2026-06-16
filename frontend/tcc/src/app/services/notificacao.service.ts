@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { NotificacaoDTO, NotificacaoViewModel, NotificacaoTipo } from '../models/dto/notificacao-dto';
 import { ApiGatewayService } from './api-gateway.service';
+import { AuthService } from './auth.service';
 import { SseService } from './sse.service';
 import { LocalNotificationService } from './local-notification.service';
 
@@ -29,6 +30,10 @@ export class NotificacaoService {
       if (this.ultimoUsuarioId) {
         this.carregarNotificacoes(this.ultimoUsuarioId);
       }
+    });
+
+    inject(AuthService).reset$.subscribe(() => {
+      this.limparEstado();
     });
   }
 
@@ -100,6 +105,18 @@ export class NotificacaoService {
     );
     ids.forEach(id => this.persistirLida(id));
     this.atualizarContador();
+  }
+
+  limparEstado(): void {
+    this.notificacoes.set([]);
+    this.naoLidas.set(0);
+    this.ultimoUsuarioId = 0;
+    this.idsAgendados.clear();
+    this.primeiraCarga = true;
+    this.sse.desconectar();
+    try {
+      localStorage.removeItem(this.STORAGE_KEY);
+    } catch { /* ignora */ }
   }
 
   private agendarNovas(atual: NotificacaoViewModel[], anterior: NotificacaoViewModel[]): void {

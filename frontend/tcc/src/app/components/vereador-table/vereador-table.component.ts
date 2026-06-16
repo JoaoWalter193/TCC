@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { VereadorService } from 'src/app/services/vereador';
 import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
@@ -22,8 +23,8 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
                 <span class="partido">{{ v.partido }}</span>
               </div>
             </a>
-            <button class="btn-seguir" [class.seguindo]="seguindoIds.has(v.id)" (click)="toggleSeguir($event, v.id)">
-              {{ seguindoIds.has(v.id) ? 'Seguindo' : 'Seguir' }}
+            <button class="btn-seguir" [class.seguindo]="auth.isLoggedIn() && seguindoIds.has(v.id)" (click)="toggleSeguir($event, v.id)">
+              {{ auth.isLoggedIn() && seguindoIds.has(v.id) ? 'Seguindo' : 'Seguir' }}
             </button>
           </div>
         }
@@ -125,30 +126,63 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
     }
   `]
 })
-export class VereadorTableComponent implements OnInit {
+export class VereadorTableComponent implements OnInit, OnDestroy {
   vereadores: VereadorDTO[] = [];
   seguindoIds = new Set<number>();
   userId: number | null = null;
+  auth = inject(AuthService);
+  private destroyed = new Subject<void>();
 
   constructor(
     private vereadorService: VereadorService,
-    private auth: AuthService
   ) {}
 
   ngOnInit() {
-    this.userId = this.auth.getUsuarioId();
-
-    if (this.userId) {
-      this.vereadorService.listarSeguindo(this.userId).subscribe({
-        next: (lista) => {
-          this.seguindoIds = new Set(lista.map(v => v.id));
+    this.sincronizarAuth();
+    this.auth.authState$
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((isLoggedIn) => {
+        if (isLoggedIn) {
+          this.userId = this.auth.getUsuarioId();
+          this.carregarSeguindo();
+        } else {
+          this.userId = null;
+          this.seguindoIds.clear();
         }
       });
-    }
+
+    this.auth.reset$
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => {
+        this.userId = null;
+        this.seguindoIds.clear();
+      });
 
     this.vereadorService.listarTopSeguidos().subscribe({
       next: (lista) => this.vereadores = lista,
       error: () => this.vereadores = []
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
+
+  private sincronizarAuth(): void {
+    this.userId = this.auth.getUsuarioId();
+    if (this.userId) {
+      this.carregarSeguindo();
+    }
+  }
+
+  private carregarSeguindo(): void {
+    const uid = this.userId;
+    if (!uid) return;
+    this.vereadorService.listarSeguindo(uid).subscribe({
+      next: (lista) => {
+        this.seguindoIds = new Set(lista.map(v => v.id));
+      }
     });
   }
 

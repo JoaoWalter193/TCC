@@ -34,14 +34,14 @@ export class CardComponent {
   @Output() tipoFiltrado = new EventEmitter<string>();
   @Output() verVereador = new EventEmitter<number>();
 
-  private auth = inject(AuthService);
+  auth = inject(AuthService);
   private reacaoService = inject(ReacaoService);
   private reacaoEvent = inject(ReacaoEventService);
   private shareService = inject(ShareService);
   private favoritosService = inject(FavoritosService);
 
   starIconName(): string {
-    return this.post.isFavorito ? 'star' : 'star-outline';
+    return this.auth.isLoggedIn() && this.post.isFavorito ? 'star' : 'star-outline';
   }
 
   toggleFavorito(event: Event) {
@@ -83,11 +83,11 @@ export class CardComponent {
   }
 
   likeIconName(): string {
-    return this.post.currentUserReaction === 'LIKE' ? 'thumbs-up' : 'thumbs-up-outline';
+    return this.auth.isLoggedIn() && this.post.currentUserReaction === 'LIKE' ? 'thumbs-up' : 'thumbs-up-outline';
   }
 
   dislikeIconName(): string {
-    return this.post.currentUserReaction === 'DISLIKE' ? 'thumbs-down' : 'thumbs-down-outline';
+    return this.auth.isLoggedIn() && this.post.currentUserReaction === 'DISLIKE' ? 'thumbs-down' : 'thumbs-down-outline';
   }
 
   reagir(event: Event, tipo: 'LIKE' | 'DISLIKE') {
