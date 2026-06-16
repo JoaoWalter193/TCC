@@ -8,7 +8,11 @@ import {
   IonButtons,
   IonMenuButton,
   IonIcon,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/angular/standalone';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { FavoritosService } from '../services/favoritos.service';
 import { VereadorService } from '../services/vereador';
@@ -27,6 +31,8 @@ import { VereadorTableComponent } from '../components/vereador-table/vereador-ta
     IonHeader,
     IonToolbar,
     IonContent,
+    IonRefresher,
+    IonRefresherContent,
     IonButton,
     IonButtons,
     IonMenuButton,
@@ -59,6 +65,26 @@ export class Tab5Page {
 
   mudarModo(modo: 'favoritos' | 'seguindo') {
     this.modoSelecionado = modo;
+  }
+
+  recarregarDados(event: any) {
+    const id = this.usuarioId;
+    const favoritos$ = id
+      ? this.favoritosService.listar(id).pipe(catchError(() => of([] as ProposicaoDTO[])))
+      : of([] as ProposicaoDTO[]);
+    const seguindo$ = id
+      ? this.vereadorService.listarSeguindo(id).pipe(catchError(() => of([] as VereadorDTO[])))
+      : of([] as VereadorDTO[]);
+
+    forkJoin([favoritos$, seguindo$]).subscribe({
+      next: ([fav, seg]) => {
+        this.favoritos = fav;
+        this.vereadores = seg;
+      },
+      complete: () => {
+        event.target.complete();
+      },
+    });
   }
 
   carregarFavoritos() {
