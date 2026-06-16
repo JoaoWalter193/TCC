@@ -1,5 +1,5 @@
-import { RecoverComponent } from './recover/recover.component';
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -43,11 +43,13 @@ export const routes: Routes = [
   },
   {
     path: 'perfil',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./perfil/perfil.component').then((m) => m.PerfilComponent),
   },
   {
     path: 'seguindo',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./seguindo/seguindo.component').then(
         (m) => m.SeguindoComponent,
@@ -55,6 +57,7 @@ export const routes: Routes = [
   },
   {
     path: 'historico',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./historico/historico.component').then(
         (m) => m.HistoricoComponent,
@@ -62,6 +65,7 @@ export const routes: Routes = [
   },
   {
     path: 'configuracoes',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./configuracoes/configuracoes.component').then(
         (m) => m.ConfiguracoesComponent,
@@ -79,6 +83,7 @@ export const routes: Routes = [
   },
   {
     path: 'editar-perfil',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./tab1/tab1.page').then((m) => m.Tab1Page),
   },

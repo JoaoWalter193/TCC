@@ -1,4 +1,5 @@
 import { Component, inject, Injector } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { AuthService } from './services/auth.service';
 import { ThemeService } from './services/theme.service';
@@ -15,9 +16,14 @@ export class AppComponent {
     inject(ThemeService);
     const authService = inject(AuthService);
     const platform = inject(Platform);
+    const router = inject(Router);
     const injector = inject(Injector);
 
     authService.checkAuth();
+
+    platform.backButton.subscribeWithPriority(0, () => {
+      router.navigate(['/tabs/tab2']);
+    });
 
     platform.ready().then(() => {
       if (platform.is('capacitor')) {
