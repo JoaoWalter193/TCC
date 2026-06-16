@@ -171,7 +171,11 @@ export class VereadorTableComponent implements OnInit {
       ? this.vereadorService.deixarDeSeguir(uid, vereadorId)
       : this.vereadorService.seguir(uid, vereadorId);
 
-    obs.subscribe({ error: () => {
+    obs.subscribe({ error: (err) => {
+      if (err?.status === 403) {
+        this.auth.showLoginPrompt();
+        return;
+      }
       if (seguindo) {
         this.seguindoIds.add(vereadorId);
       } else {
