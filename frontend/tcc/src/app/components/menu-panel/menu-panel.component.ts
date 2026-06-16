@@ -1,29 +1,29 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { DashboardMode } from 'src/app/services/dashboard-mode';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-menu-panel',
   standalone: true,
-  imports: [CommonModule, RouterModule, IonIcon],
+  imports: [IonIcon],
   template: `
     <aside class="menu-panel">
       <nav class="panel-nav">
-        <a class="panel-item" routerLink="/perfil">
+        <a class="panel-item" (click)="navigateIfLogged('/perfil')">
           <ion-icon name="person-outline"></ion-icon>
           <span>Perfil</span>
         </a>
-        <a class="panel-item" routerLink="/historico">
+        <a class="panel-item" (click)="navigateIfLogged('/historico')">
           <ion-icon name="time-outline"></ion-icon>
           <span>Histórico</span>
         </a>
-        <a class="panel-item" (click)="navMeusDashboards()">
+        <a class="panel-item" (click)="navigateIfLogged()">
           <ion-icon name="bar-chart-outline"></ion-icon>
           <span>Meus Dashboards</span>
         </a>
-        <a class="panel-item" routerLink="/configuracoes">
+        <a class="panel-item" (click)="navigateIfLogged('/configuracoes')">
           <ion-icon name="settings-outline"></ion-icon>
           <span>Configurações</span>
         </a>
@@ -87,10 +87,30 @@ import { DashboardMode } from 'src/app/services/dashboard-mode';
   `]
 })
 export class MenuPanelComponent {
-  constructor(private modoService: DashboardMode, private router: Router) {}
+  auth = inject(AuthService);
 
-  navMeusDashboards() {
-    this.modoService.setModo('my-dashboard');
-    this.router.navigate(['tabs/tab6']);
+  constructor(
+    private modoService: DashboardMode,
+    private router: Router,
+  ) {}
+
+  private checkLogin(): boolean {
+    if (!this.auth.isLoggedIn()) {
+      this.auth.showLoginPrompt();
+      return false;
+    }
+    return true;
+  }
+
+  navigateIfLogged(route?: string) {
+    if (!this.checkLogin()) return;
+
+    if (!route) {
+      this.modoService.setModo('my-dashboard');
+      this.router.navigate(['tabs/tab6']);
+      return;
+    }
+
+    this.router.navigate([route]);
   }
 }

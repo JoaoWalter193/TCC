@@ -6,16 +6,19 @@ import com.clientes.clientes_TCC.domain.Vereador.VereadorDTO;
 import com.clientes.clientes_TCC.exceptions.VereadorInexistenteException;
 import com.clientes.clientes_TCC.repositories.UsuarioVereadorSeguindoRepository;
 import com.clientes.clientes_TCC.repositories.VereadorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class VereadorService {
+
+    private static final Logger log = LoggerFactory.getLogger(VereadorService.class);
 
     @Autowired
     VereadorRepository vereadorRepository;
@@ -25,15 +28,21 @@ public class VereadorService {
 
     public ResponseEntity<List<VereadorDTO>> listarVereadores (){
         List<Vereador> vereadoresLista = vereadorRepository.findAllWithPartido();
-        List<VereadorDTO> listaDTO = vereadoresLista.stream().map(v -> transformarEmDTO(v, false)).toList();
+        List<VereadorDTO> listaDTO = vereadoresLista.stream().map(v -> toDTO(v, 0)).toList();
+        log.info("listarVereadores retornou {} vereadores", listaDTO.size());
         return ResponseEntity.ok(listaDTO);
-
-    };
+    }
 
     public ResponseEntity<List<VereadorDTO>> listarVereadoresPorSeguidores() {
         List<Vereador> vereadoresLista = vereadorRepository.findAllWithPartido();
+
+        Map<Integer, Integer> seguidoresMap = carregarSeguidoresMap(
+                vereadoresLista.stream().map(Vereador::getId).toList()
+        );
+        log.info("listarVereadoresPorSeguidores: {} vereadores carregados", vereadoresLista.size());
+
         List<VereadorDTO> listaDTO = vereadoresLista.stream()
-                .map(v -> transformarEmDTO(v, true))
+                .map(v -> toDTO(v, seguidoresMap.getOrDefault(v.getId(), 0)))
                 .sorted(Comparator.comparingInt(VereadorDTO::seguidores).reversed()
                         .thenComparing(v -> v.nome() != null ? v.nome() : ""))
                 .toList();
@@ -48,20 +57,23 @@ public class VereadorService {
             throw new VereadorInexistenteException();
         }
         Vereador vereadorTemp = vereadorOpt.get();
-        VereadorDTO dto = transformarEmDTO(vereadorTemp, false);
+        VereadorDTO dto = toDTO(vereadorTemp, 0);
 
         return ResponseEntity.ok(dto);
+    }
 
-    };
+    private Map<Integer, Integer> carregarSeguidoresMap(List<Integer> ids) {
+        if (ids.isEmpty()) return Collections.emptyMap();
+        List<Object[]> counts = seguindoRepository.countByVereadorIds(ids);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (Object[] row : counts) {
+            map.put((Integer) row[0], ((Number) row[1]).intValue());
+        }
+        return map;
+    }
 
-
-
-
-    private VereadorDTO transformarEmDTO(Vereador v, boolean incluirSeguidores) {
+    private VereadorDTO toDTO(Vereador v, Integer seguidores) {
         String siglaPartido = v.getPartido() != null ? v.getPartido().getNomePartido() : "";
-        Integer seguidores = incluirSeguidores
-                ? seguindoRepository.findUsuarioIdsByVereadorId(v.getId()).size()
-                : 0;
         return new VereadorDTO(
                 v.getId(), v.getNome(), siglaPartido,
                 v.getEmail(), v.getLegislaturas(), v.getGabinete(),

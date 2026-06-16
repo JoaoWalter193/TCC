@@ -23,6 +23,15 @@ def get_flattened_data(db: Session):
 def get_dashboard_metadata(db: Session):
     df = get_flattened_data(db)
 
+    LABEL_MAP = {
+        "codigo": "Código",
+        "data_envio": "Data de Envio",
+        "tag": "Categoria",
+        "vereador_nome": "Vereador",
+        "genero": "Gênero",
+        "partido_nome": "Partido",
+    }
+
     metadata = {}
     for column in df.columns:
         dtype = (
@@ -31,7 +40,7 @@ def get_dashboard_metadata(db: Session):
             else "categorical"
         )
         metadata[column] = {
-            "label": "Categoria" if column == "tag" else column.replace("_", " ").title(),
+            "label": LABEL_MAP.get(column, column.replace("_", " ").title()),
             "dtype": dtype,
             "options": df[column].dropna().unique().tolist() if dtype == "categorical" else []
         }

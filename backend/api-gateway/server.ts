@@ -42,11 +42,14 @@ function logProxy(req: express.Request, _res: express.Response, next: express.Ne
   next();
 }
 
+const proxyTimeout = 30000;
+
 app.use(env.bi.prefix, (req, _res, next) => {
   const stripped = req.originalUrl.replace(env.bi.prefix, "");
   (req as any).targetUrl = `${env.bi.baseUrl}${stripped}`;
   next();
 }, logProxy, proxy(env.bi.baseUrl, {
+  timeout: proxyTimeout,
   proxyReqPathResolver: (req) => {
     const stripped = req.originalUrl.replace(env.bi.prefix, "");
     return stripped;
@@ -62,12 +65,10 @@ app.use(env.business.prefix, (req, _res, next) => {
   (req as any).targetUrl = `${env.business.baseUrl}${stripped}`;
   next();
 }, logProxy, proxy(env.business.baseUrl, {
+  timeout: proxyTimeout,
   proxyReqPathResolver: (req) => {
     const stripped = req.originalUrl.replace(env.business.prefix, "");
     return stripped;
-  },
-  proxyReqOptDecorator: (proxyReqOpts) => {
-    return { ...proxyReqOpts, timeout: 0 };
   },
   proxyErrorHandler: (err, res, next) => {
     console.error(`[Proxy Error] Business service: ${err.message}`);
