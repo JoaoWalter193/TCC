@@ -4,6 +4,7 @@ export interface ProposicaoListaDTO {
   vereadorId: number;
   vereadorNome: string;
   dataEnvio: string;
+  razao: string;
   ementa: string;
   tag: string;
   estado: string;

@@ -47,15 +47,12 @@ export class AppComponent {
       return;
     }
 
-    // Mede uma vez só — safe area não muda em runtime,
-    // e o evento resize do visualViewport é contaminado pelo teclado.
     const vv = window.visualViewport!;
     const measured = Math.max(0, window.innerHeight - vv.height);
 
     if (measured > 2) {
       setInset(measured);
     } else {
-      // visualViewport não acusou insets (ex: MIUI), fallback fixo
       setInset(48);
     }
   }

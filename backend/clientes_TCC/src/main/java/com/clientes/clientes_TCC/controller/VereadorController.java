@@ -39,6 +39,16 @@ public class VereadorController {
         return vereadorService.listarVereadores();
     }
 
+    @Operation(summary = "Listar vereadores mais seguidos", description = "Retorna todos os vereadores ordenados por número de seguidores (decrescente) e nome (crescente)")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista ordenada retornada com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado", content = @Content)
+    })
+    @GetMapping("/top-seguidos")
+    public ResponseEntity<List<VereadorDTO>> listarTopSeguidos(){
+        return vereadorService.listarVereadoresPorSeguidores();
+    }
+
     @Operation(summary = "Buscar vereador por ID", description = "Retorna os dados detalhados de um vereador específico a partir do seu ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Vereador encontrado com sucesso"),

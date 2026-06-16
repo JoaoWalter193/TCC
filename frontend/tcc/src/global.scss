@@ -566,6 +566,101 @@ ion-header ion-toolbar:first-of-type {
   --color: #5c3b00;
 }
 
+// ── PAGE 3-COLUMN LAYOUT ──────────────────────────────────────────────
+
+.page-desktop-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+// Mobile: sidebars hidden
+.desktop-sidebar {
+  display: none;
+}
+
+// Desktop: three columns
+@media (min-width: 1024px) {
+  .page-desktop-layout {
+    flex-direction: row;
+  }
+
+  .desktop-sidebar {
+    display: block;
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: var(--ion-card-background);
+  }
+
+  .left-sidebar {
+    border-right: 1px solid var(--ion-border-color);
+  }
+
+  .right-sidebar {
+    border-left: 1px solid var(--ion-border-color);
+  }
+
+  .desktop-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  // Ion-content must be full-width to accommodate sidebars inside
+  app-tab2 ion-content,
+  app-tab3 ion-content,
+  app-tab4 ion-content,
+  app-tab5 ion-content {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.ion-palette-dark .left-sidebar {
+  border-right-color: var(--ion-color-step-200);
+}
+
+.ion-palette-dark .right-sidebar {
+  border-left-color: var(--ion-color-step-200);
+}
+
+// ── Header logo: mobile left, desktop centered ──────────────────────
+
+.header-logo-wrapper[slot="start"] {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+@media (min-width: 1024px) {
+  .header-logo-wrapper[slot="start"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 10;
+  }
+}
+
+// Hide menu button on desktop for tab pages with inline sidebars
+@media (min-width: 1024px) {
+  app-tab2 ion-menu-button,
+  app-tab3 ion-menu-button,
+  app-tab4 ion-menu-button,
+  app-tab5 ion-menu-button {
+    display: none;
+  }
+}
+
 // ── Icon Minimum Size ─────────────────────────────────────────────────
 
 ion-icon {

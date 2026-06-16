@@ -14,6 +14,8 @@ import { AuthService } from '../services/auth.service';
 import { FavoritosService } from '../services/favoritos.service';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { CardComponent } from '../components/card/card.component';
+import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
+import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 
 @Component({
   selector: 'app-tab5',
@@ -29,6 +31,8 @@ import { CardComponent } from '../components/card/card.component';
     IonMenuButton,
     IonIcon,
     CardComponent,
+    MenuPanelComponent,
+    VereadorTableComponent,
   ],
 })
 export class Tab5Page {

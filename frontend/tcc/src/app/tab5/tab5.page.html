@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start" class="header-logo-wrapper">
+      <img src="assets/icon/favicon.png" class="header-logo" />
+    </ion-buttons>
     @if (auth.isLoggedIn()) {
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -11,33 +14,45 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <div class="page-desktop-layout">
+    <aside class="desktop-sidebar left-sidebar">
+      <app-menu-panel></app-menu-panel>
+    </aside>
+    <div class="desktop-content">
+      <div class="feed-container">
 
-  @if (auth.getUsuarioId() == null) {
-  <div class="empty-state">
-    <ion-icon name="star-outline" class="empty-icon"></ion-icon>
-    <p>Conecte-se para favoritar proposições</p>
-    <ion-button (click)="irParaLogin()" fill="solid" color="primary" mode="ios">
-      Quero favoritar
-    </ion-button>
-  </div>
-  } @else if (carregando) {
-  <div class="empty-state">
-    <ion-icon name="hourglass-outline" class="empty-icon"></ion-icon>
-    <p>Carregando...</p>
-  </div>
-  } @else if (favoritos.length === 0) {
-  <div class="empty-state">
-    <ion-icon name="star-outline" class="empty-icon"></ion-icon>
-    <p>Nenhuma proposição favoritada ainda</p>
-    <p class="sub">As proposições que você favoritar aparecerão aqui.</p>
-  </div>
-  } @else {
-  <div class="favoritos-list">
-    @for (item of favoritos; track trackById($index, item)) {
-    <app-card [post]="item" [link]="['/proposicao', item.id]" [usuarioId]="usuarioId"
-      (verVereador)="verVereador($event)" />
-    }
-  </div>
-  }
+      @if (auth.getUsuarioId() == null) {
+      <div class="empty-state">
+        <ion-icon name="star-outline" class="empty-icon"></ion-icon>
+        <p>Conecte-se para favoritar proposições</p>
+        <ion-button (click)="irParaLogin()" fill="solid" color="primary" mode="ios">
+          Quero favoritar
+        </ion-button>
+      </div>
+      } @else if (carregando) {
+      <div class="empty-state">
+        <ion-icon name="hourglass-outline" class="empty-icon"></ion-icon>
+        <p>Carregando...</p>
+      </div>
+      } @else if (favoritos.length === 0) {
+      <div class="empty-state">
+        <ion-icon name="star-outline" class="empty-icon"></ion-icon>
+        <p>Nenhuma proposição favoritada ainda</p>
+        <p class="sub">As proposições que você favoritar aparecerão aqui.</p>
+      </div>
+      } @else {
+      <div class="favoritos-list">
+        @for (item of favoritos; track trackById($index, item)) {
+        <app-card [post]="item" [link]="['/proposicao', item.id]" [usuarioId]="usuarioId"
+          (verVereador)="verVereador($event)" />
+        }
+      </div>
+      }
 
+      </div>
+    </div>
+    <aside class="desktop-sidebar right-sidebar">
+      <app-vereador-table></app-vereador-table>
+    </aside>
+  </div>
 </ion-content>

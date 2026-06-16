@@ -13,6 +13,8 @@ import { NotificacaoService } from '../services/notificacao.service';
 import { VereadorService } from '../services/vereador';
 import { NotificacaoViewModel } from '../models/dto/notificacao-dto';
 import { CommonModule } from '@angular/common';
+import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
+import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 
 @Component({
   selector: 'app-tab3',
@@ -25,6 +27,8 @@ import { CommonModule } from '@angular/common';
     IonMenuButton, IonButtons, IonCard, IonCardHeader,
     IonCardTitle, IonCardContent, IonChip, IonLabel,
     IonItem, IonAvatar, IonText, IonList, IonBadge,
+    MenuPanelComponent,
+    VereadorTableComponent,
   ],
 })
 export class Tab3Page implements OnInit, OnDestroy {

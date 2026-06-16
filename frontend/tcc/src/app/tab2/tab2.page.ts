@@ -3,6 +3,8 @@ import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton
 
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
+import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
+import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { VereadorDTO } from '../models/dto/vereador-dto';
@@ -25,7 +27,9 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     CardComponent,
     IonButtons,
     IonMenuButton,
-    IonIcon
+    IonIcon,
+    MenuPanelComponent,
+    VereadorTableComponent,
 ],
 })
 export class Tab2Page {
