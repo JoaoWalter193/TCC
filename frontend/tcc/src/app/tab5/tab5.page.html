@@ -1,7 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <span class="header-app-name" routerLink="/tabs/tab2">CuritibAtiva</span>
     <ion-buttons slot="start" class="header-logo-wrapper">
-      <img src="assets/icon/favicon.png" class="header-logo" />
+      <img src="assets/icon/favicon.png" class="header-logo" routerLink="/tabs/tab2" />
     </ion-buttons>
     @if (auth.isLoggedIn()) {
     <ion-buttons slot="end">
@@ -11,6 +12,16 @@
     <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="irParaLogin()">Entrar</ion-button>
     }
   </ion-toolbar>
+
+  <div class="mode-tabs">
+    <button class="mode-tab" [class.active]="modoSelecionado === 'favoritos'" (click)="mudarModo('favoritos')">
+      Proposições
+    </button>
+    <div class="mode-divider"></div>
+    <button class="mode-tab" [class.active]="modoSelecionado === 'seguindo'" (click)="mudarModo('seguindo')">
+      Vereadores
+    </button>
+  </div>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -21,32 +32,77 @@
     <div class="desktop-content">
       <div class="feed-container">
 
-      @if (auth.getUsuarioId() == null) {
-      <div class="empty-state">
-        <ion-icon name="star-outline" class="empty-icon"></ion-icon>
-        <p>Conecte-se para favoritar proposições</p>
-        <ion-button (click)="irParaLogin()" fill="solid" color="primary" mode="ios">
-          Quero favoritar
-        </ion-button>
-      </div>
-      } @else if (carregando) {
-      <div class="empty-state">
-        <ion-icon name="hourglass-outline" class="empty-icon"></ion-icon>
-        <p>Carregando...</p>
-      </div>
-      } @else if (favoritos.length === 0) {
-      <div class="empty-state">
-        <ion-icon name="star-outline" class="empty-icon"></ion-icon>
-        <p>Nenhuma proposição favoritada ainda</p>
-        <p class="sub">As proposições que você favoritar aparecerão aqui.</p>
-      </div>
-      } @else {
-      <div class="favoritos-list">
-        @for (item of favoritos; track trackById($index, item)) {
-        <app-card [post]="item" [link]="['/proposicao', item.id]" [usuarioId]="usuarioId"
-          (verVereador)="verVereador($event)" />
+      @if (modoSelecionado === 'favoritos') {
+        @if (auth.getUsuarioId() == null) {
+        <div class="empty-state">
+          <ion-icon name="star-outline" class="empty-icon"></ion-icon>
+          <p>Conecte-se para favoritar proposições</p>
+          <ion-button (click)="irParaLogin()" fill="solid" color="primary" mode="ios">
+            Quero favoritar
+          </ion-button>
+        </div>
+        } @else if (carregandoFavoritos) {
+        <div class="empty-state">
+          <ion-icon name="hourglass-outline" class="empty-icon"></ion-icon>
+          <p>Carregando...</p>
+        </div>
+        } @else if (favoritos.length === 0) {
+        <div class="empty-state">
+          <ion-icon name="bookmark-outline" class="empty-icon"></ion-icon>
+          <p>Nenhuma proposição favoritada ainda</p>
+          <p class="sub">As proposições que você favoritar aparecerão aqui.</p>
+        </div>
+        } @else {
+          @for (item of favoritos; track trackById($index, item)) {
+          <app-card [post]="item" [link]="['/proposicao', item.id]" [usuarioId]="usuarioId"
+            (verVereador)="verVereador($event)" />
+          }
         }
-      </div>
+      }
+
+      @if (modoSelecionado === 'seguindo') {
+        @if (auth.getUsuarioId() == null) {
+        <div class="empty-state">
+          <ion-icon name="heart-outline" class="empty-icon"></ion-icon>
+          <p>Conecte-se para acompanhar vereadores</p>
+          <ion-button (click)="irParaLogin()" fill="solid" color="primary" mode="ios">
+            Quero acompanhar
+          </ion-button>
+        </div>
+        } @else if (carregandoSeguindo) {
+        <div class="empty-state">
+          <ion-icon name="hourglass-outline" class="empty-icon"></ion-icon>
+          <p>Carregando...</p>
+        </div>
+        } @else if (vereadores.length === 0) {
+        <div class="empty-state">
+          <ion-icon name="people-outline" class="empty-icon"></ion-icon>
+          <p>Você ainda não está seguindo nenhum vereador</p>
+          <p class="sub">Visite o perfil deles para acompanhar o mandato!</p>
+        </div>
+        } @else {
+          @for (item of vereadores; track item.id) {
+          <div class="vereador-card" (click)="irParaVereador(item.id)">
+            <div class="vereador-info">
+              <div class="avatar">
+                <ion-icon name="person-outline"></ion-icon>
+              </div>
+              <div class="dados">
+                <span class="nome">{{ item.nome }}</span>
+                <span class="partido">{{ item.partido }}</span>
+              </div>
+            </div>
+            <ion-button
+              color="medium"
+              fill="outline"
+              class="btn-seguindo"
+              (click)="deixarDeSeguir($event, item.id)">
+              <ion-icon slot="start" name="heart-dislike-outline"></ion-icon>
+              Seguindo
+            </ion-button>
+          </div>
+          }
+        }
       }
 
       </div>

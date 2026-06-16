@@ -630,12 +630,39 @@ ion-header ion-toolbar:first-of-type {
   height: 28px;
 }
 
+.header-app-name {
+  display: none;
+}
+
+.header-logo,
+.header-app-name {
+  cursor: pointer;
+}
+
 @media (min-width: 1024px) {
+  ion-header ion-toolbar {
+    position: relative;
+  }
+
   .header-logo-wrapper[slot="start"] {
     position: absolute !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     z-index: 10;
+  }
+
+  .header-app-name {
+    display: block;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    white-space: nowrap;
+    z-index: 15;
   }
 }
 
