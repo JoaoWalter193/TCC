@@ -1,8 +1,11 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
+import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
+import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { VereadorDTO } from '../models/dto/vereador-dto';
@@ -18,14 +21,19 @@ import { ReacaoEventService } from '../services/reacao-event.service';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   imports: [
+    RouterLink,
     IonHeader,
     IonToolbar,
     IonContent,
     IonButton,
+    IonRefresher,
+    IonRefresherContent,
     CardComponent,
     IonButtons,
     IonMenuButton,
-    IonIcon
+    IonIcon,
+    MenuPanelComponent,
+    VereadorTableComponent,
 ],
 })
 export class Tab2Page {
@@ -81,6 +89,40 @@ export class Tab2Page {
       },
       error: (err) => {
         console.error('Erro ao carregar dados', err);
+      },
+    });
+  }
+
+  recarregarDados(event: any) {
+    const uid = this.usuarioId;
+    forkJoin([
+      this.proposicaoService.listar(uid).pipe(
+        catchError(() => of([] as ProposicaoDTO[]))
+      ),
+      this.vereadorService.listar().pipe(
+        catchError(() => of([] as VereadorDTO[]))
+      )
+    ]).subscribe({
+      next: ([proposicoes, vereadores]: [ProposicaoDTO[], VereadorDTO[]]) => {
+        const vereadorMap = new Map(
+          vereadores.map(v => [v.nome.toLowerCase(), v.id])
+        );
+
+        this.posts = proposicoes.map(p => ({
+          ...p,
+          vereador: {
+            ...p.vereador,
+            id: vereadorMap.get(p.vereador.nome.toLowerCase()) ?? p.vereador.id
+          }
+        }));
+
+        this.postsFiltrados = [...this.posts];
+      },
+      error: (err) => {
+        console.error('Erro ao carregar dados', err);
+      },
+      complete: () => {
+        event.target.complete();
       },
     });
   }

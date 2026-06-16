@@ -18,6 +18,7 @@ interface VereadorBackend {
   vereador_cor: string;
   ocupacao: string;
   vereador_escolaridade: string;
+  seguidores?: number;
 }
 
 function mapToDTO(v: VereadorBackend): VereadorDTO {
@@ -30,12 +31,18 @@ function mapToDTO(v: VereadorBackend): VereadorDTO {
     telefone: v.telefone ?? '',
     email: v.email ?? '',
     site: v.site ?? '',
+    seguidores: v.seguidores ?? 0,
   };
 }
 
 @Injectable({ providedIn: 'root' })
 export class VereadorService {
   constructor(private api: ApiGatewayService) {}
+
+  listarTopSeguidos(): Observable<VereadorDTO[]> {
+    return this.api.v1.get<VereadorBackend[]>('/vereador/top-seguidos')
+      .pipe(map(lista => lista.map(mapToDTO)));
+  }
 
   listar(): Observable<VereadorDTO[]> {
     return this.api.v1.get<VereadorBackend[]>('/vereador')

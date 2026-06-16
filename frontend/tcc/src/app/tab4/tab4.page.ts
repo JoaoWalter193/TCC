@@ -1,12 +1,15 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonMenuButton, IonButtons, IonText, IonSpinner } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonMenuButton, IonButtons, IonText, IonSpinner, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { CardComponent } from '../components/card/card.component';
+import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
+import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReacaoEventService } from '../services/reacao-event.service';
 
@@ -16,6 +19,7 @@ import { ReacaoEventService } from '../services/reacao-event.service';
   styleUrls: ['./tab4.page.scss'],
   standalone: true,
   imports: [
+    RouterLink,
     IonContent,
     IonHeader,
     IonTitle,
@@ -27,9 +31,13 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     IonSearchbar,
     IonMenuButton,
     IonButtons,
+    IonRefresher,
+    IonRefresherContent,
     CardComponent,
     IonText,
     IonSpinner,
+    MenuPanelComponent,
+    VereadorTableComponent,
   ],
 })
 export class Tab4Page {
@@ -78,6 +86,23 @@ export class Tab4Page {
     });
   }
 
+  recarregarDados(event: any) {
+    this.proposicaoService.listar(this.usuarioId).subscribe({
+      next: (data) => {
+        this.postsDestaque = data
+          .sort((a, b) => (b.likes - b.dislikes) - (a.likes - a.dislikes))
+          .slice(0, 4);
+        this.limparPesquisa();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar proposições', err);
+      },
+      complete: () => {
+        event.target.complete();
+      },
+    });
+  }
+
   executarPesquisa(event: Event) {
     event.preventDefault();
     const termo = this.searchTerm.trim();
@@ -97,6 +122,10 @@ export class Tab4Page {
         this.searchResults = [];
       },
     });
+  }
+
+  irParaVereador(id: number) {
+    this.router.navigate(['/vereador', id]);
   }
 
   limparPesquisa() {

@@ -197,21 +197,34 @@ CREATE TABLE usuario_dashboard (
     updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE OR REPLACE FUNCTION notify_proposicao_change()
+-- Trigger para INSERT (qualquer nova proposição)
+CREATE OR REPLACE FUNCTION notify_proposicao_insert()
 RETURNS trigger AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN
-        PERFORM pg_notify('proposicao_nova', NEW.codigo::text);
-    ELSIF TG_OP = 'UPDATE' THEN
-        PERFORM pg_notify('proposicao_atualizada', NEW.codigo::text);
-    END IF;
+    PERFORM pg_notify('proposicao_nova', NEW.codigo::text);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_proposicao
-AFTER INSERT OR UPDATE ON proposicao
-FOR EACH ROW EXECUTE FUNCTION notify_proposicao_change();
+CREATE TRIGGER trigger_proposicao_insert
+AFTER INSERT ON proposicao
+FOR EACH ROW EXECUTE FUNCTION notify_proposicao_insert();
+
+-- Trigger para UPDATE (apenas colunas estruturais)
+-- Updates de likes/dislikes NÃO disparam notificação
+CREATE OR REPLACE FUNCTION notify_proposicao_update()
+RETURNS trigger AS $$
+BEGIN
+    PERFORM pg_notify('proposicao_atualizada', NEW.codigo::text);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_proposicao_update
+AFTER UPDATE OF estado_id, localizacao, ultimo_tramite, razao,
+               ementa, texto, encerrou_tramitacao
+ON proposicao
+FOR EACH ROW EXECUTE FUNCTION notify_proposicao_update();
 
 
 -- Inserir partidos

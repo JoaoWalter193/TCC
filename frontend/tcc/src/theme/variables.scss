@@ -19,7 +19,7 @@
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
-  color: #121212;
+  color: var(--ion-text-color);
   margin: 0;
   padding: 0;
 }
@@ -27,12 +27,12 @@ h1, h2, h3, h4, h5, h6 {
 body, p, span, a, ion-input, ion-textarea {
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
-  color: #121212;
+  color: var(--ion-text-color);
 }
 
 ion-label, ion-item {
   font-family: 'Open Sans', sans-serif;
-  color: #121212;
+  color: var(--ion-text-color);
 }
 
 ion-button {

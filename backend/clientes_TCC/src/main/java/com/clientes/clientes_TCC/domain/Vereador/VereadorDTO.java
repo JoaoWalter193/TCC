@@ -46,6 +46,9 @@ public record VereadorDTO(
         String ocupacao,
 
         @Schema(description = "Escolaridade")
-        VereadorEscolaridade vereador_escolaridade
+        VereadorEscolaridade vereador_escolaridade,
+
+        @Schema(description = "Quantidade de seguidores", example = "42")
+        Integer seguidores
 ) {
 }

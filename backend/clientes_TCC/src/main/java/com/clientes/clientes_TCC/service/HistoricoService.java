@@ -12,6 +12,8 @@ import com.clientes.clientes_TCC.domain.Vereador.VereadorDTO;
 import com.clientes.clientes_TCC.repositories.HistoricoProposicaoRepository;
 import com.clientes.clientes_TCC.repositories.HistoricoVereadorRepository;
 import com.clientes.clientes_TCC.repositories.ReacaoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class HistoricoService {
+
+    private static final Logger log = LoggerFactory.getLogger(HistoricoService.class);
 
     @Autowired
     private HistoricoProposicaoRepository historicoProposicaoRepository;
@@ -38,10 +42,7 @@ public class HistoricoService {
             Usuario usuario = (Usuario) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
 
-            historicoProposicaoRepository.findAll().stream()
-                    .filter(h -> h.getUsuarioId().equals(usuario.getId())
-                            && h.getProposicaoCodigo().equals(proposicaoCodigo))
-                    .forEach(h -> historicoProposicaoRepository.delete(h));
+            historicoProposicaoRepository.deleteByUsuarioIdAndProposicaoCodigo(usuario.getId(), proposicaoCodigo);
 
             HistoricoProposicao historico = new HistoricoProposicao();
             historico.setUsuarioId(usuario.getId());
@@ -57,10 +58,7 @@ public class HistoricoService {
             Usuario usuario = (Usuario) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
 
-            historicoVereadorRepository.findAll().stream()
-                    .filter(h -> h.getUsuarioId().equals(usuario.getId())
-                            && h.getVereadorId().equals(vereadorId))
-                    .forEach(h -> historicoVereadorRepository.delete(h));
+            historicoVereadorRepository.deleteByUsuarioIdAndVereadorId(usuario.getId(), vereadorId);
 
             HistoricoVereador historico = new HistoricoVereador();
             historico.setUsuarioId(usuario.getId());
@@ -118,6 +116,7 @@ public class HistoricoService {
                         p.getVereador().getId(),
                         p.getVereador().getNome(),
                         p.getDataEnvio(),
+                        p.getRazao(),
                         p.getEmenta(),
                         p.getTag(),
                         p.getEstado().getEstado(),
@@ -152,7 +151,7 @@ public class HistoricoService {
                         v.getEmail(), v.getLegislaturas(), v.getGabinete(),
                         v.getTelefone(), v.getSite(), v.getAtivo(),
                         v.getGenero(), v.getNascimento(), v.getCor(),
-                        v.getOcupacao(), v.getEscolaridade()
+                        v.getOcupacao(), v.getEscolaridade(), null
                 );
                 resultado.add(HistoricoResponseDTO.deVereador(v.getId(), data, verDto));
             }

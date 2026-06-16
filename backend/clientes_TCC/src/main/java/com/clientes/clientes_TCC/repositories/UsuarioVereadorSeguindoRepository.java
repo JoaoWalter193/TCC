@@ -14,6 +14,9 @@ public interface UsuarioVereadorSeguindoRepository extends JpaRepository<Usuario
 
     boolean existsById(UsuarioVereadorSeguindo.UsuarioVereadorId id);
 
+    @Query("SELECT s.id.vereadorId, COUNT(s) FROM UsuarioVereadorSeguindo s WHERE s.id.vereadorId IN :ids GROUP BY s.id.vereadorId")
+    List<Object[]> countByVereadorIds(@Param("ids") List<Integer> ids);
+
     @Query("SELECT s.id.vereadorId FROM UsuarioVereadorSeguindo s WHERE s.id.usuarioId = :usuarioId")
     List<Integer> findVereadorIdsByUsuarioId(@Param("usuarioId") Integer usuarioId);
 

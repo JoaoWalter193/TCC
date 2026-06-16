@@ -3,11 +3,13 @@ package com.clientes.clientes_TCC.repositories;
 import com.clientes.clientes_TCC.domain.Proposicao.Proposicao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +17,13 @@ import java.util.Optional;
 
 public interface ProposicaoRepository extends JpaRepository<Proposicao, Long> {
 
-    //tag ignorando maiusculas/minusculas
+    @Override
+    @EntityGraph(attributePaths = {"tipo", "vereador", "estado"})
+    Page<Proposicao> findAll(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"tipo", "vereador", "estado"})
     Page<Proposicao> findByTagContainingIgnoreCase(String tag, Pageable pageable);
 
-    //tag exata
     Page<Proposicao> findByTag(String tag, Pageable pageable);
 
     Optional<Proposicao> findByCodigo(Long codigo);

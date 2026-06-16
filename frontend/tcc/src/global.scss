@@ -335,6 +335,15 @@ ion-header ion-toolbar:first-of-type {
   .engajamento-divider {
     background: var(--ion-border-color) !important;
   }
+
+  // ── Login Prompt Modal ──────────────────────────
+  ion-modal.login-prompt-modal {
+    --background: var(--ion-card-background);
+
+    ion-button[fill="clear"] {
+      --color: var(--ion-color-step-500);
+    }
+  }
 }
 
 // ── RESPONSIVE WEB ────────────────────────────────────────────────────
@@ -367,18 +376,6 @@ ion-header ion-toolbar:first-of-type {
     max-width: 680px;
     margin-left: auto;
     margin-right: auto;
-  }
-
-  app-card ion-card {
-    border-radius: 16px;
-    border: 1px solid var(--ion-border-color);
-    margin: 14px auto;
-    transition: box-shadow 0.18s ease;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-  }
-
-  app-card ion-card:active {
-    background: var(--ion-card-background);
   }
 
   app-card ion-card:hover {
@@ -564,6 +561,133 @@ ion-header ion-toolbar:first-of-type {
 .ion-palette-dark app-tab3 .update-chip {
   --background: #c4943f;
   --color: #5c3b00;
+}
+
+// ── PAGE 3-COLUMN LAYOUT ──────────────────────────────────────────────
+
+.page-desktop-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+// Mobile: sidebars hidden
+.desktop-sidebar {
+  display: none;
+}
+
+// Desktop: three columns
+@media (min-width: 1024px) {
+  .page-desktop-layout {
+    flex-direction: row;
+  }
+
+  .desktop-sidebar {
+    display: block;
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: var(--ion-card-background);
+  }
+
+  .left-sidebar {
+    border-right: 1px solid var(--ion-border-color);
+  }
+
+  .right-sidebar {
+    border-left: 1px solid var(--ion-border-color);
+  }
+
+  .desktop-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  // Ion-content must be full-width to accommodate sidebars inside
+  app-tab2 ion-content,
+  app-tab3 ion-content,
+  app-tab4 ion-content,
+  app-tab5 ion-content {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.ion-palette-dark .left-sidebar {
+  border-right-color: var(--ion-color-step-200);
+}
+
+.ion-palette-dark .right-sidebar {
+  border-left-color: var(--ion-color-step-200);
+}
+
+// ── Header logo: mobile left, desktop centered ──────────────────────
+
+.header-logo-wrapper[slot="start"] {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+.header-app-name {
+  display: none;
+}
+
+.header-logo,
+.header-app-name {
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  ion-header ion-toolbar {
+    position: relative;
+  }
+
+  .header-logo-wrapper[slot="start"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 10;
+  }
+
+  .header-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-app-name {
+    display: block;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    white-space: nowrap;
+    z-index: 15;
+  }
+}
+
+// Hide menu button on desktop for tab pages with inline sidebars
+@media (min-width: 1024px) {
+  app-tab2 ion-menu-button,
+  app-tab3 ion-menu-button,
+  app-tab4 ion-menu-button,
+  app-tab5 ion-menu-button {
+    display: none;
+  }
 }
 
 // ── Icon Minimum Size ─────────────────────────────────────────────────

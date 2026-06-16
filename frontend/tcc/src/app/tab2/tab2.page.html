@@ -1,6 +1,10 @@
 <ion-header [translucent]="true">
 
   <ion-toolbar>
+    <span class="header-app-name" routerLink="/tabs/tab2">CuritibAtiva</span>
+    <ion-buttons slot="start" class="header-logo-wrapper">
+      <img src="assets/icon/favicon.png" class="header-logo" routerLink="/tabs/tab2" />
+    </ion-buttons>
     @if (auth.isLoggedIn()) {
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -22,9 +26,27 @@
 </ion-header>
 
 <ion-content [fullscreen]="false">
-  <div class="feed-container">
-    @for (post of postsFiltrados; track post.id) {
-    <app-card [post]="post" [usuarioId]="usuarioId" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
-    }
+  <ion-refresher slot="fixed" mode="md" (ionRefresh)="recarregarDados($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="crescent"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="page-desktop-layout">
+    <aside class="desktop-sidebar left-sidebar">
+      <app-menu-panel></app-menu-panel>
+    </aside>
+    <div class="desktop-content">
+      <div class="feed-container">
+        @for (post of postsFiltrados; track post.id) {
+        <app-card [post]="post" [usuarioId]="usuarioId" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
+        }
+      </div>
+    </div>
+    <aside class="desktop-sidebar right-sidebar">
+      <app-vereador-table></app-vereador-table>
+    </aside>
   </div>
 </ion-content>

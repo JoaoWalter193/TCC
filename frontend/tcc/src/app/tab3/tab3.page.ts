@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {
@@ -13,6 +13,8 @@ import { NotificacaoService } from '../services/notificacao.service';
 import { VereadorService } from '../services/vereador';
 import { NotificacaoViewModel } from '../models/dto/notificacao-dto';
 import { CommonModule } from '@angular/common';
+import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
+import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 
 @Component({
   selector: 'app-tab3',
@@ -20,11 +22,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['tab3.page.scss'],
   standalone: true,
   imports: [
+    RouterLink,
     CommonModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButton,
     IonMenuButton, IonButtons, IonCard, IonCardHeader,
     IonCardTitle, IonCardContent, IonChip, IonLabel,
     IonItem, IonAvatar, IonText, IonList, IonBadge,
+    MenuPanelComponent,
+    VereadorTableComponent,
   ],
 })
 export class Tab3Page implements OnInit, OnDestroy {

@@ -7,6 +7,8 @@ import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoListaResponseDTO;
 import com.clientes.clientes_TCC.exceptions.ProposicaoInexistenteException;
 import com.clientes.clientes_TCC.repositories.ProposicaoRepository;
 import com.clientes.clientes_TCC.repositories.ReacaoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 @Service
 public class ProposicaoService {
 
+    private static final Logger log = LoggerFactory.getLogger(ProposicaoService.class);
+
 
     @Autowired
     private ProposicaoRepository proposicaoRepository;
@@ -35,6 +39,7 @@ public class ProposicaoService {
     private ReacaoRepository reacaoRepository;
 
     public ResponseEntity<Page<ProposicaoListaResponseDTO>> listarProposicoes(String tag, Pageable pageable, Integer usuarioId) {
+        log.info("listarProposicoes tag={} page={} size={} usuarioId={}", tag, pageable.getPageNumber(), pageable.getPageSize(), usuarioId);
         Page<Proposicao> proposicoes;
 
         if (tag != null && !tag.isEmpty()) {
@@ -62,6 +67,7 @@ public class ProposicaoService {
                 p.getVereador().getId(),
                 p.getVereador().getNome(),
                 p.getDataEnvio(),
+                p.getRazao(),
                 p.getEmenta(),
                 p.getTag(),
                 p.getEstado().getEstado(),
@@ -72,6 +78,7 @@ public class ProposicaoService {
     }
 
     public ResponseEntity<ProposicaoEspecificaDTO> buscarProposicao(Long codigo, Integer usuarioId) {
+        log.info("buscarProposicao codigo={} usuarioId={}", codigo, usuarioId);
         Optional<Proposicao> optProposicao = proposicaoRepository.findByCodigo(codigo);
         if (optProposicao.isEmpty()){
             throw new ProposicaoInexistenteException();
@@ -143,6 +150,7 @@ public class ProposicaoService {
                         p.getVereador().getId(),
                         p.getVereador().getNome(),
                         p.getDataEnvio(),
+                        p.getRazao(),
                         p.getEmenta(),
                         p.getTag(),
                         p.getEstado().getEstado(),

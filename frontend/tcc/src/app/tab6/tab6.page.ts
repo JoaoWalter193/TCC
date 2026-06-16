@@ -1,15 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   IonContent,
   IonHeader,
   IonToolbar,
   IonButton,
-  IonList,
-  IonItem,
-  IonSelect,
-  IonSelectOption,
   MenuController,
   IonMenuButton,
   IonButtons,
@@ -26,17 +21,12 @@ import { DashboardMode } from '../services/dashboard-mode';
   styleUrls: ['./tab6.page.scss'],
   standalone: true,
   imports: [
+    RouterLink,
     IonContent,
     IonHeader,
     IonToolbar,
-    CommonModule,
-    FormsModule,
     IonButton,
     IonButtons,
-    IonList,
-    IonItem,
-    IonSelect,
-    IonSelectOption,
     IonMenuButton,
     DashboardViewComponent,
     MyDashboardViewComponent
@@ -66,7 +56,7 @@ export class Tab6Page implements OnInit {
     await this.menuCtrl.open();
   }
 
-  mudarModo(event: CustomEvent) {
-    this.modoSelecionado = event.detail.value;
+  mudarModo(modo: string) {
+    this.modoSelecionado = modo;
   }
 }

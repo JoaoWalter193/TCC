@@ -21,6 +21,9 @@ public record ProposicaoListaResponseDTO(
         @Schema(description = "Data de envio da proposição", example = "2024-03-15T10:30:00")
         LocalDateTime dataEnvio,
 
+        @Schema(description = "Título (razão) da proposição", example = "Melhoria educacional")
+        String razao,
+
         @Schema(description = "Ementa (resumo) da proposição", example = "Dispõe sobre a criação do programa de coleta seletiva")
         String ementa,
 

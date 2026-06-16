@@ -6,15 +6,17 @@ import com.clientes.clientes_TCC.domain.Proposicao.Proposicao;
 import com.clientes.clientes_TCC.repositories.ProposicaoRepository;
 import org.postgresql.PGConnection;
 import org.postgresql.PGNotification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
-import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +24,16 @@ import java.util.Optional;
 @Service
 public class ProposicaoListenerService {
 
-    @Autowired
-    private DataSource dataSource;
+    private static final Logger log = LoggerFactory.getLogger(ProposicaoListenerService.class);
+
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+
+    @Value("${spring.datasource.username}")
+    private String dbUser;
+
+    @Value("${spring.datasource.password}")
+    private String dbPassword;
 
     @Autowired
     private ProposicaoRepository proposicaoRepository;
@@ -40,7 +50,8 @@ public class ProposicaoListenerService {
     @Async
     @EventListener(ApplicationReadyEvent.class)
     public void escutarNotificacoes() {
-        try (Connection conn = dataSource.getConnection()) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
+            log.info("Listener PostgreSQL iniciado com conexão dedicada");
 
             Statement stmt = conn.createStatement();
             stmt.execute("LISTEN proposicao_nova");
