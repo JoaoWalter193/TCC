@@ -31,7 +31,7 @@ def get_dashboard_metadata(db: Session):
             else "categorical"
         )
         metadata[column] = {
-            "label": column.replace("_", " ").title(),
+            "label": "Categoria" if column == "tag" else column.replace("_", " ").title(),
             "dtype": dtype,
             "options": df[column].dropna().unique().tolist() if dtype == "categorical" else []
         }

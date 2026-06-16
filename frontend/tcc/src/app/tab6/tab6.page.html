@@ -8,16 +8,6 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
-
-  <ion-list>
-    <ion-item>
-      <ion-select aria-label="Dashboard" [value]="modoSelecionado" cancelText="Cancelar" mode="ios"
-        (ionChange)="mudarModo($event)">
-        <ion-select-option value="dashboard">Dashboard</ion-select-option>
-        <ion-select-option value="my-dashboard">Meus Dashboards</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
   } @else {
   <ion-toolbar>
     <ion-buttons slot="start" class="header-logo-wrapper">
@@ -25,17 +15,17 @@
     </ion-buttons>
     <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="navigateToLogin()">Entrar</ion-button>
   </ion-toolbar>
-
-  <ion-list>
-    <ion-item>
-      <ion-select aria-label="Dashboard" value="dashboard" cancelText="Cancelar" mode="ios"
-        (ionChange)="mudarModo($event)">
-        <ion-select-option value="dashboard">Dashboard</ion-select-option>
-        <ion-select-option value="my-dashboard">Meus Dashboards</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
   }
+
+  <div class="mode-tabs">
+    <button class="mode-tab" [class.active]="modoSelecionado === 'dashboard'" (click)="mudarModo('dashboard')">
+      Dashboard
+    </button>
+    <div class="mode-divider"></div>
+    <button class="mode-tab" [class.active]="modoSelecionado === 'my-dashboard'" (click)="mudarModo('my-dashboard')">
+      Meus Dashboards
+    </button>
+  </div>
 </ion-header>
 
 <ion-content [fullscreen]="true">
