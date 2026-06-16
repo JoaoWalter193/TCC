@@ -1,6 +1,7 @@
-import { Component, inject, Injector } from '@angular/core';
+import { Component, inject, Injector, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { ThemeService } from './services/theme.service';
 import { MenuComponent } from "./components/menu/menu.component";
@@ -11,7 +12,9 @@ import { MenuComponent } from "./components/menu/menu.component";
   standalone: true,
   imports: [IonApp, IonRouterOutlet, MenuComponent],
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+  private destroyed = new Subject<void>();
+
   constructor() {
     inject(ThemeService);
     const authService = inject(AuthService);
@@ -20,6 +23,18 @@ export class AppComponent {
     const injector = inject(Injector);
 
     authService.checkAuth();
+
+    authService.authState$
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((isLoggedIn) => {
+        if (!isLoggedIn) {
+          const protectedPrefixes = ['/perfil', '/historico', '/configuracoes', '/editar-perfil'];
+          const rotaAtual = router.url.split('?')[0];
+          if (protectedPrefixes.some(p => rotaAtual.startsWith(p))) {
+            router.navigate(['/tabs/tab2'], { replaceUrl: true });
+          }
+        }
+      });
 
     platform.backButton.subscribeWithPriority(0, () => {
       router.navigate(['/tabs/tab2']);
@@ -41,6 +56,11 @@ export class AppComponent {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 
   private aplicarSafeAreaAndroid(): void {
