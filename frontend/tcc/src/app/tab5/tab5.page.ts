@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   IonHeader,
@@ -11,8 +11,8 @@ import {
   IonRefresher,
   IonRefresherContent,
 } from '@ionic/angular/standalone';
-import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { forkJoin, of, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { FavoritosService } from '../services/favoritos.service';
 import { VereadorService } from '../services/vereador';
@@ -21,6 +21,7 @@ import { VereadorDTO } from '../models/dto/vereador-dto';
 import { CardComponent } from '../components/card/card.component';
 import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
 import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
+import { Tab5ModoService } from '../services/tab5-modo.service';
 
 @Component({
   selector: 'app-tab5',
@@ -42,11 +43,13 @@ import { VereadorTableComponent } from '../components/vereador-table/vereador-ta
     VereadorTableComponent,
   ],
 })
-export class Tab5Page {
+export class Tab5Page implements OnInit, OnDestroy {
   private router = inject(Router);
   auth = inject(AuthService);
   private favoritosService = inject(FavoritosService);
   private vereadorService = inject(VereadorService);
+  private tab5Modo = inject(Tab5ModoService);
+  private destroyed = new Subject<void>();
 
   favoritos: ProposicaoDTO[] = [];
   vereadores: VereadorDTO[] = [];
@@ -61,6 +64,19 @@ export class Tab5Page {
   ionViewWillEnter() {
     this.carregarFavoritos();
     this.carregarSeguindo();
+  }
+
+  ngOnInit() {
+    this.tab5Modo.modo$
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(modo => {
+        this.modoSelecionado = modo;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 
   mudarModo(modo: 'favoritos' | 'seguindo') {

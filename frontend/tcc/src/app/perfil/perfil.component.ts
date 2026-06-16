@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonButtons, IonBackButton, IonMenuButton, IonHeader, IonList, IonItem, IonIcon, IonLabel, IonToolbar } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { DashboardMode } from '../services/dashboard-mode';
+import { Tab5ModoService } from '../services/tab5-modo.service';
 import { UsuarioService } from '../services/usuario.service';
 import { UsuarioPerfilDTO } from '../models/dto/usuario-perfil-dto';
 import { PushService } from '../services/push.service';
@@ -19,6 +20,7 @@ export class PerfilComponent implements OnInit {
 
   constructor(
     private modoService: DashboardMode,
+    private tab5Modo: Tab5ModoService,
     private router: Router,
     private usuarioService: UsuarioService,
     private pushService: PushService,
@@ -67,10 +69,12 @@ export class PerfilComponent implements OnInit {
   }
 
   navFavoritos() {
+    this.tab5Modo.setModo('favoritos');
     this.router.navigate(['/tabs/tab5']);
   }
 
   navSeguindo() {
-    this.router.navigate(['/seguindo']);
+    this.tab5Modo.setModo('seguindo');
+    this.router.navigate(['/tabs/tab5']);
   }
 }
