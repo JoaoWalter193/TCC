@@ -25,6 +25,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" mode="md" (ionRefresh)="recarregarDados($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="crescent"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
   <div class="page-desktop-layout">
     <aside class="desktop-sidebar left-sidebar">
       <app-menu-panel></app-menu-panel>

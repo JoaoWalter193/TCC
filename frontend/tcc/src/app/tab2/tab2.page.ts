@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
@@ -26,6 +26,8 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     IonToolbar,
     IonContent,
     IonButton,
+    IonRefresher,
+    IonRefresherContent,
     CardComponent,
     IonButtons,
     IonMenuButton,
@@ -87,6 +89,40 @@ export class Tab2Page {
       },
       error: (err) => {
         console.error('Erro ao carregar dados', err);
+      },
+    });
+  }
+
+  recarregarDados(event: any) {
+    const uid = this.usuarioId;
+    forkJoin([
+      this.proposicaoService.listar(uid).pipe(
+        catchError(() => of([] as ProposicaoDTO[]))
+      ),
+      this.vereadorService.listar().pipe(
+        catchError(() => of([] as VereadorDTO[]))
+      )
+    ]).subscribe({
+      next: ([proposicoes, vereadores]: [ProposicaoDTO[], VereadorDTO[]]) => {
+        const vereadorMap = new Map(
+          vereadores.map(v => [v.nome.toLowerCase(), v.id])
+        );
+
+        this.posts = proposicoes.map(p => ({
+          ...p,
+          vereador: {
+            ...p.vereador,
+            id: vereadorMap.get(p.vereador.nome.toLowerCase()) ?? p.vereador.id
+          }
+        }));
+
+        this.postsFiltrados = [...this.posts];
+      },
+      error: (err) => {
+        console.error('Erro ao carregar dados', err);
+      },
+      complete: () => {
+        event.target.complete();
       },
     });
   }
