@@ -11,7 +11,7 @@ export function mapListaToListaDTO(item: ProposicaoListaDTO): ProposicaoDTO {
     dataEfetivo: '',
     localizacao: '',
     ultimoTramite: '',
-    razao: item.ementa.substring(0, 60),
+    razao: item.razao,
     tag: item.tag,
     tramiteAlternativo: false,
     encerrouTramitacao: item.estado !== 'Em tramitação',

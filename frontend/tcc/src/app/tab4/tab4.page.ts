@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { CardComponent } from '../components/card/card.component';
+import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
+import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReacaoEventService } from '../services/reacao-event.service';
 
@@ -30,6 +32,8 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     CardComponent,
     IonText,
     IonSpinner,
+    MenuPanelComponent,
+    VereadorTableComponent,
   ],
 })
 export class Tab4Page {

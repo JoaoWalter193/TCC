@@ -57,6 +57,7 @@ public class FavoritarProposicaoService {
                         p.getVereador().getId(),
                         p.getVereador().getNome(),
                         p.getDataEnvio(),
+                        p.getRazao(),
                         p.getEmenta(),
                         p.getTag(),
                         p.getEstado().getEstado(),

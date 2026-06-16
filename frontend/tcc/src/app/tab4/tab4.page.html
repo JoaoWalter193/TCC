@@ -1,5 +1,8 @@
 <ion-header class="search-header">
   <ion-toolbar>
+    <ion-buttons slot="start" class="header-logo-wrapper">
+      <img src="assets/icon/favicon.png" class="header-logo" />
+    </ion-buttons>
     @if (auth.isLoggedIn()) {
       <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
@@ -33,34 +36,44 @@
 </ion-header>
 
 <ion-content>
-  @if (hasSearched) {
-    @if (isSearching) {
-      <div class="search-state-container">
-        <ion-spinner name="crescent"></ion-spinner>
-        <p>Buscando proposições...</p>
-      </div>
-    } @else if (searchResults.length > 0) {
-      <div class="feed-container">
-        <div class="highlight-list">
-          @for (post of searchResults; track post.id) {
-            <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"></app-card>
-          }
-        </div>
-      </div>
-    } @else {
-      <div class="search-state-container empty-state">
-        <ion-icon name="search-outline"></ion-icon>
-        <h3>Nenhuma proposição encontrada</h3>
-        <p>Tente alterar o termo de busca</p>
-      </div>
-    }
-  } @else {
-    <div class="feed-container">
-      <div class="highlight-list">
-        @for (post of postsDestaque; track post.id) {
-          <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"></app-card>
+  <div class="page-desktop-layout">
+    <aside class="desktop-sidebar left-sidebar">
+      <app-menu-panel></app-menu-panel>
+    </aside>
+    <div class="desktop-content">
+      @if (hasSearched) {
+        @if (isSearching) {
+          <div class="search-state-container">
+            <ion-spinner name="crescent"></ion-spinner>
+            <p>Buscando proposições...</p>
+          </div>
+        } @else if (searchResults.length > 0) {
+          <div class="feed-container">
+            <div class="highlight-list">
+              @for (post of searchResults; track post.id) {
+                <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"></app-card>
+              }
+            </div>
+          </div>
+        } @else {
+          <div class="search-state-container empty-state">
+            <ion-icon name="search-outline"></ion-icon>
+            <h3>Nenhuma proposição encontrada</h3>
+            <p>Tente alterar o termo de busca</p>
+          </div>
         }
-      </div>
+      } @else {
+        <div class="feed-container">
+          <div class="highlight-list">
+            @for (post of postsDestaque; track post.id) {
+              <app-card [post]="post" [usuarioId]="usuarioId" [link]="['/proposicao', post.id]"></app-card>
+            }
+          </div>
+        </div>
+      }
     </div>
-  }
+    <aside class="desktop-sidebar right-sidebar">
+      <app-vereador-table></app-vereador-table>
+    </aside>
+  </div>
 </ion-content>

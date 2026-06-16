@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
 
   <ion-toolbar>
+    <ion-buttons slot="start" class="header-logo-wrapper">
+      <img src="assets/icon/favicon.png" class="header-logo" />
+    </ion-buttons>
     @if (auth.isLoggedIn()) {
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -22,9 +25,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="false">
-  <div class="feed-container">
-    @for (post of postsFiltrados; track post.id) {
-    <app-card [post]="post" [usuarioId]="usuarioId" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
-    }
+  <div class="page-desktop-layout">
+    <aside class="desktop-sidebar left-sidebar">
+      <app-menu-panel></app-menu-panel>
+    </aside>
+    <div class="desktop-content">
+      <div class="feed-container">
+        @for (post of postsFiltrados; track post.id) {
+        <app-card [post]="post" [usuarioId]="usuarioId" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
+        }
+      </div>
+    </div>
+    <aside class="desktop-sidebar right-sidebar">
+      <app-vereador-table></app-vereador-table>
+    </aside>
   </div>
 </ion-content>

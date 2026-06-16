@@ -118,6 +118,7 @@ public class HistoricoService {
                         p.getVereador().getId(),
                         p.getVereador().getNome(),
                         p.getDataEnvio(),
+                        p.getRazao(),
                         p.getEmenta(),
                         p.getTag(),
                         p.getEstado().getEstado(),
@@ -152,7 +153,7 @@ public class HistoricoService {
                         v.getEmail(), v.getLegislaturas(), v.getGabinete(),
                         v.getTelefone(), v.getSite(), v.getAtivo(),
                         v.getGenero(), v.getNascimento(), v.getCor(),
-                        v.getOcupacao(), v.getEscolaridade()
+                        v.getOcupacao(), v.getEscolaridade(), null
                 );
                 resultado.add(HistoricoResponseDTO.deVereador(v.getId(), data, verDto));
             }

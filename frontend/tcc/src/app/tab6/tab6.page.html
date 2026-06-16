@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   @if (auth.isLoggedIn()) {
   <ion-toolbar>
+    <ion-buttons slot="start" class="header-logo-wrapper">
+      <img src="assets/icon/favicon.png" class="header-logo" />
+    </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -17,6 +20,9 @@
   </ion-list>
   } @else {
   <ion-toolbar>
+    <ion-buttons slot="start" class="header-logo-wrapper">
+      <img src="assets/icon/favicon.png" class="header-logo" />
+    </ion-buttons>
     <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="navigateToLogin()">Entrar</ion-button>
   </ion-toolbar>
 
