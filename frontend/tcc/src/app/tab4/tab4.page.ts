@@ -103,6 +103,10 @@ export class Tab4Page {
     });
   }
 
+  irParaVereador(id: number) {
+    this.router.navigate(['/vereador', id]);
+  }
+
   limparPesquisa() {
     this.searchTerm = '';
     this.searchResults = [];
