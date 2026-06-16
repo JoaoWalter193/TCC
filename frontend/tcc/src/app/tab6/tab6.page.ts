@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   IonContent,
   IonHeader,
@@ -20,6 +21,7 @@ import { DashboardMode } from '../services/dashboard-mode';
   styleUrls: ['./tab6.page.scss'],
   standalone: true,
   imports: [
+    RouterLink,
     IonContent,
     IonHeader,
     IonToolbar,

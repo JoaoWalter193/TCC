@@ -49,11 +49,8 @@ export const routes: Routes = [
   },
   {
     path: 'seguindo',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./seguindo/seguindo.component').then(
-        (m) => m.SeguindoComponent,
-      ),
+    redirectTo: '/tabs/tab5',
+    pathMatch: 'full',
   },
   {
     path: 'historico',

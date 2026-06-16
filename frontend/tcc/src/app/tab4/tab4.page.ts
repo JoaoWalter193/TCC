@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonMenuButton, IonButtons, IonText, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -18,6 +19,7 @@ import { ReacaoEventService } from '../services/reacao-event.service';
   styleUrls: ['./tab4.page.scss'],
   standalone: true,
   imports: [
+    RouterLink,
     IonContent,
     IonHeader,
     IonTitle,

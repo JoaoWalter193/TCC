@@ -1,4 +1,5 @@
 import { Component, DestroyRef, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
@@ -20,6 +21,7 @@ import { ReacaoEventService } from '../services/reacao-event.service';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   imports: [
+    RouterLink,
     IonHeader,
     IonToolbar,
     IonContent,

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {
@@ -22,6 +22,7 @@ import { VereadorTableComponent } from '../components/vereador-table/vereador-ta
   styleUrls: ['tab3.page.scss'],
   standalone: true,
   imports: [
+    RouterLink,
     CommonModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButton,
     IonMenuButton, IonButtons, IonCard, IonCardHeader,
