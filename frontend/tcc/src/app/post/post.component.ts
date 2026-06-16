@@ -121,11 +121,11 @@ export class PostComponent implements OnInit {
   }
 
   likeIconName(): string {
-    return this.post?.currentUserReaction === 'LIKE' ? 'thumbs-up' : 'thumbs-up-outline';
+    return this.auth.isLoggedIn() && this.post?.currentUserReaction === 'LIKE' ? 'thumbs-up' : 'thumbs-up-outline';
   }
 
   dislikeIconName(): string {
-    return this.post?.currentUserReaction === 'DISLIKE' ? 'thumbs-down' : 'thumbs-down-outline';
+    return this.auth.isLoggedIn() && this.post?.currentUserReaction === 'DISLIKE' ? 'thumbs-down' : 'thumbs-down-outline';
   }
 
   reagir(tipo: 'LIKE' | 'DISLIKE') {

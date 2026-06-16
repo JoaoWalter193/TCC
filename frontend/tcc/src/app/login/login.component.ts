@@ -150,15 +150,12 @@ export class LoginComponent implements OnInit {
         this.carregando = false;
 
         if (response && response.token) {
-          localStorage.setItem('auth_token', response.token);
+          this.auth.saveAuthData(response.token, response.usuario);
           if (response.usuario) {
-            localStorage.setItem('user_info', JSON.stringify(response.usuario));
-            localStorage.setItem('usuario_id', String(response.usuario.id));
             this.pushService.tentarRegistrarBackend();
           }
 
-          this.auth.checkAuth();
-          this.router.navigate(['/tabs/tab2']);
+          this.router.navigate(['/tabs/tab2'], { replaceUrl: true });
         } else if (response) {
           this.mensagemErro = 'Resposta de login inválida ou incompleta.';
         }

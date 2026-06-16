@@ -3,11 +3,11 @@
   <ion-card-header>
 
     <div class="header-top">
-      <ion-card-title>{{ post.ementa }}</ion-card-title>
+      <ion-card-title>{{ post.razao }}</ion-card-title>
 
       <ion-icon
         [name]="starIconName()"
-        [color]="post.isFavorito ? 'warning' : ''"
+        [color]="auth.isLoggedIn() && post.isFavorito ? 'warning' : ''"
         (click)="toggleFavorito($event)">
       </ion-icon>
     </div>
@@ -26,17 +26,17 @@
       <div class="tag-chip">{{ post.tag }}</div>
     </div>
 
-    <p>{{ post.texto }}</p>
+    <p class="ementa">{{ post.ementa }}</p>
 
     <div class="acoes">
 
       <div class="acao" (click)="reagir($event, 'LIKE')">
-        <ion-icon [name]="likeIconName()" [class.active]="post.currentUserReaction === 'LIKE'"></ion-icon>
+        <ion-icon [name]="likeIconName()" [class.active]="auth.isLoggedIn() && post.currentUserReaction === 'LIKE'"></ion-icon>
         <span>{{ post.likes }}</span>
       </div>
 
       <div class="acao" (click)="reagir($event, 'DISLIKE')">
-        <ion-icon [name]="dislikeIconName()" [class.active]="post.currentUserReaction === 'DISLIKE'"></ion-icon>
+        <ion-icon [name]="dislikeIconName()" [class.active]="auth.isLoggedIn() && post.currentUserReaction === 'DISLIKE'"></ion-icon>
         <span>{{ post.dislikes }}</span>
       </div>
 

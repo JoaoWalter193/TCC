@@ -7,4 +7,5 @@ export interface VereadorDTO {
   telefone: string;
   email: string;
   site: string;
+  seguidores?: number;
 }
