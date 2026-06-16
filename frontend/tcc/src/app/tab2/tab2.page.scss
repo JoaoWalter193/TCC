@@ -2,6 +2,11 @@ ion-content {
   --background: var(--ion-background-color);
 }
 
+.feed-container {
+  display: flex;
+  flex-direction: column;
+}
+
 ion-toolbar {
   --background: var(--ion-toolbar-background);
   --border-color: var(--ion-border-color);
