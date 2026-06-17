@@ -5,6 +5,8 @@ from . import config
 from .banco import salvar, transformar
 from .scraper import pesquisar
 from .tags import enriquecer_dados
+from .gerar_embeddings import main as gerar_embeddings
+
 
 def _enriquecer_tags():
     try:
@@ -41,6 +43,9 @@ def main():
     salvar(df, engine)
 
     _enriquecer_tags()
+
+    print("\nGerando embeddings das proposições...")
+    gerar_embeddings()
 
     print("\nProcesso finalizado com sucesso!")
 
