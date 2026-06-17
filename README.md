@@ -86,8 +86,8 @@ O **CuritibAtiva** oferece:
        | porta 3000
        v
 [API Gateway (Express / TypeScript)]
-  /api/bi/*  ──────→  [ms-dashboard (FastAPI / Python)]  :8085
-  /api/v1/*  ──────→  [clientes_TCC (Spring Boot / Java)] :8080
+  /api/bi/*  ──────→  [ms-python (FastAPI / Python)]  :8085
+  /api/v1/*  ──────→  [ms-java (Spring Boot / Java)] :8080
                             |
                             | PostgreSQL LISTEN/NOTIFY
                             v
@@ -97,10 +97,10 @@ O **CuritibAtiva** oferece:
 ### Fluxo de Dados
 
 1. **Frontend** (Angular) comunica-se exclusivamente com o **API Gateway** — nunca diretamente com os microserviços.
-2. **Gateway** roteia por prefixo: `/api/bi/*` → ms-dashboard, `/api/v1/*` → clientes_TCC.
-3. **ms-dashboard** consome a Groq API para classificação (`/tag`) e sumarização (`/resumo`) via LLM, e gera embeddings com Sentence Transformers (`/embedding`).
+2. **Gateway** roteia por prefixo: `/api/bi/*` → ms-python, `/api/v1/*` → ms-java.
+3. **ms-python** consome a Groq API para classificação (`/tag`) e sumarização (`/resumo`) via LLM, e gera embeddings com Sentence Transformers (`/embedding`).
 4. **PostgreSQL** dispara gatilhos `NOTIFY` em inserts/updates de proposições. O `ProposicaoListenerService` captura esses eventos, persiste notificações e envia SSE + push (FCM).
-5. **Busca semântica**: o frontend envia o texto para `/embedding` no ms-dashboard, recebe o vetor 768d, e a Business API executa similaridade do cosseno no pgvector.
+5. **Busca semântica**: o frontend envia o texto para `/embedding` no ms-python, recebe o vetor 768d, e a Business API executa similaridade do cosseno no pgvector.
 
 ---
 
@@ -192,7 +192,7 @@ O **CuritibAtiva** oferece:
 | `rxjs` | Programação reativa (BehaviorSubject, forkJoin, Subjects) |
 | `dom-to-image-more` / `html2canvas` | Exportação de gráficos |
 
-### Backend (clientes_TCC) — Dependências Principais
+### Backend (ms-java) — Dependências Principais
 
 | Framework | Finalidade |
 |---|---|
@@ -213,14 +213,14 @@ TCC/
 ├── backend/
 │   ├── api-gateway/          # Express + TypeScript — proxy reverso
 │   │   └── server.ts         # Entry point, rotas, CORS
-│   ├── clientes_TCC/         # Spring Boot + Java 17 — negócios
+│   ├── ms-java/              # Spring Boot + Java 17 — negócios
 │   │   └── src/main/java/com/clientes/clientes_TCC/
 │   │       ├── controller/   # 10 REST controllers
 │   │       ├── service/      # 14 services (incl. ProposicaoListenerService)
 │   │       ├── repositories/ # 16 JPA repositories
 │   │       ├── domain/       # 9 pacotes de entidades
 │   │       └── config/       # Security, Firebase, Swagger
-│   └── ms-dashboard/         # FastAPI + Python — BI e IA
+│   └── ms-python/            # FastAPI + Python — BI e IA
 │       └── app/
 │           ├── api/          # endpoints.py, resumo.py, tag.py, embedding.py
 │           ├── services/     # pandas_engine.py, repository.py
@@ -320,13 +320,13 @@ TCC/
 
 ### API Gateway (`backend/api-gateway`)
 - Express 4 + TypeScript
-- Proxy: `/api/v1/*` → `clientes:8080`, `/api/bi/*` → `ms-dashboard:8085`
+- Proxy: `/api/v1/*` → `ms-java:8080`, `/api/bi/*` → `ms-python:8085`
 - Timeout: 30s em ambos os proxies
 - CORS configurável por ambiente
 - Health check em `/health`
 - Endpoint de teste `/playground/notificar/:usuarioId`
 
-### clientes_TCC (`backend/clientes_TCC`)
+### ms-java (`backend/ms-java`)
 - Spring Boot 4 + Java 17 + Maven
 - **10 Controllers**: Usuario, Vereador, Proposicao, Notificacao, Reacao, FavoritarProposicao, SeguirVereador, Historico, Dispositivo, Sse
 - **16 Repositórios JPA** com `@EntityGraph` para otimização N+1
@@ -335,7 +335,7 @@ TCC/
 - **Triggers**: `notify_proposicao_insert` (AFTER INSERT) e `notify_proposicao_update` (AFTER UPDATE OF colunas estruturais) — updates de likes/dislikes NÃO disparam NOTIFY
 - Swagger disponível em `/api/v1/swagger-ui.html`
 
-### ms-dashboard (`backend/ms-dashboard`)
+### ms-python (`backend/ms-python`)
 - FastAPI + Python 3.11 + Uvicorn
 - **Endpoints**: crud de dashboards, ranking preview, metadata
 - **IA**: `/tag` (classificação), `/resumo` (sumarização), `/embedding` (geração de vetores)
@@ -401,7 +401,7 @@ TCC/
 |---|---|---|
 | `frontend` | Ubuntu + Node 20 + Android SDK + Ionic CLI (custom) | 80, 8100 |
 | `clientes` | `maven:3.8.4-openjdk-17-slim` | 8080 |
-| `ms-dashboard` | Python (Dockerfile custom) | 8085 |
+| `ms-python` | Python (Dockerfile custom) | 8085 |
 | `api-gateway` | `node:22-alpine` | 3000 |
 | `postgres` | `pgvector/pgvector:pg15` | 5432 |
 

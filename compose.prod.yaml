@@ -16,5 +16,5 @@ services:
     environment:
       CORS_ORIGINS: "https://app.curitibativa.online,capacitor://localhost,http://localhost"
 
-  clientes:
+  ms-java:
     command: "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dspring-boot.run.profiles=prod'"
