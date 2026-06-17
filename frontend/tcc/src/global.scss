@@ -76,12 +76,11 @@ hr {
 }
 
 // ── Toolbar / Header spacing ─────────────────────
+// NOTA: NÃO sobrescrever padding-top de ion-header/ion-toolbar.
+// Ionic já gerencia --ion-safe-area-top automaticamente quando
+// @capacitor/status-bar está configurado com overlaysWebView: false.
 ion-toolbar {
   padding: 0 8px;
-}
-
-ion-header ion-toolbar:first-of-type {
-  padding-top: 4px;
 }
 
 // ── "Entrar" button ──────────────────────────────
@@ -454,7 +453,7 @@ ion-header ion-toolbar:first-of-type {
   app-cadastro .content,
   app-recover .content {
     max-width: 520px;
-    margin: 0 auto;
+    margin: 1rem auto 0;
     border-radius: 1rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   }
