@@ -32,7 +32,7 @@ services:
       - "80:4200"
       - "8100:8100"
 
-  clientes:
+  ms-java:
     image: maven:3.8.4-openjdk-17-slim
     depends_on:
      - postgres
@@ -45,17 +45,17 @@ services:
     working_dir: /app
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
-      - ./backend/clientes_TCC/:/app
+      - ./backend/ms-java/:/app
       - ~/.m2:/tmp/.m2
     ports:
       - 8080:8080
 
-  ms-dashboard:
-    build: ./backend/ms-dashboard
+  ms-python:
+    build: ./backend/ms-python
     ports:
       - 8085:8085
     volumes:
-      - ./backend/ms-dashboard:/code
+      - ./backend/ms-python:/code
     command: uvicorn app.main:app --host 0.0.0.0 --port 8085
     environment:
       - DATABASE_URL=postgresql://postgres:senha@postgres:5432/TCC
@@ -79,12 +79,12 @@ services:
       - "3000:3000"
     environment:
       GATEWAY_PORT: 3000
-      BI_MS_URL: http://ms-dashboard:8085
-      BUSINESS_MS_URL: http://clientes:8080
+      BI_MS_URL: http://ms-python:8085
+      BUSINESS_MS_URL: http://ms-java:8080
       CORS_ORIGINS: "http://localhost:4200,http://localhost:8100,capacitor://localhost,http://localhost"
     depends_on:
-      - ms-dashboard
-      - clientes
+      - ms-python
+      - ms-java
 
   postgres:
     image: pgvector/pgvector:pg15
