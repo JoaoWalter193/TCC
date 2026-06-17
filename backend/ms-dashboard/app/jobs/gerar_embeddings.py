@@ -3,17 +3,17 @@ from sentence_transformers import SentenceTransformer
 
 from . import config
 
-print("Carregando modelo de embedding...")
-model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
-print("Modelo carregado!")
 
-
-def gerar_embedding(texto: str) -> list:
+def gerar_embedding(texto: str, model) -> list:
     embedding = model.encode(texto)
     return embedding.tolist()
 
 
 def main():
+    print("Carregando modelo de embedding...")
+    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+    print("Modelo carregado!")
+
     conn = psycopg2.connect(config.DATABASE_URL)
     cur = conn.cursor()
 
@@ -66,7 +66,7 @@ def main():
         print(f"Gerando embedding para proposição {codigo}...")
 
         try:
-            embedding = gerar_embedding(texto_completo)
+            embedding = gerar_embedding(texto_completo, model)
             embedding_str = "[" + ",".join(str(x) for x in embedding) + "]"
 
             cur.execute(

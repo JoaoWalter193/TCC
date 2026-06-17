@@ -45,12 +45,15 @@ def transformar(lista, session, engine):
         pd.to_numeric(df["codigo"].str.replace(r"\D", "", regex=True), errors="coerce")
         .astype("Int64")
     )
+    
     df["data_envio"] = pd.to_datetime(
         df["data_envio_txt"].apply(limpar_data), dayfirst=True, errors="coerce"
     )
+
     df["ultimo_tramite"] = pd.to_datetime(
         df["ultimo_tramite_txt"].apply(limpar_data), dayfirst=True, errors="coerce"
     )
+
     df["data_efetivo"] = df["data_envio"]
 
     for col in ["razao", "localizacao", "ementa"]:
@@ -193,7 +196,7 @@ def salvar(df, engine):
     final.dropna(subset=["tipo_id", "estado_id", "vereador_id"], inplace=True)
     perdidos = tamanho_antes - len(final)
     if perdidos:
-        print(f"   [ALERTA] {perdidos} proposicoes descartadas — FK não encontrada "
+        print(f"   [ALERTA] {perdidos} proposicoes descartadas — FK nao encontrada "
               "(tipo, estado ou vereador inexistente no banco).")
 
     colunas = [
