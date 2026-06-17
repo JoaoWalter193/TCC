@@ -1,7 +1,22 @@
 .env
-/backend/clientes_TCC/src/main/resources/firebase-service-account.json
+/backend/ms-java/src/main/resources/firebase-service-account.json
 */node_modules/*
 api-gateway/node_modules/*
 backend/api-gateway/node_modules/*
 frontend/tcc/android/app/google-services.json
 google-services.json
+
+
+
+# IDEs
+.idea/
+backend/.idea/
+*.iml
+
+# Build & runtime artifacts (safety net)
+target/
+.m2/
+
+# Python cache
+__pycache__/
+*.pyc

@@ -123,7 +123,7 @@ public class ProposicaoService {
 
     }
 
-    @Value("${ms.dashboard.url:http://ms-dashboard:8085}")
+    @Value("${ms.python.url:http://ms-python:8085}")
     private String msDashboardUrl;
 
     @Autowired

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.clientes</groupId>
-	<artifactId>clientes_TCC</artifactId>
+	<artifactId>ms-java</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>clientes_TCC</name>
+	<name>ms-java</name>
 	<description>Backend para nosso banco de clientes</description>
 	<url/>
 	<licenses>
