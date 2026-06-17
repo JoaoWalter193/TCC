@@ -4,6 +4,7 @@ import com.clientes.clientes_TCC.domain.Notificacao.Notificacao;
 import com.clientes.clientes_TCC.exceptions.NotificacaoInexistenteException;
 import com.clientes.clientes_TCC.repositories.DispositivoUsuarioRepository;
 import com.clientes.clientes_TCC.repositories.NotificacaoRepository;
+import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
@@ -48,6 +49,10 @@ public class NotificacaoService {
                     .setNotification(Notification.builder()
                             .setTitle(titulo)
                             .setBody(mensagem)
+                            .build())
+                    .setAndroidConfig(AndroidConfig.builder()
+                            .setPriority(AndroidConfig.Priority.HIGH)
+                            .setTtl(86400)
                             .build())
                     .setToken(fcmToken)
                     .build();
