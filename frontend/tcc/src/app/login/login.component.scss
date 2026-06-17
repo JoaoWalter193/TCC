@@ -2,40 +2,33 @@ $color-error: #dc3545;
 $color-success: #28a745;
 
 .login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
+  --background: var(--ion-background-color);
   width: 100%;
+  height: 100%;
 
-  padding-block: 5%;
-
-  text-align: center;
-  color: var(--ion-text-color);
-  background-color: var(--ion-background-color);
-  position: relative;
+  &::part(scroll) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+  }
 }
 
 .content {
   width: 100%;
   max-width: 450px;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+  border-radius: 1rem;
   background-color: var(--ion-card-background);
   padding: 1rem;
   padding-inline: 2rem;
   padding-bottom: 2rem;
+  margin-top: 0.5rem;
 }
 
 ion-buttons {
-  position: absolute;
-  top: 12px;
-  left: 12px;
+  align-self: flex-start;
+  margin: 8px 0 0 8px;
   z-index: 10;
-}
-
-.ion-page {
-  align-items: center;
 }
 
 .logo {
@@ -44,8 +37,8 @@ ion-buttons {
   font-weight: 700;
   color: var(--ion-color-primary);
 
-  margin-bottom: 3rem;
-  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .h2 {

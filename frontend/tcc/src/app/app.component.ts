@@ -2,6 +2,7 @@ import { Component, inject, Injector, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { AuthService } from './services/auth.service';
 import { ThemeService } from './services/theme.service';
 import { MenuComponent } from "./components/menu/menu.component";
@@ -42,6 +43,10 @@ export class AppComponent implements OnDestroy {
 
     platform.ready().then(() => {
       if (platform.is('capacitor')) {
+        StatusBar.setOverlaysWebView({ overlay: false });
+        StatusBar.setStyle({ style: Style.Dark });
+        StatusBar.setBackgroundColor({ color: '#1DA1F2' });
+
         import('./services/push.service').then(m => {
           const push = injector.get(m.PushService);
           push.init();
