@@ -70,7 +70,6 @@ export class ProposicaoService {
         const favCodigos = new Set(favs.map(f => f.codigo));
         return posts.map(p => ({ ...p, isFavorito: favCodigos.has(p.id) }));
       }),
-      map(favs => favs.sort((a, b) => (a.isFavorito === b.isFavorito ? 0 : a.isFavorito ? -1 : 1))),
     );
   }
 
