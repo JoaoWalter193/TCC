@@ -22,11 +22,17 @@
     <div class="desktop-content">
       <div class="feed-container">
 
-        @if (temNaoLidas) {
+        @if (notificacoes.length > 0) {
         <div class="notif-actions">
+          @if (temNaoLidas) {
           <ion-button fill="clear" color="primary" (click)="marcarTodas()">
             <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
             Marcar todas como lidas
+          </ion-button>
+          }
+          <ion-button fill="clear" color="danger" (click)="excluirTodas()">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Limpar
           </ion-button>
         </div>
         }

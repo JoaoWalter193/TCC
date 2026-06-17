@@ -28,7 +28,6 @@ import { ThemeService } from '../services/theme.service';
 })
 export class ConfiguracoesComponent implements OnInit {
   paletteToggle = false;
-  notifyToggle = false;
 
   constructor(
     private auth: AuthService,
@@ -49,6 +48,4 @@ export class ConfiguracoesComponent implements OnInit {
     this.theme.set(event.detail.checked);
     this.paletteToggle = event.detail.checked;
   }
-
-  toggleNotify(event: CustomEvent) {}
 }

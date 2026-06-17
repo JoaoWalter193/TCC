@@ -11,6 +11,7 @@ import com.google.firebase.messaging.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -106,6 +107,12 @@ public class NotificacaoService {
         List<Notificacao> naoLidas = notificacaoRepository.findByUsuarioIdAndLidaFalse(usuarioId);
         naoLidas.forEach(n -> n.setLida(true));
         notificacaoRepository.saveAll(naoLidas);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    public ResponseEntity<Void> excluirTodas(Integer usuarioId) {
+        notificacaoRepository.deleteByUsuarioId(usuarioId);
         return ResponseEntity.noContent().build();
     }
 }

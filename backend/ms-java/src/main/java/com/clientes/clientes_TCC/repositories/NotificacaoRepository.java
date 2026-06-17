@@ -7,4 +7,5 @@ import java.util.List;
 public interface NotificacaoRepository extends JpaRepository<Notificacao, Integer> {
     List<Notificacao> findByUsuarioIdOrderByCriadaEmDesc(Integer usuarioId);
     List<Notificacao> findByUsuarioIdAndLidaFalse(Integer usuarioId);
+    void deleteByUsuarioId(Integer usuarioId);
 }
