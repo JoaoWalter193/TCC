@@ -107,6 +107,21 @@ export class NotificacaoService {
     this.atualizarContador();
   }
 
+  excluirTodas(usuarioId: number): void {
+    this.api.v1.delete(`/notificacoes/${usuarioId}`).pipe(
+      catchError(() => of(void 0)),
+    ).subscribe();
+
+    this.localNotif.cancelarTodas();
+    this.notificacoes.set([]);
+    this.naoLidas.set(0);
+    this.idsAgendados.clear();
+    this.primeiraCarga = true;
+    try {
+      localStorage.removeItem(this.STORAGE_KEY);
+    } catch { /* ignora */ }
+  }
+
   limparEstado(): void {
     this.notificacoes.set([]);
     this.naoLidas.set(0);

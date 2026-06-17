@@ -75,6 +75,18 @@ public class NotificacaoController {
         return notificacaoService.marcarTodasComoLidas(usuarioId);
     }
 
+    @Operation(summary = "Excluir todas as notificações", description = "Remove todo o histórico de notificações de um usuário")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Notificações excluídas com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado", content = @Content)
+    })
+    @DeleteMapping("/{usuarioId}")
+    public ResponseEntity<Void> excluirTodas(
+            @Parameter(description = "ID do usuário", example = "1", required = true)
+            @PathVariable Integer usuarioId) {
+        return notificacaoService.excluirTodas(usuarioId);
+    }
+
     @Operation(summary = "Testar notificação", description = "Dispara manualmente uma notificação de teste para um usuário")
     @PostMapping("/{usuarioId}/teste")
     public ResponseEntity<Notificacao> testarNotificacao(

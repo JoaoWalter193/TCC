@@ -7,6 +7,7 @@ import {
   IonMenuButton, IonButtons, IonCard, IonCardHeader,
   IonCardTitle, IonCardContent, IonChip, IonLabel,
   IonItem, IonAvatar, IonText, IonList, IonBadge,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { NotificacaoService } from '../services/notificacao.service';
@@ -37,6 +38,7 @@ export class Tab3Page implements OnInit, OnDestroy {
   auth = inject(AuthService);
   notificacaoService = inject(NotificacaoService);
   private vereadorService = inject(VereadorService);
+  private alertCtrl = inject(AlertController);
 
   private vereadorMap = new Map<string, number>();
   carregando = true;
@@ -72,6 +74,25 @@ export class Tab3Page implements OnInit, OnDestroy {
 
   marcarTodas(): void {
     this.notificacaoService.marcarTodasComoLidas();
+  }
+
+  async excluirTodas(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: 'Limpar notificações',
+      message: 'Tem certeza que deseja excluir todo o histórico de notificações? Esta ação não pode ser desfeita.',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Excluir tudo',
+          role: 'destructive',
+          handler: () => {
+            const usuarioId = Number(localStorage.getItem('usuario_id') || 1);
+            this.notificacaoService.excluirTodas(usuarioId);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   clicarNotificacao(n: NotificacaoViewModel): void {

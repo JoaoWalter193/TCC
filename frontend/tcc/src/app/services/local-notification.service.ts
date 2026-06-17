@@ -85,4 +85,17 @@ export class LocalNotificationService {
     if (!this.plugin) return;
     await this.plugin.cancel({ notifications: [{ id }] });
   }
+
+  async cancelarTodas(): Promise<void> {
+    if (!this.plugin) return;
+    try {
+      const { LocalNotifications } = await import('@capacitor/local-notifications');
+      const { notifications } = await LocalNotifications.getPending();
+      if (notifications.length > 0) {
+        await LocalNotifications.cancel({ notifications });
+      }
+    } catch {
+      console.warn('Erro ao cancelar notificações locais');
+    }
+  }
 }
