@@ -33,6 +33,15 @@
         <ion-text color="primary">Em destaque</ion-text>
       </div>
     </div>
+    <div class="destaque-toggle">
+      <button class="destaque-tab" [class.active]="destaqueModo === 'proposicoes'" (click)="mudarDestaqueModo('proposicoes')">
+        Proposições
+      </button>
+      <div class="destaque-divider"></div>
+      <button class="destaque-tab" [class.active]="destaqueModo === 'vereadores'" (click)="mudarDestaqueModo('vereadores')">
+        Vereadores
+      </button>
+    </div>
   }
 </ion-header>
 
@@ -99,6 +108,7 @@
           </div>
         }
       } @else {
+        @if (destaqueModo === 'proposicoes') {
         <div class="feed-container">
           <div class="highlight-list">
             @for (post of postsDestaque; track post.id) {
@@ -107,6 +117,9 @@
             }
           </div>
         </div>
+        } @else {
+        <app-vereador-table></app-vereador-table>
+        }
       }
     </div>
     <aside class="desktop-sidebar right-sidebar">
