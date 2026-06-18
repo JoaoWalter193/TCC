@@ -19,6 +19,7 @@
   </ion-toolbar>
   }
 
+  @if (auth.isLoggedIn()) {
   <div class="mode-tabs">
     <button class="mode-tab" [class.active]="modoSelecionado === 'dashboard'" (click)="mudarModo('dashboard')">
       Dashboard
@@ -28,6 +29,7 @@
       Meus Dashboards
     </button>
   </div>
+  }
 </ion-header>
 
 <ion-content [fullscreen]="true">
