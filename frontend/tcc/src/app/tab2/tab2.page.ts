@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent, IonPopover } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
@@ -34,7 +34,8 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     IonIcon,
     MenuPanelComponent,
     VereadorTableComponent,
-],
+    IonPopover,
+  ],
 })
 export class Tab2Page {
   auth = inject(AuthService);
@@ -43,7 +44,19 @@ export class Tab2Page {
 
   posts: ProposicaoDTO[] = [];
   postsFiltrados: ProposicaoDTO[] = [];
-  tipoFiltroAtivo: string | null = null;
+
+  categoriasDisponiveis: string[] = [];
+  temasDisponiveis: string[] = [];
+  categoriasSelecionadas: string[] = [];
+  temasSelecionados: string[] = [];
+
+  get categoriasNaoSelecionadas(): string[] {
+    return this.categoriasDisponiveis.filter(c => !this.categoriasSelecionadas.includes(c));
+  }
+
+  get temasNaoSelecionados(): string[] {
+    return this.temasDisponiveis.filter(t => !this.temasSelecionados.includes(t));
+  }
 
   constructor(
     private router: Router,
@@ -85,6 +98,7 @@ export class Tab2Page {
           }
         }));
 
+        this.extrairFiltros();
         this.postsFiltrados = [...this.posts];
       },
       error: (err) => {
@@ -116,6 +130,9 @@ export class Tab2Page {
           }
         }));
 
+        this.categoriasSelecionadas = [];
+        this.temasSelecionados = [];
+        this.extrairFiltros();
         this.postsFiltrados = [...this.posts];
       },
       error: (err) => {
@@ -127,12 +144,62 @@ export class Tab2Page {
     });
   }
 
-  filtrarPorTipo(tipoProposicao: string) {
-    this.tipoFiltroAtivo = tipoProposicao;
+  private extrairFiltros() {
+    this.categoriasDisponiveis = [...new Set(this.posts.map(p => p.tipoProposicao))].sort();
+    this.temasDisponiveis = [...new Set(this.posts.map(p => p.tag).filter(Boolean))].sort();
+  }
 
-    this.postsFiltrados = this.posts.filter(
-      (post) => post.tipoProposicao === tipoProposicao,
-    );
+  aplicarFiltros() {
+    let filtrados = this.posts;
+
+    if (this.categoriasSelecionadas.length > 0) {
+      filtrados = filtrados.filter(p => this.categoriasSelecionadas.includes(p.tipoProposicao));
+    }
+
+    if (this.temasSelecionados.length > 0) {
+      filtrados = filtrados.filter(p => this.temasSelecionados.includes(p.tag));
+    }
+
+    this.postsFiltrados = filtrados;
+  }
+
+  toggleCategoria(cat: string) {
+    const idx = this.categoriasSelecionadas.indexOf(cat);
+    if (idx >= 0) {
+      this.categoriasSelecionadas.splice(idx, 1);
+    } else {
+      this.categoriasSelecionadas.push(cat);
+    }
+    this.aplicarFiltros();
+  }
+
+  toggleTema(tema: string) {
+    const idx = this.temasSelecionados.indexOf(tema);
+    if (idx >= 0) {
+      this.temasSelecionados.splice(idx, 1);
+    } else {
+      this.temasSelecionados.push(tema);
+    }
+    this.aplicarFiltros();
+  }
+
+  filtrarPorTipo(tipoProposicao: string) {
+    this.categoriasSelecionadas = [tipoProposicao];
+    this.temasSelecionados = [];
+    this.aplicarFiltros();
+  }
+
+  limparFiltros() {
+    this.categoriasSelecionadas = [];
+    this.temasSelecionados = [];
+    this.postsFiltrados = [...this.posts];
+  }
+
+  formatarTag(tag: string): string {
+    return tag
+      .split('-')
+      .map(palavra => palavra.charAt(0).toUpperCase() + palavra.slice(1))
+      .join(' ');
   }
 
   verVereador(idVereador: number) {
@@ -141,10 +208,5 @@ export class Tab2Page {
 
   navigateToLogin() {
     this.router.navigate(['/login']);
-  }
-
-  limparFiltro() {
-    this.tipoFiltroAtivo = null;
-    this.postsFiltrados = this.posts;
   }
 }
