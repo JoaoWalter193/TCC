@@ -44,6 +44,11 @@ export class VereadorService {
       .pipe(map(lista => lista.map(mapToDTO)));
   }
 
+  buscarPorNome(query: string): Observable<VereadorDTO[]> {
+    return this.api.v1.get<VereadorBackend[]>('/vereador/busca', { q: query })
+      .pipe(map(lista => lista.map(mapToDTO)));
+  }
+
   listar(): Observable<VereadorDTO[]> {
     return this.api.v1.get<VereadorBackend[]>('/vereador')
       .pipe(map(lista => lista.map(mapToDTO)));
