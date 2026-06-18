@@ -33,6 +33,18 @@ public class VereadorService {
         return ResponseEntity.ok(listaDTO);
     }
 
+    public ResponseEntity<List<VereadorDTO>> buscarVereadores(String query) {
+        List<Vereador> resultados = vereadorRepository.findByNomeContaining(query);
+        Map<Integer, Integer> seguidoresMap = carregarSeguidoresMap(
+                resultados.stream().map(Vereador::getId).toList()
+        );
+        List<VereadorDTO> listaDTO = resultados.stream()
+                .map(v -> toDTO(v, seguidoresMap.getOrDefault(v.getId(), 0)))
+                .limit(5)
+                .toList();
+        return ResponseEntity.ok(listaDTO);
+    }
+
     public ResponseEntity<List<VereadorDTO>> listarVereadoresPorSeguidores() {
         List<Vereador> vereadoresLista = vereadorRepository.findAllWithPartido();
 

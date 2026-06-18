@@ -1,0 +1,14 @@
+<ion-card [routerLink]="link" button="true">
+  <ion-card-content class="card-content">
+    <div class="vereador-avatar">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </div>
+    <div class="vereador-info">
+      <strong class="vereador-nome">{{ vereador.nome }}</strong>
+      <span class="vereador-partido">{{ vereador.partido }}</span>
+    </div>
+    @if (vereador.seguidores && vereador.seguidores > 0) {
+      <span class="vereador-seguidores">{{ vereador.seguidores }} seguidor{{ vereador.seguidores > 1 ? 'es' : '' }}</span>
+    }
+  </ion-card-content>
+</ion-card>

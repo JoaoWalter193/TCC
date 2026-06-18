@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,6 +48,14 @@ public class VereadorController {
     @GetMapping("/top-seguidos")
     public ResponseEntity<List<VereadorDTO>> listarTopSeguidos(){
         return vereadorService.listarVereadoresPorSeguidores();
+    }
+
+    @Operation(summary = "Buscar vereadores por nome", description = "Retorna até 5 vereadores cujo nome contenha o termo buscado (case-insensitive)")
+    @GetMapping("/busca")
+    public ResponseEntity<List<VereadorDTO>> buscarVereadores(
+            @Parameter(description = "Termo de busca", example = "Ana", required = true)
+            @RequestParam String q){
+        return vereadorService.buscarVereadores(q);
     }
 
     @Operation(summary = "Buscar vereador por ID", description = "Retorna os dados detalhados de um vereador específico a partir do seu ID")
