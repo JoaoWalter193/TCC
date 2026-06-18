@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -6,12 +6,17 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSea
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
+import { VereadorDTO } from '../models/dto/vereador-dto';
 import { ProposicaoService } from '../services/proposicao';
+import { VereadorService } from '../services/vereador';
 import { CardComponent } from '../components/card/card.component';
+import { VereadorSearchCardComponent } from '../components/vereador-search-card/vereador-search-card.component';
 import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
 import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReacaoEventService } from '../services/reacao-event.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tab4',
@@ -38,6 +43,7 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     IonSpinner,
     MenuPanelComponent,
     VereadorTableComponent,
+    VereadorSearchCardComponent,
   ],
 })
 export class Tab4Page {
@@ -46,15 +52,18 @@ export class Tab4Page {
   private destroyRef = inject(DestroyRef);
 
   postsDestaque: ProposicaoDTO[] = [];
+  destaqueModo: 'proposicoes' | 'vereadores' = 'proposicoes';
 
   searchTerm = '';
   searchResults: ProposicaoDTO[] = [];
+  vereadorResults: VereadorDTO[] = [];
   isSearching = false;
   hasSearched = false;
 
   constructor(
     private router: Router,
     private proposicaoService: ProposicaoService,
+    private vereadorService: VereadorService,
   ) {
     this.reacaoEvent.reacaoAlterada$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -67,6 +76,17 @@ export class Tab4Page {
 
   get usuarioId(): number | null {
     return this.auth.getUsuarioId();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (window.innerWidth >= 1024) {
+      this.destaqueModo = 'proposicoes';
+    }
+  }
+
+  mudarDestaqueModo(modo: 'proposicoes' | 'vereadores') {
+    this.destaqueModo = modo;
   }
 
   navigateToLogin() {
@@ -111,15 +131,19 @@ export class Tab4Page {
     this.hasSearched = true;
     this.isSearching = true;
     this.searchResults = [];
+    this.vereadorResults = [];
 
-    this.proposicaoService.buscarPorSimilaridade(termo, 50, this.usuarioId).subscribe({
-      next: (results) => {
-        this.searchResults = results;
+    forkJoin({
+      vereadores: this.vereadorService.buscarPorNome(termo).pipe(catchError(() => of([]))),
+      proposicoes: this.proposicaoService.buscarPorSimilaridade(termo, 50, this.usuarioId).pipe(catchError(() => of([]))),
+    }).subscribe({
+      next: ({ vereadores, proposicoes }) => {
+        this.vereadorResults = vereadores;
+        this.searchResults = proposicoes;
         this.isSearching = false;
       },
       error: () => {
         this.isSearching = false;
-        this.searchResults = [];
       },
     });
   }
@@ -131,6 +155,7 @@ export class Tab4Page {
   limparPesquisa() {
     this.searchTerm = '';
     this.searchResults = [];
+    this.vereadorResults = [];
     this.hasSearched = false;
     this.isSearching = false;
   }

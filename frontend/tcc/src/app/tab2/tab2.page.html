@@ -14,14 +14,67 @@
     }
   </ion-toolbar>
 
-  @if (tipoFiltroAtivo) {
   <div class="header-filtro-container">
-    <div class="tipo-tag filtro-header" (click)="limparFiltro()">
-      {{ tipoFiltroAtivo }}
-      <ion-icon name="close"></ion-icon>
-    </div>
+    @for (cat of categoriasSelecionadas; track cat) {
+      <div class="filtro-header" (click)="toggleCategoria(cat)">
+        {{ cat }}
+        <ion-icon name="close"></ion-icon>
+      </div>
+    }
+    @for (tema of temasSelecionados; track tema) {
+      <div class="filtro-header" (click)="toggleTema(tema)">
+        {{ formatarTag(tema) }}
+        <ion-icon name="close"></ion-icon>
+      </div>
+    }
+
+    <button class="dropdown-trigger" id="cat-trigger">
+      Categoria <ion-icon name="chevron-down"></ion-icon>
+    </button>
+    <button class="dropdown-trigger" id="tema-trigger">
+      Tema <ion-icon name="chevron-down"></ion-icon>
+    </button>
   </div>
-  }
+
+  <ion-popover #catPopover trigger="cat-trigger" triggerAction="click" side="bottom" alignment="start" [dismissOnSelect]="false">
+    <ng-template>
+      <div class="filter-dropdown">
+        @if (categoriasNaoSelecionadas.length > 0) {
+          @for (cat of categoriasNaoSelecionadas; track cat) {
+            <div class="dropdown-item" (click)="toggleCategoria(cat); catPopover.dismiss()">
+              {{ cat }}
+            </div>
+          }
+        } @else {
+          <div class="dropdown-empty">Todas selecionadas</div>
+        }
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-clear" (click)="categoriasSelecionadas = []; aplicarFiltros(); catPopover.dismiss()">
+          Limpar categoria
+        </div>
+      </div>
+    </ng-template>
+  </ion-popover>
+
+  <ion-popover #temaPopover trigger="tema-trigger" triggerAction="click" side="bottom" alignment="start" [dismissOnSelect]="false">
+    <ng-template>
+      <div class="filter-dropdown">
+        @if (temasNaoSelecionados.length > 0) {
+          @for (tema of temasNaoSelecionados; track tema) {
+            <div class="dropdown-item" (click)="toggleTema(tema); temaPopover.dismiss()">
+              {{ formatarTag(tema) }}
+            </div>
+          }
+        } @else {
+          <div class="dropdown-empty">Todas selecionadas</div>
+        }
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-clear" (click)="temasSelecionados = []; aplicarFiltros(); temaPopover.dismiss()">
+          Limpar tema
+        </div>
+      </div>
+    </ng-template>
+  </ion-popover>
 
 </ion-header>
 
