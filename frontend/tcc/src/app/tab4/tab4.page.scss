@@ -42,6 +42,37 @@
   }
 }
 
+.search-results-container {
+  padding: 0;
+}
+
+.result-section {
+  margin-bottom: 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ion-color-step-700);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px 16px 8px;
+  margin: 0;
+
+  ion-icon {
+    font-size: 16px;
+    color: var(--ion-color-primary);
+  }
+}
+
+.vereador-list {
+  display: flex;
+  flex-direction: column;
+}
+
 .highlight-list {
   padding: 0;
   display: flex;

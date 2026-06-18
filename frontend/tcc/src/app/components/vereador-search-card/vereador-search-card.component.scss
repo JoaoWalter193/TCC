@@ -1,0 +1,55 @@
+ion-card {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid var(--ion-color-light-shade, #e0e0e0);
+  background: var(--ion-card-background);
+  transition: background 0.18s ease;
+}
+
+ion-card:active {
+  background: var(--ion-color-step-50);
+}
+
+ion-card-content {
+  padding: 0;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.vereador-avatar {
+  font-size: 2.2rem;
+  color: var(--ion-color-primary);
+  flex-shrink: 0;
+  line-height: 1;
+  display: flex;
+}
+
+.vereador-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.vereador-nome {
+  display: block;
+  font-size: 15px;
+  color: var(--ion-text-color);
+  font-weight: 600;
+}
+
+.vereador-partido {
+  font-size: 13px;
+  color: var(--ion-color-step-600);
+}
+
+.vereador-seguidores {
+  font-size: 12px;
+  color: var(--ion-color-step-500);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
