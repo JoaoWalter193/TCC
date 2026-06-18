@@ -19,28 +19,121 @@ ion-button[fill="clear"] {
   font-size: 0.92rem;
 }
 
+// ── Filtros ────────────────────────────────────
+
 .header-filtro-container {
-  padding: 0 12px 8px 12px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 12px 10px;
   border-bottom: 1px solid var(--ion-border-color);
   background: var(--ion-background-color);
+  min-height: 44px;
 }
 
 .filtro-header {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 26px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 10px;
+  height: 28px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0 10px;
   border-radius: 14px;
   background: #ffc67c;
   color: #5c3b00;
   cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  ion-icon {
+    font-size: 0.85rem;
+    min-width: 16px;
+    min-height: 16px;
+  }
 }
 
-.filtro-header ion-icon {
+.ion-palette-dark .filtro-header {
+  background: #b8862e;
+  color: #1a1200;
+}
+
+// ── Dropdowns ──────────────────────────────────
+
+.dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--ion-color-step-300);
+  background: transparent;
+  color: var(--ion-color-step-600);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--ion-color-step-50);
+    border-color: var(--ion-color-step-400);
+  }
+
+  ion-icon {
+    font-size: 0.85rem;
+  }
+}
+
+.filter-dropdown {
+  min-width: 200px;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.dropdown-item {
+  padding: 10px 14px;
   font-size: 0.85rem;
-  min-width: 16px;
-  min-height: 16px;
+  color: var(--ion-text-color);
+  cursor: pointer;
+  transition: background 0.1s;
+
+  &:hover {
+    background: var(--ion-color-step-50);
+  }
+
+  &:active {
+    background: var(--ion-color-step-100);
+  }
+}
+
+.dropdown-empty {
+  padding: 14px 14px;
+  font-size: 0.82rem;
+  color: var(--ion-color-step-400);
+  text-align: center;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--ion-color-step-150);
+  margin: 4px 0;
+}
+
+.dropdown-clear {
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: var(--ion-color-danger);
+  cursor: pointer;
+  transition: background 0.1s;
+
+  &:hover {
+    background: rgba(var(--ion-color-danger-rgb), 0.06);
+  }
 }
