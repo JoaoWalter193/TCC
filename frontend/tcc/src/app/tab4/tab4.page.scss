@@ -42,6 +42,52 @@
   }
 }
 
+.destaque-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 8px 16px 10px;
+  background: var(--ion-toolbar-background);
+}
+
+.destaque-tab {
+  background: transparent;
+  border: none;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ion-color-step-500);
+  cursor: pointer;
+  transition: color 0.2s, font-weight 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  line-height: 1.3;
+  white-space: nowrap;
+
+  &.active {
+    font-weight: 700;
+    color: var(--ion-color-primary);
+  }
+
+  &:hover {
+    color: var(--ion-color-primary);
+  }
+}
+
+.destaque-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--ion-color-step-300);
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .destaque-toggle {
+    display: none;
+  }
+}
+
 .search-results-container {
   padding: 0;
 }

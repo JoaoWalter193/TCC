@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -52,6 +52,7 @@ export class Tab4Page {
   private destroyRef = inject(DestroyRef);
 
   postsDestaque: ProposicaoDTO[] = [];
+  destaqueModo: 'proposicoes' | 'vereadores' = 'proposicoes';
 
   searchTerm = '';
   searchResults: ProposicaoDTO[] = [];
@@ -75,6 +76,17 @@ export class Tab4Page {
 
   get usuarioId(): number | null {
     return this.auth.getUsuarioId();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (window.innerWidth >= 1024) {
+      this.destaqueModo = 'proposicoes';
+    }
+  }
+
+  mudarDestaqueModo(modo: 'proposicoes' | 'vereadores') {
+    this.destaqueModo = modo;
   }
 
   navigateToLogin() {
