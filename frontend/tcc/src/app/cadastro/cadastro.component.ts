@@ -198,6 +198,7 @@ export class CadastroComponent implements OnInit {
 
           this.cadastroForm.reset();
           this.currentStep = 1;
+          setTimeout(() => this.router.navigate(['/login']), 1000);
         }
       });
   }
