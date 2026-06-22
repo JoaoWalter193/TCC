@@ -151,7 +151,7 @@ public class HistoricoService {
                         v.getEmail(), v.getLegislaturas(), v.getGabinete(),
                         v.getTelefone(), v.getSite(), v.getAtivo(),
                         v.getGenero(), v.getNascimento(), v.getCor(),
-                        v.getOcupacao(), v.getEscolaridade(), null
+                        v.getOcupacao(), v.getEscolaridade(), null,null
                 );
                 resultado.add(HistoricoResponseDTO.deVereador(v.getId(), data, verDto));
             }
