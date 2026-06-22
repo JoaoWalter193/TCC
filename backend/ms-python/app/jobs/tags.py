@@ -7,6 +7,24 @@ from sqlalchemy import create_engine, text
 from . import config
 
 
+def salvar_tags(tags_calculadas, engine):
+    if not tags_calculadas:
+        print("Nenhuma tag para salvar.")
+        return
+
+    df_update = pd.DataFrame(tags_calculadas)
+    query_update = text("""
+        UPDATE proposicao
+        SET tag = :tag
+        WHERE codigo = :codigo
+    """)
+
+    print(f"Salvando {len(tags_calculadas)} tags no banco de dados...")
+
+    with engine.begin() as conn:
+        conn.execute(query_update, df_update.to_dict(orient="records"))
+
+
 def enriquecer_dados():
     print("Iniciando rotina de enriquecimento de tags...")
     engine = create_engine(config.DATABASE_URL)
@@ -42,6 +60,11 @@ def enriquecer_dados():
             for tentativa in range(3):
                 try:
                     resp = session.post(config.TAG_API_URL, json=payload, timeout=15)
+                    if resp.status_code == 429:
+                        print(f"\nLimite de tokens excedido! Interrompendo para evitar "
+                              f"classificação incorreta. {len(tags_calculadas)} tags salvas até agora.")
+                        salvar_tags(tags_calculadas, engine)
+                        return
                     resp.raise_for_status()
                     tag_retornada = resp.json().get("tag", "administrativo")
                     sucesso = True
@@ -63,21 +86,7 @@ def enriquecer_dados():
 
             time.sleep(1.0)
 
-    df_update = pd.DataFrame(tags_calculadas)
-
-    query_update = text("""
-        UPDATE proposicao
-        SET tag = :tag
-        WHERE codigo = :codigo
-    """)
-
-    parametros = df_update.to_dict(orient="records")
-
-    print(f"Salvando {len(parametros)} tags no banco de dados...")
-
-    with engine.begin() as conn:
-        conn.execute(query_update, parametros)
-
+    salvar_tags(tags_calculadas, engine)
     print("Enriquecimento finalizado com sucesso!")
 
 

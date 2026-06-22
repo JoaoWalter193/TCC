@@ -58,10 +58,19 @@ def _extrair_leis_similares(soup):
                 return "; ".join(leis)
     return ""
 
+def _extrair_encerrou_tramitacao(soup):
+    for tr in soup.find_all("tr", class_="itemTr"):
+        label = tr.find("span", class_="spamFormLabel")
+        if label and "Encerrou a tramitação" in label.get_text():
+            field = tr.find("td", class_="formField")
+            if field:
+                return field.get_text(strip=True).lower() == "sim"
+    return False
+
 def obter_detalhes(session, link_parcial):
 
     if not link_parcial:
-        return {"texto": "", "justificativa": ""}
+        return {"texto": "", "justificativa": "", "leis_similares": "", "encerrou_tramitacao": False}
 
     if "?" in link_parcial:
         parametros = link_parcial.split("?", 1)[1]
@@ -83,14 +92,46 @@ def obter_detalhes(session, link_parcial):
         soup = BeautifulSoup(resp.text, "html.parser")
         div_texto = soup.find("div", id="pro_texto")
         div_justificativa = soup.find("div", id="pro_justificativa")
+        leis_similares = _extrair_leis_similares(soup)
+        encerrou_tramitacao = _extrair_encerrou_tramitacao(soup)
 
         return {
             "texto": div_texto.get_text(separator="\n", strip=True) if div_texto else "",
             "justificativa": div_justificativa.get_text(separator="\n", strip=True) if div_justificativa else "",
+            "leis_similares": leis_similares,
+            "encerrou_tramitacao": encerrou_tramitacao,
         }
     except Exception as e:
         print(f"   Erro ao acessar detalhes: {e}")
-        return {"texto": "", "justificativa": ""}
+        return {"texto": "", "justificativa": "", "leis_similares": "", "encerrou_tramitacao": False}
+
+
+def _extrair_pro_id(soup):
+    tag = soup.find("input", {"name": "pro_id"})
+    return tag["value"] if tag else None
+
+
+def _buscar_texto_report(session, pro_id):
+    if not pro_id:
+        return "", ""
+
+    report_url = (
+        f"{config.BASE_URL_CMC}/wspl/relatorios/"
+        f"ProposicaoDetalhesTextoReport.do?select_action=&pro_id={pro_id}"
+    )
+    try:
+        time.sleep(1)
+        resp = session.get(report_url, headers=config.HEADERS, timeout=config.REQUEST_TIMEOUT)
+        if not resp or "jcaptcha" in resp.text.lower():
+            return "", ""
+        soup = BeautifulSoup(resp.text, "html.parser")
+        texto_div = soup.find("div", id="pro_texto")
+        just_div = soup.find("div", id="pro_justificativa")
+        texto = texto_div.get_text(separator="\n", strip=True) if texto_div else ""
+        just = just_div.get_text(separator="\n", strip=True) if just_div else ""
+        return texto, just
+    except Exception:
+        return "", ""
 
 
 def _parse_detalhes(args):
@@ -98,7 +139,7 @@ def _parse_detalhes(args):
     link_parcial, session_principal = args
 
     if not link_parcial:
-        return (link_parcial, {"texto": "", "justificativa": ""})
+        return (link_parcial, {"texto": "", "justificativa": "", "leis_similares": "", "encerrou_tramitacao": False})
 
     session = requests.Session()
     session.headers.update(session_principal.headers)
@@ -118,21 +159,49 @@ def _parse_detalhes(args):
         if "jcaptcha" in resp.text.lower():
             resp = resolver_captcha(session, url, resp.text)
             if not resp:
-                return (link_parcial, {"texto": "", "justificativa": ""})
+                cod = link_parcial.split("&")[0] if "&" in link_parcial else link_parcial[:40]
+                print(f"   [CAPTCHA] Falha ao resolver captcha para {cod}")
+                return (link_parcial, {"texto": "", "justificativa": "", "leis_similares": "", "encerrou_tramitacao": False})
+
+        if not resp.text or len(resp.text) < 500:
+            cod = link_parcial.split("&")[0] if "&" in link_parcial else link_parcial[:40]
+            print(f"   [RESPOSTA VAZIA] Status {resp.status_code}, tamanho {len(resp.text)} para {cod}")
 
         soup = BeautifulSoup(resp.text, "html.parser")
         div_texto = soup.find("div", id="pro_texto")
         div_just = soup.find("div", id="pro_justificativa")
         leis_similares = _extrair_leis_similares(soup)
+        encerrou_tramitacao = _extrair_encerrou_tramitacao(soup)
+
+        if not div_texto or not div_just:
+            cod = link_parcial.split("&")[0] if "&" in link_parcial else link_parcial[:40]
+            print(f"   [DIV AUSENTE] para {cod}")
+            texto = ""
+            just = ""
+        else:
+            texto = div_texto.get_text(separator="\n", strip=True)
+            just = div_just.get_text(separator="\n", strip=True)
+
+        if not texto or not just:
+            pro_id = _extrair_pro_id(soup)
+            if not texto and pro_id:
+                print(f"   [TEXTO VAZIO] Buscando texto pelo relatório (pro_id={pro_id})...")
+                texto, just = _buscar_texto_report(session, pro_id)
+                if texto or just:
+                    print(f"   [TEXTO VAZIO] Texto obtido via relatório!")
+                else:
+                    print(f"   [TEXTO VAZIO] Relatório também vazio para pro_id={pro_id}")
 
         return (link_parcial, {
-            "texto": div_texto.get_text(separator="\n", strip=True) if div_texto else "",
-            "justificativa": div_just.get_text(separator="\n", strip=True) if div_just else "",
+            "texto": texto,
+            "justificativa": just,
             "leis_similares": leis_similares,
+            "encerrou_tramitacao": encerrou_tramitacao,
         })
     except Exception as e:
-        print(f"   Erro ao acessar detalhes: {e}")
-        return (link_parcial, {"texto": "", "justificativa": "", "leis_similares": ""})
+        cod = link_parcial.split("&")[0] if "&" in link_parcial else link_parcial[:40]
+        print(f"   [ERRO] {cod}: {e}")
+        return (link_parcial, {"texto": "", "justificativa": "", "leis_similares": "", "encerrou_tramitacao": False})
 
 
 def buscar_detalhes_lote(links, session, max_threads=5):
@@ -214,9 +283,9 @@ def pesquisar(session, data_inicio, data_fim):
             "pro_protocolada": data_inicio,
             "pro_protocolada1": data_fim,
             "tipopesq": "0",
-            "tpr_pdu": "t",
-            "pro_encerradas": "t",
             "select_action": "Pesquisar",
+            "tpr_pdu": "f",
+            "pro_encerradas": "t"
         })
 
         time.sleep(config.RATE_LIMIT_DELAY)

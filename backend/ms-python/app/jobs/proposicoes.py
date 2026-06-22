@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 import requests
 from sqlalchemy import create_engine
 
@@ -24,8 +26,10 @@ def main():
     engine = create_engine(config.DATABASE_URL)
     session = requests.Session()
 
-    DATA_INI = "01/01/2026"
-    DATA_FIM = "09/06/2026"
+    hoje = date.today()
+    ontem = hoje - timedelta(days=1)
+    DATA_INI = ontem.strftime("%d/%m/%Y")
+    DATA_FIM = hoje.strftime("%d/%m/%Y")
 
     print(f"Filtrando período de {DATA_INI} até {DATA_FIM}")
     lista = pesquisar(session, data_inicio=DATA_INI, data_fim=DATA_FIM)

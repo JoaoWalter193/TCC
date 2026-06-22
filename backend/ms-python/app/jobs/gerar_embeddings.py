@@ -63,8 +63,6 @@ def main():
 
         texto_completo = " | ".join(partes)
 
-        print(f"Gerando embedding para proposição {codigo}...")
-
         try:
             embedding = gerar_embedding(texto_completo, model)
             embedding_str = "[" + ",".join(str(x) for x in embedding) + "]"
@@ -74,10 +72,9 @@ def main():
                 (embedding_str, codigo)
             )
             conn.commit()
-            print(f"  ✓ Proposição {codigo} atualizada")
 
         except Exception as e:
-            print(f"  ✗ Erro na proposição {codigo}: {e}")
+            print(f"  Erro ao gerar embedding para {codigo}: {e}")
             conn.rollback()
 
     cur.close()

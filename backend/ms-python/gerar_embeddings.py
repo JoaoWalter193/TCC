@@ -39,9 +39,9 @@ def main():
             p.justificativa,
             p.tag
         FROM proposicao p
-        JOIN tipoproposicao t ON p.tipo_id = t.id
+        JOIN tipo_proposicao t ON p.tipo_id = t.id
         JOIN vereador v ON p.vereador_id = v.id
-        JOIN estadoproposicao ep ON p.estado_id = ep.id
+        JOIN estado_proposicao ep ON p.estado_id = ep.id
         WHERE p.embedding IS NULL
     """)
     proposicoes = cur.fetchall()

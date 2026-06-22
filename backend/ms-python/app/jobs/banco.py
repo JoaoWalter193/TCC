@@ -60,11 +60,7 @@ def transformar(lista, session, engine):
         df[col] = df[col].fillna("")
 
     df["tramite_alternativo"] = False
-    estados_fim = [
-        "arquivamento", "prejudicada", "aprovada",
-        "promulgada", "concluído atendimento na cmc",
-    ]
-    df["encerrou_tramitacao"] = df["estado"].str.lower().isin(estados_fim)
+    df["encerrou_tramitacao"] = False
     df["leis_similares"] = ""
     df["tag"] = ""
 
@@ -74,7 +70,8 @@ def transformar(lista, session, engine):
         query = """
             SELECT codigo, ultimo_tramite AS ultimo_tramite_db,
                    texto AS texto_db, justificativa AS justificativa_db,
-                   leis_similares AS leis_similares_db
+                   leis_similares AS leis_similares_db,
+                   encerrou_tramitacao AS encerrou_tramitacao_db
             FROM proposicao
         """
         existentes = pd.read_sql(query, engine)
@@ -89,16 +86,14 @@ def transformar(lista, session, engine):
         df["texto_db"] = None
         df["justificativa_db"] = None
         df["leis_similares_db"] = None
+        df["encerrou_tramitacao_db"] = None
         df["ultimo_tramite_db"] = pd.NaT
 
     # Verifica a data do ultimo tramite
     antes = len(df)
     mascara_novo = df["ultimo_tramite_db"].isna()
     mascara_atualizado = df["ultimo_tramite"] > df["ultimo_tramite_db"]
-    mascara_lacuna = (
-        (df["ultimo_tramite"] == df["ultimo_tramite_db"])
-        & (df["texto_db"].isna() | df["justificativa_db"].isna())
-    )
+    mascara_lacuna = df["texto_db"].isna() | df["justificativa_db"].isna()
 
     df = df[mascara_novo | mascara_atualizado | mascara_lacuna].copy()
     depois = len(df)
@@ -114,6 +109,7 @@ def transformar(lista, session, engine):
     textos = [None] * len(df)
     justificativas = [None] * len(df)
     leis_similares = [None] * len(df)
+    encerrou_tramitacao = [None] * len(df)
 
     for i, (_, row) in enumerate(df.iterrows()):
         # Reaproveita textos/leis do banco se ja existirem,
@@ -124,6 +120,7 @@ def transformar(lista, session, engine):
             textos[i] = row["texto_db"]
             justificativas[i] = row["justificativa_db"]
             leis_similares[i] = row["leis_similares_db"]
+            encerrou_tramitacao[i] = row["encerrou_tramitacao_db"]
         else:
             precisa_buscar.append(row["link_detalhe"])
             indices_busca.append(i)
@@ -135,17 +132,23 @@ def transformar(lista, session, engine):
             textos[idx] = dados["texto"]
             justificativas[idx] = dados["justificativa"]
             leis_similares[idx] = dados["leis_similares"]
+            encerrou_tramitacao[idx] = dados["encerrou_tramitacao"]
 
     df["texto"] = textos
     df["justificativa"] = justificativas
     df["leis_similares"] = leis_similares
+    # Preenche encerrou_tramitacao com o raspado; mantem False se nao veio nada
+    for i, val in enumerate(encerrou_tramitacao):
+        if val is not None:
+            df.loc[df.index[i], "encerrou_tramitacao"] = val
 
-    # Converte strings vazias para none (viram null no banco)
+    # Converte strings vazias/"NaN"/"nan"/None para null no banco
     for col in ("texto", "justificativa", "leis_similares"):
-        df[col] = df[col].replace("", None)
+        df[col] = df[col].replace(["", "NaN", "nan", "None"], None)
 
     df.drop(
-        columns=["texto_db", "justificativa_db", "leis_similares_db", "ultimo_tramite_db"],
+        columns=["texto_db", "justificativa_db", "leis_similares_db",
+                 "encerrou_tramitacao_db", "ultimo_tramite_db"],
         errors="ignore", inplace=True,
     )
     df.dropna(subset=["codigo", "data_envio", "ultimo_tramite"], inplace=True)
@@ -193,11 +196,16 @@ def salvar(df, engine):
 
     # Loga proposições que serão descartadas por falta de FK
     tamanho_antes = len(final)
+    mascara_fk = final[["tipo_id", "estado_id", "vereador_id"]].isna().any(axis=1)
+    descartadas = final[mascara_fk]
+    perdidos = len(descartadas)
     final.dropna(subset=["tipo_id", "estado_id", "vereador_id"], inplace=True)
-    perdidos = tamanho_antes - len(final)
     if perdidos:
-        print(f"   [ALERTA] {perdidos} proposicoes descartadas — FK nao encontrada "
-              "(tipo, estado ou vereador inexistente no banco).")
+        for _, row in descartadas.iterrows():
+            print(f"   [ALERTA] Proposicao {row['codigo']} descartada — "
+                  f"tipo={'ok' if pd.notna(row.get('tipo_id')) else row.get('tipo','?')}, "
+                  f"estado={'ok' if pd.notna(row.get('estado_id')) else row.get('estado','?')}, "
+                  f"vereador={'ok' if pd.notna(row.get('vereador_id')) else row.get('iniciativa_nome','?')}")
 
     colunas = [
         "codigo", "tipo_id", "vereador_id", "data_envio", "data_efetivo",

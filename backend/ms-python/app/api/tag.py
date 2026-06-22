@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from groq import Groq
+from groq import Groq, RateLimitError
 import os
 
 router = APIRouter()
@@ -28,16 +28,20 @@ def gerar_tag(request: TagRequest):
     Ementa: {request.ementa}
     Justificativa: {request.justificativa}
     """
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=20
+        )
 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=20
-    )
+        tag = response.choices[0].message.content.strip().lower()
 
-    tag = response.choices[0].message.content.strip().lower()
-
-    if tag not in TAGS_POSSIVEIS:
+        if tag not in TAGS_POSSIVEIS:
+            tag = "administrativo"
+    except RateLimitError:
+        raise HTTPException(status_code=429, detail="rate_limit_exceeded")
+    except Exception:
         tag = "administrativo"
 
     return {"tag": tag}

@@ -7,3 +7,9 @@ python-multipart
 psycopg2-binary
 sentence-transformers
 groq
+requests
+beautifulsoup4
+lxml
+tabula-py
+python-dotenv
+opencv-python-headless
