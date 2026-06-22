@@ -87,17 +87,29 @@
 }
 
 .avatar {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--ion-color-step-100);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 
   ion-icon {
-    font-size: 22px;
+    font-size: 19px;
     color: var(--ion-color-step-500);
+  }
+}
+
+@media (min-width: 768px) {
+  .avatar {
+    width: 44px;
+    height: 44px;
+
+    ion-icon {
+      font-size: 22px;
+    }
   }
 }
 
@@ -105,15 +117,31 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .nome {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--ion-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+  .nome {
+    font-size: 1rem;
+  }
 }
 
 .partido {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--ion-color-step-600);
+}
+
+@media (min-width: 768px) {
+  .partido {
+    font-size: 0.8rem;
+  }
 }
