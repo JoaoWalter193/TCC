@@ -29,5 +29,10 @@ public interface HistoricoProposicaoRepository extends JpaRepository<HistoricoPr
     @Query("DELETE FROM HistoricoProposicao h WHERE h.usuarioId = :usuarioId AND h.proposicaoCodigo = :codigo")
     void deleteByUsuarioIdAndProposicaoCodigo(@Param("usuarioId") Integer usuarioId, @Param("codigo") Long codigo);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM HistoricoProposicao h WHERE h.usuarioId = :usuarioId")
+    void deleteByUsuarioId(@Param("usuarioId") Integer usuarioId);
+
     List<HistoricoProposicao> findByUsuarioIdOrderByVisualizadoEmDesc(Integer usuarioId);
 }

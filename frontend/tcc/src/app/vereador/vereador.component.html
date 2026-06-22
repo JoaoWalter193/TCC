@@ -33,16 +33,22 @@
     <h2>{{ vereador.nome }}</h2>
     <p class="partido">{{ vereador.partido }}</p>
 
-    <ion-button
-      [disabled]="carregandoStatus"
-      [color]="seguindo ? 'medium' : 'primary'"
-      [fill]="seguindo ? 'outline' : 'solid'"
-      class="btn-seguir"
-      (click)="toggleSeguir()"
-    >
-      <ion-icon slot="start" [name]="seguindo ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
-      {{ seguindo ? 'Seguindo' : 'Seguir' }}
-    </ion-button>
+    <div class="acoes-topo">
+      <ion-button
+        [disabled]="carregandoStatus"
+        [color]="seguindo ? 'medium' : 'primary'"
+        [fill]="seguindo ? 'outline' : 'solid'"
+        class="btn-seguir"
+        (click)="toggleSeguir()"
+      >
+        <ion-icon slot="start" [name]="seguindo ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
+        {{ seguindo ? 'Seguindo' : 'Seguir' }}
+      </ion-button>
+
+      <ion-button fill="clear" size="small" class="btn-compartilhar" (click)="compartilhar()">
+        <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+      </ion-button>
+    </div>
   </div>
 
   <div class="vereador-card">

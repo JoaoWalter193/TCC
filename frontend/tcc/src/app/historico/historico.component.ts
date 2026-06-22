@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonBackButton, IonButtons, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonSpinner } from "@ionic/angular/standalone";
+import {
+  IonBackButton, IonButtons, IonHeader, IonToolbar, IonTitle, IonContent,
+  IonIcon, IonSpinner, IonButton, AlertController,
+} from "@ionic/angular/standalone";
 import { HistoricoItem } from '../models/historico.model';
 import { HistoricoService } from '../services/historico.service';
 
@@ -11,7 +14,7 @@ import { HistoricoService } from '../services/historico.service';
   standalone: true,
   imports: [
     IonBackButton, IonButtons, IonHeader, IonToolbar, IonTitle, IonContent,
-    IonIcon, IonSpinner, RouterLink,
+    IonIcon, IonSpinner, IonButton, RouterLink,
   ],
 })
 export class HistoricoComponent implements OnInit {
@@ -20,6 +23,7 @@ export class HistoricoComponent implements OnInit {
 
   constructor(
     private historicoService: HistoricoService,
+    private alertCtrl: AlertController,
   ) {}
 
   ngOnInit() {
@@ -44,6 +48,30 @@ export class HistoricoComponent implements OnInit {
     const anoAtual = agora.getFullYear();
 
     return ano === anoAtual ? `${dia} ${mes}` : `${dia} ${mes} ${ano}`;
+  }
+
+  async excluirTudo(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: 'Limpar histórico',
+      message: 'Tem certeza que deseja excluir todo o histórico de navegação? Esta ação não pode ser desfeita.',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Excluir tudo',
+          role: 'destructive',
+          handler: () => {
+            const usuarioId = Number(localStorage.getItem('usuario_id') || 1);
+            this.historicoService.excluirTudo(usuarioId).subscribe({
+              next: () => {
+                this.historico = [];
+                this.carregando = false;
+              },
+            });
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   private carregar(): void {

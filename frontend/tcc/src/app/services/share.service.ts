@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { Platform } from '@ionic/angular/standalone';
+import { Platform, ToastController } from '@ionic/angular/standalone';
 
 @Injectable({ providedIn: 'root' })
 export class ShareService {
   private platform = inject(Platform);
+  private toastCtrl = inject(ToastController);
 
   async compartilharGrafico(elemento: HTMLElement, titulo: string): Promise<void> {
     if (this.platform.is('capacitor')) {
@@ -64,6 +65,13 @@ export class ShareService {
       await Share.share(shareData);
     } else {
       await navigator.clipboard.writeText(url);
+      const toast = await this.toastCtrl.create({
+        message: 'Link copiado para a área de transferência!',
+        duration: 2500,
+        position: 'bottom',
+        cssClass: 'toast-success',
+      });
+      await toast.present();
     }
   }
 

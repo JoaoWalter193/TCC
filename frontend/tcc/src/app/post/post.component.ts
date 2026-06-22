@@ -1,5 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { IonHeader, IonButtons, IonBackButton, IonButton, IonMenuButton, IonContent, IonIcon, IonTitle, IonToolbar, IonModal, IonSpinner } from '@ionic/angular/standalone';
+import {
+  IonHeader,
+  IonButtons,
+  IonBackButton,
+  IonButton,
+  IonMenuButton,
+  IonContent,
+  IonIcon,
+  IonTitle,
+  IonToolbar,
+  IonModal,
+  IonSpinner,
+  IonAvatar
+} from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
@@ -28,6 +41,7 @@ import { FormatCodigoPipe } from '../pipes/format-codigo.pipe';
     IonToolbar,
     IonModal,
     IonSpinner,
+    IonAvatar,
     FormatCodigoPipe,
   ],
 })
@@ -44,6 +58,13 @@ export class PostComponent implements OnInit {
     return this.auth.getUsuarioId();
   }
 
+  get iniciais(): string {
+    if (!this.post.vereador?.nome) return '';
+    const partes = this.post.vereador.nome.trim().split(/\s+/);
+    if (partes.length === 1) return partes[0][0].toUpperCase();
+    return (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -53,7 +74,7 @@ export class PostComponent implements OnInit {
     private shareService: ShareService,
     private iaService: IaService,
     private favoritosService: FavoritosService,
-    private vereadorService: VereadorService,
+    private vereadorService: VereadorService
   ) {}
 
   ngOnInit() {
@@ -89,15 +110,25 @@ export class PostComponent implements OnInit {
       this.carregandoStatusSeg = false;
       return;
     }
-    this.vereadorService.verificarStatusSeguindo(uid, this.post.vereador.id).subscribe({
-      next: (status) => { this.seguindo = status; this.carregandoStatusSeg = false; },
-      error: () => { this.carregandoStatusSeg = false; },
-    });
+    this.vereadorService
+      .verificarStatusSeguindo(uid, this.post.vereador.id)
+      .subscribe({
+        next: (status) => {
+          this.seguindo = status;
+          this.carregandoStatusSeg = false;
+        },
+        error: () => {
+          this.carregandoStatusSeg = false;
+        },
+      });
   }
 
   toggleSeguir() {
     const uid = this.usuarioId;
-    if (!uid || !this.post) { this.auth.showLoginPrompt(); return; }
+    if (!uid || !this.post) {
+      this.auth.showLoginPrompt();
+      return;
+    }
 
     const anterior = this.seguindo;
     this.seguindo = !anterior;
@@ -106,11 +137,18 @@ export class PostComponent implements OnInit {
       ? this.vereadorService.deixarDeSeguir(uid, this.post.vereador.id)
       : this.vereadorService.seguir(uid, this.post.vereador.id);
 
-    obs.subscribe({ error: () => { this.seguindo = anterior; } });
+    obs.subscribe({
+      error: () => {
+        this.seguindo = anterior;
+      },
+    });
   }
 
   toggleFavorito() {
-    if (this.usuarioId == null || !this.post) { this.auth.showLoginPrompt(); return; }
+    if (this.usuarioId == null || !this.post) {
+      this.auth.showLoginPrompt();
+      return;
+    }
 
     const anterior = this.post.isFavorito;
     this.post.isFavorito = !anterior;
@@ -119,19 +157,31 @@ export class PostComponent implements OnInit {
       ? this.favoritosService.desfavoritar(this.usuarioId, this.post.id)
       : this.favoritosService.favoritar(this.usuarioId, this.post.id);
 
-    obs.subscribe({ error: () => { this.post.isFavorito = anterior; } });
+    obs.subscribe({
+      error: () => {
+        this.post.isFavorito = anterior;
+      },
+    });
   }
 
   likeIconName(): string {
-    return this.auth.isLoggedIn() && this.post?.currentUserReaction === 'LIKE' ? 'thumbs-up' : 'thumbs-up-outline';
+    return this.auth.isLoggedIn() && this.post?.currentUserReaction === 'LIKE'
+      ? 'thumbs-up'
+      : 'thumbs-up-outline';
   }
 
   dislikeIconName(): string {
-    return this.auth.isLoggedIn() && this.post?.currentUserReaction === 'DISLIKE' ? 'thumbs-down' : 'thumbs-down-outline';
+    return this.auth.isLoggedIn() &&
+      this.post?.currentUserReaction === 'DISLIKE'
+      ? 'thumbs-down'
+      : 'thumbs-down-outline';
   }
 
   reagir(tipo: 'LIKE' | 'DISLIKE') {
-    if (this.usuarioId == null || !this.post) { this.auth.showLoginPrompt(); return; }
+    if (this.usuarioId == null || !this.post) {
+      this.auth.showLoginPrompt();
+      return;
+    }
 
     const estadoAnterior = this.post.currentUserReaction;
     const likesAnterior = this.post.likes;
@@ -139,12 +189,24 @@ export class PostComponent implements OnInit {
 
     if (estadoAnterior === tipo) {
       this.post.currentUserReaction = null;
-      if (tipo === 'LIKE') { this.post.likes--; } else { this.post.dislikes--; }
+      if (tipo === 'LIKE') {
+        this.post.likes--;
+      } else {
+        this.post.dislikes--;
+      }
     } else {
-      if (estadoAnterior === 'LIKE') { this.post.likes--; }
-      if (estadoAnterior === 'DISLIKE') { this.post.dislikes--; }
+      if (estadoAnterior === 'LIKE') {
+        this.post.likes--;
+      }
+      if (estadoAnterior === 'DISLIKE') {
+        this.post.dislikes--;
+      }
       this.post.currentUserReaction = tipo;
-      if (tipo === 'LIKE') { this.post.likes++; } else { this.post.dislikes++; }
+      if (tipo === 'LIKE') {
+        this.post.likes++;
+      } else {
+        this.post.dislikes++;
+      }
     }
 
     this.reacaoService.reagir(this.usuarioId, this.post.id, tipo).subscribe({
@@ -153,7 +215,7 @@ export class PostComponent implements OnInit {
         this.post.currentUserReaction = estadoAnterior;
         this.post.likes = likesAnterior;
         this.post.dislikes = dislikesAnterior;
-      }
+      },
     });
   }
 
@@ -162,7 +224,7 @@ export class PostComponent implements OnInit {
     this.shareService.compartilharProposicao(
       'Proposição - CuritibAtiva',
       this.post.ementa.substring(0, 100),
-      url,
+      url
     );
   }
 
@@ -172,25 +234,30 @@ export class PostComponent implements OnInit {
     this.iaCarregando = true;
     this.iaResumo = '';
 
-    this.iaService.gerarResumo({
-      codigo: this.post.id,
-      tipo: this.post.tipoProposicao,
-      vereador: this.post.vereador.nome,
-      ementa: this.post.ementa,
-      texto: this.post.texto || '',
-      justificativa: this.post.justificativa || '',
-      estado: this.post.encerrouTramitacao ? 'Tramitação encerrada' : 'Em tramitação',
-      tag: this.post.tag,
-    }).subscribe({
-      next: (res) => {
-        this.iaResumo = res.resumo;
-        this.iaCarregando = false;
-      },
-      error: () => {
-        this.iaResumo = 'Não foi possível gerar a explicação. Tente novamente.';
-        this.iaCarregando = false;
-      },
-    });
+    this.iaService
+      .gerarResumo({
+        codigo: this.post.id,
+        tipo: this.post.tipoProposicao,
+        vereador: this.post.vereador.nome,
+        ementa: this.post.ementa,
+        texto: this.post.texto || '',
+        justificativa: this.post.justificativa || '',
+        estado: this.post.encerrouTramitacao
+          ? 'Tramitação encerrada'
+          : 'Em tramitação',
+        tag: this.post.tag,
+      })
+      .subscribe({
+        next: (res) => {
+          this.iaResumo = res.resumo;
+          this.iaCarregando = false;
+        },
+        error: () => {
+          this.iaResumo =
+            'Não foi possível gerar a explicação. Tente novamente.';
+          this.iaCarregando = false;
+        },
+      });
   }
 
   fecharIaModal() {
@@ -211,7 +278,20 @@ export class PostComponent implements OnInit {
     if (diffDias < 7) return `Há ${diffDias} dias`;
 
     const dia = String(d.getDate()).padStart(2, '0');
-    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const meses = [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ];
     const mes = meses[d.getMonth()];
     const ano = d.getFullYear();
     const anoAtual = agora.getFullYear();

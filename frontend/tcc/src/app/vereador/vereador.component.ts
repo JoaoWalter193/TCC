@@ -14,6 +14,7 @@ import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FormatCodigoPipe } from '../pipes/format-codigo.pipe';
 import { FormatTelefonePipe } from '../pipes/format-telefone-pipe';
+import { ShareService } from '../services/share.service';
 
 @Component({
   selector: 'app-vereador',
@@ -28,6 +29,7 @@ import { FormatTelefonePipe } from '../pipes/format-telefone-pipe';
 })
 export class VereadorComponent implements OnInit {
   auth = inject(AuthService);
+  private shareService = inject(ShareService);
   vereador!: VereadorDTO;
   proposicoes: ProposicaoDTO[] = [];
   vereadorId!: number;
@@ -78,6 +80,15 @@ export class VereadorComponent implements OnInit {
         this.seguindo = !this.seguindo;
       },
     });
+  }
+
+  compartilhar() {
+    const url = window.location.origin + '/vereador/' + this.vereadorId;
+    this.shareService.compartilharProposicao(
+      'Vereador - CuritibAtiva',
+      this.vereador.nome + ' · ' + this.vereador.partido,
+      url,
+    );
   }
 
   timelineIcon(tipo: string): string {

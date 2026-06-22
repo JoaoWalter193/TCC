@@ -27,5 +27,10 @@ public interface HistoricoVereadorRepository extends JpaRepository<HistoricoVere
     @Query("DELETE FROM HistoricoVereador h WHERE h.usuarioId = :usuarioId AND h.vereadorId = :vereadorId")
     void deleteByUsuarioIdAndVereadorId(@Param("usuarioId") Integer usuarioId, @Param("vereadorId") Integer vereadorId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM HistoricoVereador h WHERE h.usuarioId = :usuarioId")
+    void deleteByUsuarioId(@Param("usuarioId") Integer usuarioId);
+
     List<HistoricoVereador> findByUsuarioIdOrderByVisualizadoEmDesc(Integer usuarioId);
 }
