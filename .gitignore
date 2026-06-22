@@ -5,7 +5,7 @@ api-gateway/node_modules/*
 backend/api-gateway/node_modules/*
 frontend/tcc/android/app/google-services.json
 google-services.json
-
+backend/clientes_TCC/src/main/resources/firebase-service-account.jsonX
 
 
 # IDEs
