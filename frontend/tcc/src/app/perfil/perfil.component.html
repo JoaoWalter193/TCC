@@ -20,7 +20,7 @@
       <p>{{ perfil.email }}</p>
     </div>
 
-    @if (perfil.cep || perfil.escolaridade || perfil.profissao) {
+    @if (perfil.cep || perfil.escolaridade || perfil.profissao || perfil.genero || perfil.dataNascimento) {
       <div class="perfil-dados-card">
         @if (perfil.cep) {
           <div class="dado-item">
@@ -46,6 +46,24 @@
             <div>
               <span class="dado-label">Profissão</span>
               <span class="dado-value">{{ perfil.profissao }}</span>
+            </div>
+          </div>
+        }
+        @if (perfil.genero) {
+          <div class="dado-item">
+            <ion-icon name="person-outline"></ion-icon>
+            <div>
+              <span class="dado-label">Gênero</span>
+              <span class="dado-value">{{ perfil.genero }}</span>
+            </div>
+          </div>
+        }
+        @if (perfil.dataNascimento) {
+          <div class="dado-item">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <div>
+              <span class="dado-label">Data de Nascimento</span>
+              <span class="dado-value">{{ perfil.dataNascimento | date:"dd/MM/yyyy" }}</span>
             </div>
           </div>
         }

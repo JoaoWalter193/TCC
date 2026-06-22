@@ -3,6 +3,7 @@ package com.clientes.clientes_TCC.domain.Usuario;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record UsuarioCriarDTO(
@@ -37,16 +38,20 @@ public record UsuarioCriarDTO(
         String email,
 
         @Schema(
-                description = "Senha do usuário (mínimo 6 caracteres)",
-                example = "123"
+                description = "Senha do usuário (mínimo 8 caracteres e 1 caractere especial)",
+                example = "Senha@123"
         )
         @NotBlank(message = "Senha é obrigatória")
+        @Pattern(
+                regexp = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$",
+                message = "A senha deve ter no mínimo 8 caracteres e incluir pelo menos 1 caractere especial"
+        )
         String senha,
 
 
         @Schema(
                 description = "Confirmação da senha",
-                example = "123"
+                example = "Senha@123"
         )
         @NotBlank(message = "Confirmação de senha é obrigatória")
         String senhaNovamente,
@@ -69,6 +74,18 @@ public record UsuarioCriarDTO(
                 description = "Profissão do usuário",
                 example = "Engenheiro Civil"
         )
-        String profissao
+        String profissao,
+
+        @Schema(
+                description = "Gênero do usuário",
+                example = "Masculino"
+        )
+        String genero,
+
+        @Schema(
+                description = "Data de nascimento do usuário",
+                example = "1990-01-15"
+        )
+        String dataNascimento
 ) {
 }

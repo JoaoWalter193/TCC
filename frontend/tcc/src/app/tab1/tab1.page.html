@@ -96,6 +96,30 @@
       </div>
 
       <div class="form-group">
+        <select
+          id="genero"
+          name="genero"
+          [(ngModel)]="dadosFormulario.genero"
+          class="custom-select"
+        >
+          <option value="">Gênero (opcional)</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Feminino">Feminino</option>
+          <option value="Outro">Outro</option>
+          <option value="Prefiro não informar">Prefiro não informar</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input
+          id="dataNascimento"
+          type="date"
+          name="dataNascimento"
+          [(ngModel)]="dadosFormulario.dataNascimento"
+        />
+      </div>
+
+      <div class="form-group">
         <input
           id="cpf"
           type="text"
@@ -122,8 +146,8 @@
           type="password"
           name="senhaNova"
           [(ngModel)]="dadosFormulario.senhaNova"
-          minlength="6"
-          placeholder="Nova senha"
+          minlength="8"
+          placeholder="Nova senha (mín. 8 caracteres, 1 especial)"
         />
       </div>
 
