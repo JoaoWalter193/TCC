@@ -47,9 +47,29 @@
 
     <!-- ── Post Body ── -->
     <div class="post-body">
-      <h1 class="post-title">{{ post.razao }}</h1>
-      <div class="tipo-tag">{{ post.tipoProposicao }}</div>
-      <p class="post-text">{{ post.ementa }}</p>
+      <div class="post-meta-bar">
+        <span class="tipo-tag">{{ post.tipoProposicao }}</span>
+        <span class="codigo-tag">{{ post.id | formatCodigo }}</span>
+        @if (post.tag) {
+          <span class="tag-tag">#{{ post.tag }}</span>
+        }
+      </div>
+
+      <p class="post-ementa">{{ post.ementa }}</p>
+
+      @if (post.texto) {
+        <details class="post-section">
+          <summary>Texto completo</summary>
+          <p class="post-text">{{ post.texto }}</p>
+        </details>
+      }
+
+      @if (post.justificativa) {
+        <details class="post-section">
+          <summary>Justificativa</summary>
+          <p class="post-text">{{ post.justificativa }}</p>
+        </details>
+      }
     </div>
 
     <!-- ── Engagement Bar ── -->
@@ -120,25 +140,47 @@
         <ion-icon name="calendar-outline"></ion-icon>
         <div>
           <span class="info-label">Emissão</span>
-          <span class="info-value">{{ formatarData(post.dataDeEnvio) }} · {{ formatarData(post.dataEfetivo) }}</span>
+          <span class="info-value">{{ formatarData(post.dataDeEnvio) }}</span>
         </div>
       </div>
+
+      @if (post.dataEfetivo) {
+      <div class="info-row">
+        <ion-icon name="flag-outline"></ion-icon>
+        <div>
+          <span class="info-label">Efetivo</span>
+          <span class="info-value">{{ formatarData(post.dataEfetivo) }}</span>
+        </div>
+      </div>
+      }
 
       <div class="info-row">
         <ion-icon name="location-outline"></ion-icon>
         <div>
-          <span class="info-label">Último trâmite</span>
-          <span class="info-value">{{ post.localizacao }} · {{ formatarData(post.ultimoTramite) }}</span>
+          <span class="info-label">Localização</span>
+          <span class="info-value">{{ post.localizacao }}</span>
         </div>
       </div>
 
+      @if (post.razao) {
       <div class="info-row">
-        <ion-icon name="pricetag-outline"></ion-icon>
+        <ion-icon name="document-text-outline"></ion-icon>
         <div>
-          <span class="info-label">Categoria</span>
-          <span class="info-value">#{{ post.tag }}</span>
+          <span class="info-label">Razão</span>
+          <span class="info-value">{{ post.razao }}</span>
         </div>
       </div>
+      }
+
+      @if (post.ultimoTramite) {
+      <div class="info-row">
+        <ion-icon name="time-outline"></ion-icon>
+        <div>
+          <span class="info-label">Último trâmite</span>
+          <span class="info-value">{{ formatarData(post.ultimoTramite) }}</span>
+        </div>
+      </div>
+      }
     </div>
 
     @if (post.leisSimilares.length > 0) {

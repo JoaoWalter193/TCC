@@ -4,6 +4,7 @@ import {
   IonHeader, IonToolbar, IonButton, IonIcon, IonAvatar,
 } from '@ionic/angular/standalone';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { VereadorDTO } from '../models/dto/vereador-dto';
 import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { VereadorService } from '../services/vereador';
@@ -11,6 +12,8 @@ import { ProposicaoService } from '../services/proposicao';
 import { AuthService } from '../services/auth.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { FormatCodigoPipe } from '../pipes/format-codigo.pipe';
+import { FormatTelefonePipe } from '../pipes/format-telefone-pipe';
 
 @Component({
   selector: 'app-vereador',
@@ -19,7 +22,8 @@ import { catchError } from 'rxjs/operators';
   imports: [
     IonContent, IonButtons, IonMenuButton, IonBackButton,
     IonHeader, IonToolbar, IonButton, IonIcon, IonAvatar,
-    RouterLink,
+    RouterLink, FormatCodigoPipe, FormatTelefonePipe,
+    DatePipe, TitleCasePipe
   ],
 })
 export class VereadorComponent implements OnInit {
@@ -108,6 +112,16 @@ export class VereadorComponent implements OnInit {
     return ano === anoAtual ? `${dia} ${mes}` : `${dia} ${mes} ${ano}`;
   }
 
+  formatarEscolaridade(valor: string): string {
+    const mapa: Record<string, string> = {
+      'sup_comp': 'Superior completo',
+      'sup_incomp': 'Superior incompleto',
+      'ens_fund_comp': 'Ensino fundamental completo',
+      'ens_fund_incomp': 'Ensino fundamental incompleto',
+    };
+    return mapa[valor] || valor;
+  }
+
   carregarDados() {
     const uid = this.usuarioId;
 
@@ -115,8 +129,8 @@ export class VereadorComponent implements OnInit {
       catchError(() => of<VereadorDTO | undefined>(undefined))
     );
 
-    const proposicoes$ = this.proposicaoService.listar().pipe(
-      catchError(() => of<ProposicaoDTO[]>([]))
+    const proposicoes$ = this.proposicaoService.listarPorVereador(this.vereadorId, uid).pipe(
+      catchError(() => of([] as ProposicaoDTO[]))
     );
 
     const status$ = uid
@@ -129,10 +143,7 @@ export class VereadorComponent implements OnInit {
       next: ([vereador, proposicoes, status]) => {
         if (vereador) {
           this.vereador = vereador;
-          const nomeLower = vereador.nome.toLowerCase();
-          this.proposicoes = proposicoes.filter(
-            p => p.vereador.nome.toLowerCase() === nomeLower
-          );
+          this.proposicoes = proposicoes;
         }
         this.seguindo = status;
         this.carregandoStatus = false;

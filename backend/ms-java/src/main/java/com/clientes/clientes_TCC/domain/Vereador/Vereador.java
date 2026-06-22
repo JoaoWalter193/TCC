@@ -51,6 +51,9 @@ public class Vereador {
     @Column(columnDefinition = "vereador_escolaridade")
     private VereadorEscolaridade escolaridade;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     @OneToMany(mappedBy = "vereador", cascade = CascadeType.ALL)
     private List<VereadorComissao> comissoes = new ArrayList<>();
 

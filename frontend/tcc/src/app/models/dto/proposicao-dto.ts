@@ -37,6 +37,14 @@ export interface ProposicaoDetalheDTO {
   currentUserReaction: string | null;
 }
 
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
+}
+
 export interface ProposicaoDTO {
   id: number;
   tipoProposicao: string;

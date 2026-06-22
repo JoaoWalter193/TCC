@@ -28,6 +28,21 @@ ion-card-content {
   flex-shrink: 0;
   line-height: 1;
   display: flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  ion-icon {
+    font-size: 2.2rem;
+    color: var(--ion-color-primary);
+  }
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .vereador-info {

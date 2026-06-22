@@ -17,7 +17,13 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
         @for (v of vereadores; track v.id) {
           <div class="table-item">
             <a class="item-link" [routerLink]="['/vereador', v.id]">
-              <span class="avatar">{{ v.nome.charAt(0) }}</span>
+              <span class="avatar">
+                @if (v.avatarUrl) {
+                  <img [src]="v.avatarUrl" [alt]="v.nome" class="avatar-img" />
+                } @else {
+                  {{ v.nome.charAt(0) }}
+                }
+              </span>
               <div class="info">
                 <span class="nome">{{ v.nome }}</span>
                 <span class="partido">{{ v.partido }}</span>
@@ -37,6 +43,9 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       flex-direction: column;
       height: 100%;
       padding: 20px 0;
+      overflow-x: hidden;
+      overflow-x: hidden;
+      align-items: flex-end
     }
     .table-title {
       font-size: 0.82rem;
@@ -57,6 +66,8 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       align-items: center;
       padding: 4px 12px 4px 16px;
       gap: 2px;
+      height: 6rem;
+      min-width: 400px;
     }
     .table-item:hover {
       background: var(--ion-color-step-50);
@@ -68,10 +79,11 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       text-decoration: none;
       flex: 1;
       min-width: 0;
+
     }
     .avatar {
-      width: 32px;
-      height: 32px;
+      width: 4rem;
+      height: 4rem;
       border-radius: 50%;
       background: var(--ion-color-primary);
       color: var(--ion-color-primary-contrast);
@@ -81,6 +93,12 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       font-size: 0.8rem;
       font-weight: 700;
       flex-shrink: 0;
+      overflow: hidden;
+    }
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     .info {
       display: flex;

@@ -92,7 +92,7 @@ public class VereadorService {
                 v.getTelefone(), v.getSite(), v.getAtivo(),
                 v.getGenero(), v.getNascimento(), v.getCor(),
                 v.getOcupacao(), v.getEscolaridade(),
-                seguidores
+                seguidores, v.getAvatarUrl()
         );
     }
 

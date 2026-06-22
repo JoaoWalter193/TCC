@@ -26,17 +26,23 @@ public interface ProposicaoRepository extends JpaRepository<Proposicao, Long> {
 
     Page<Proposicao> findByTag(String tag, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"tipo", "vereador", "estado"})
+    List<Proposicao> findByVereadorId(Integer vereadorId);
+
+    @Query("SELECT p FROM Proposicao p JOIN FETCH p.vereador JOIN FETCH p.tipo JOIN FETCH p.estado WHERE LOWER(p.vereador.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
+    List<Proposicao> buscarPorNomeVereador(@Param("nome") String nome);
+
     Optional<Proposicao> findByCodigo(Long codigo);
 
 
     // busca por similaridade usando pgVector
     @Query(value = """
         SELECT * FROM proposicao
+        WHERE embedding IS NOT NULL
         ORDER BY embedding <=> CAST(:embedding AS vector)
         LIMIT :limit
     """, nativeQuery = true)
-    List<Proposicao> findBySimilarity(@Param("embedding") String embedding,
-                                      @Param("limit") int limit);
+    List<Proposicao> findBySimilarity(@Param("embedding") String embedding, @Param("limit") int limit);
 
     @Modifying
     @Query("UPDATE Proposicao p SET p.likes = p.likes + :delta WHERE p.codigo = :codigo")

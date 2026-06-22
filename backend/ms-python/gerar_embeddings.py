@@ -49,7 +49,7 @@ def main():
     print(f"{len(proposicoes)} proposições para processar...")
 
     for row in proposicoes:
-        (codigo, tipo, vereador, data_envio, data_efetivo, estado,
+        (codigo, tipo, vereador, estado,
          localizacao, razao, leis_similares, ementa, texto, justificativa, tag) = row
 
         # monta texto rico com todos os campos relevantes

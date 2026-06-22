@@ -1,7 +1,11 @@
 <ion-card [routerLink]="link" button="true">
   <ion-card-content class="card-content">
     <div class="vereador-avatar">
-      <ion-icon name="person-circle-outline"></ion-icon>
+      @if (vereador.avatarUrl) {
+        <img [src]="vereador.avatarUrl" [alt]="vereador.nome" class="avatar-img" />
+      } @else {
+        <ion-icon name="person-circle-outline"></ion-icon>
+      }
     </div>
     <div class="vereador-info">
       <strong class="vereador-nome">{{ vereador.nome }}</strong>

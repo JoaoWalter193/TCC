@@ -7,12 +7,13 @@ import { Tab5ModoService } from '../services/tab5-modo.service';
 import { UsuarioService } from '../services/usuario.service';
 import { UsuarioPerfilDTO } from '../models/dto/usuario-perfil-dto';
 import { PushService } from '../services/push.service';
+import { FormatCepPipe } from '../pipes/format-cep-pipe';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss'],
-  imports: [ CommonModule, IonContent, IonButtons, IonBackButton, IonMenuButton, IonHeader, IonList, IonItem, RouterLink, IonIcon, IonLabel, IonToolbar ],
+  imports: [ CommonModule, IonContent, IonButtons, IonBackButton, IonMenuButton, IonHeader, IonList, IonItem, RouterLink, IonIcon, IonLabel, IonToolbar, FormatCepPipe ],
 })
 export class PerfilComponent implements OnInit {
   perfil: UsuarioPerfilDTO | null = null;

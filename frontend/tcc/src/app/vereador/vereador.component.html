@@ -23,7 +23,11 @@
   <div class="vereador-topo">
     <div class="avatar-wrapper">
       <ion-avatar class="vereador-avatar">
-        <span class="avatar-iniciais">{{ iniciais }}</span>
+        @if (vereador.avatarUrl) {
+          <img [src]="vereador.avatarUrl" [alt]="vereador.nome" class="avatar-img" />
+        } @else {
+          <span class="avatar-iniciais">{{ iniciais }}</span>
+        }
       </ion-avatar>
     </div>
     <h2>{{ vereador.nome }}</h2>
@@ -43,29 +47,112 @@
 
   <div class="vereador-card">
 
+    <!-- ── Full width (textos grandes) ── -->
     <div class="info-item">
-      <strong>Legislaturas</strong>
-      <p>{{ vereador.legislaturas }}</p>
+      <ion-icon name="business-outline"></ion-icon>
+      <div>
+        <span class="info-label">Gabinete</span>
+        <span class="info-value">{{ vereador.gabinete }}</span>
+      </div>
+    </div>
+
+    @if (vereador.legislaturas) {
+    <div class="info-item">
+      <ion-icon name="layers-outline"></ion-icon>
+      <div>
+        <span class="info-label">Legislaturas</span>
+        <span class="info-value">{{ vereador.legislaturas }}</span>
+      </div>
+    </div>
+    }
+
+    <div class="info-item">
+      <ion-icon name="mail-outline"></ion-icon>
+      <div>
+        <span class="info-label">E-mail</span>
+        <span class="info-value"><a [href]="'mailto:' + vereador.email">{{ vereador.email }}</a></span>
+      </div>
     </div>
 
     <div class="info-item">
-      <strong>Gabinete</strong>
-      <p>{{ vereador.gabinete }}</p>
+      <ion-icon name="globe-outline"></ion-icon>
+      <div>
+        <span class="info-label">Site</span>
+        <span class="info-value"><a href="{{ vereador.site }}" target="_blank">{{ vereador.site }}</a></span>
+      </div>
     </div>
 
-    <div class="info-item">
-      <strong>Telefone</strong>
-      <p>{{ vereador.telefone }}</p>
-    </div>
+    <div class="section-divider"></div>
 
-    <div class="info-item">
-      <strong>Email</strong>
-      <p>{{ vereador.email }}</p>
-    </div>
+    <!-- ── Grid 2 colunas (campos curtos) ── -->
+    <div class="info-grid">
 
-    <div class="info-item">
-      <strong>Site</strong>
-      <p>{{ vereador.site }}</p>
+      <div class="info-item">
+        <ion-icon name="pulse-outline"></ion-icon>
+        <div>
+          <span class="info-label">Situação</span>
+          <span class="info-value">{{ vereador.vereador_ativo | titlecase }}</span>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <ion-icon name="call-outline"></ion-icon>
+        <div>
+          <span class="info-label">Telefone</span>
+          <span class="info-value">{{ vereador.telefone | formatTelefone }}</span>
+        </div>
+      </div>
+
+      @if (vereador.genero) {
+      <div class="info-item">
+        <ion-icon name="person-outline"></ion-icon>
+        <div>
+          <span class="info-label">Gênero</span>
+          <span class="info-value">{{ vereador.genero | titlecase }}</span>
+        </div>
+      </div>
+      }
+
+      @if (vereador.dataNasc) {
+      <div class="info-item">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <div>
+          <span class="info-label">Nascimento</span>
+          <span class="info-value">{{ vereador.dataNasc | date:"dd/MM/yyyy" }}</span>
+        </div>
+      </div>
+      }
+
+      @if (vereador.ocupacao) {
+      <div class="info-item">
+        <ion-icon name="briefcase-outline"></ion-icon>
+        <div>
+          <span class="info-label">Ocupação</span>
+          <span class="info-value">{{ vereador.ocupacao }}</span>
+        </div>
+      </div>
+      }
+
+      @if (vereador.vereador_escolaridade) {
+      <div class="info-item">
+        <ion-icon name="school-outline"></ion-icon>
+        <div>
+          <span class="info-label">Escolaridade</span>
+          <span class="info-value">{{ formatarEscolaridade(vereador.vereador_escolaridade) }}</span>
+        </div>
+      </div>
+      }
+
+      @if (vereador.vereador_cor) {
+      <div class="info-item">
+        <ion-icon name="color-palette-outline"></ion-icon>
+        <div>
+          <span class="info-label">Cor/Raça</span>
+          <span class="info-value">{{ vereador.vereador_cor | titlecase }}</span>
+        </div>
+      </div>
+      }
+
     </div>
 
   </div>
@@ -89,7 +176,7 @@
           <span class="timeline-type">{{ post.tipoProposicao }}</span>
           <span class="timeline-date">{{ formatarData(post.dataDeEnvio) }}</span>
         </div>
-        <h4 class="timeline-title">{{ post.razao }}</h4>
+        <h4 class="timeline-title">{{ post.id | formatCodigo }}</h4>
         <p class="timeline-text">{{ post.ementa }}</p>
       </div>
     </div>

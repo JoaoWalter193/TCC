@@ -49,6 +49,9 @@ public record VereadorDTO(
         VereadorEscolaridade vereador_escolaridade,
 
         @Schema(description = "Quantidade de seguidores", example = "42")
-        Integer seguidores
+        Integer seguidores,
+
+        @Schema(description = "URL do avatar do vereador", example = "https://www.cmc.pr.gov.br/fotos/vereador.jpg")
+        String avatarUrl
 ) {
 }

@@ -7,5 +7,12 @@ export interface VereadorDTO {
   telefone: string;
   email: string;
   site: string;
+  genero: string;
+  vereador_ativo: string;
+  dataNasc: string;
+  vereador_cor: string;
+  ocupacao: string;
+  vereador_escolaridade: string;
+  avatarUrl: string;
   seguidores?: number;
 }

@@ -10,6 +10,7 @@ import { ShareService } from '../services/share.service';
 import { IaService } from '../services/ia.service';
 import { FavoritosService } from '../services/favoritos.service';
 import { VereadorService } from '../services/vereador';
+import { FormatCodigoPipe } from '../pipes/format-codigo.pipe';
 
 @Component({
   selector: 'app-post',
@@ -26,7 +27,8 @@ import { VereadorService } from '../services/vereador';
     IonTitle,
     IonToolbar,
     IonModal,
-    IonSpinner
+    IonSpinner,
+    FormatCodigoPipe,
   ],
 })
 export class PostComponent implements OnInit {

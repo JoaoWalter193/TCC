@@ -98,22 +98,39 @@
   color: #5c3b00;
 }
 
+// ── Post Meta Bar ─────────────────────────────────────────────────────
+
+.post-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.codigo-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 12px;
+  background: var(--ion-color-step-100);
+  color: var(--ion-color-step-700);
+  font-family: monospace;
+}
+
+.tag-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(105, 59, 220, 0.1);
+  color: var(--ion-color-primary);
+}
+
 // ── Post Body ─────────────────────────────────────────────────────────
 
 .post-body {
   margin-bottom: 20px;
-}
-
-.post-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--ion-text-color);
-  margin: 0 0 12px 0;
-
-  @media (min-width: 768px) {
-    font-size: 1.5rem;
-  }
 }
 
 .post-text {
@@ -123,6 +140,44 @@
   margin: 0;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+.post-ementa {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ion-text-color);
+  margin: 0 0 16px 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+// ── Collapsible Sections (texto / justificativa) ─────────────────────
+
+.post-section {
+  margin-top: 12px;
+  border-radius: 10px;
+  background: var(--ion-color-step-50);
+  overflow: hidden;
+
+  summary {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ion-color-step-600);
+    padding: 10px 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: var(--ion-color-step-100);
+    }
+  }
+
+  .post-text {
+    padding: 0 14px 14px;
+    font-size: 0.9rem;
+  }
 }
 
 // ── Engagement Bar ────────────────────────────────────────────────────

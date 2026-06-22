@@ -96,6 +96,9 @@
         @for (post of postsFiltrados; track post.id) {
         <app-card [post]="post" [usuarioId]="usuarioId" (tipoFiltrado)="filtrarPorTipo($event)" (verVereador)="verVereador(post.vereador.id)" [link]="['/proposicao', post.id]"></app-card>
         }
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="carregarMais()">
+          <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Carregando mais..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </div>
     </div>
     <aside class="desktop-sidebar right-sidebar">

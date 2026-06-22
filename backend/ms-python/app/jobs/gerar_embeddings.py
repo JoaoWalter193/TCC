@@ -22,29 +22,28 @@ def main():
             p.codigo,
             t.tipo,
             v.nome as vereador,
-            p.data_envio,
-            p.data_efetivo,
             ep.estado,
             p.localizacao,
             p.razao,
-            p.leis_similares,
             p.ementa,
             p.texto,
-            p.justificativa,
             p.tag
         FROM proposicao p
         JOIN tipo_proposicao t ON p.tipo_id = t.id
         JOIN vereador v ON p.vereador_id = v.id
         JOIN estado_proposicao ep ON p.estado_id = ep.id
-        WHERE p.embedding IS NULL
+        ORDER BY p.codigo
     """)
     proposicoes = cur.fetchall()
 
     print(f"{len(proposicoes)} proposições para processar...")
 
-    for row in proposicoes:
-        (codigo, tipo, vereador, data_envio, data_efetivo, estado,
-         localizacao, razao, leis_similares, ementa, texto, justificativa, tag) = row
+    total = len(proposicoes)
+    for i, row in enumerate(proposicoes, 1):
+        if i % 100 == 0 or i == 1 or i == total:
+            print(f"  [{i}/{total} ({i*100//total}%)]")
+        (codigo, tipo, vereador, estado,
+         localizacao, razao, ementa, texto, tag) = row
 
         partes = [
             f"Tipo: {tipo}",
@@ -54,12 +53,9 @@ def main():
             f"Tag: {tag}",
             f"Razão: {razao}",
             f"Ementa: {ementa}",
-            f"Texto: {texto}",
-            f"Justificativa: {justificativa}",
+            f"Texto: {texto}"
         ]
 
-        if leis_similares:
-            partes.append(f"Leis similares: {leis_similares}")
 
         texto_completo = " | ".join(partes)
 
@@ -80,7 +76,6 @@ def main():
     cur.close()
     conn.close()
     print("Concluído!")
-
 
 if __name__ == "__main__":
     main()

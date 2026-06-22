@@ -20,5 +20,8 @@ public record VereadorSeguindoDTO(
         String email,
 
         @Schema(description = "Site do vereador", example = "https://www.camara.gov.br/vereador/joao-silva")
-        String site
+        String site,
+
+        @Schema(description = "URL do avatar do vereador", example = "https://www.cmc.pr.gov.br/fotos/vereador.jpg")
+        String avatarUrl
 ) {}

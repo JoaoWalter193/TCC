@@ -62,6 +62,22 @@ public class ProposicaoController {
         return proposicaoService.buscarProposicao(codigo, usuarioId);
     }
 
+    @Operation(summary = "Listar proposições por vereador", description = "Retorna todas as proposições de um vereador específico")
+    @GetMapping("/vereador/{vereadorId}")
+    public ResponseEntity<List<ProposicaoListaResponseDTO>> listarPorVereador(
+            @PathVariable Integer vereadorId,
+            @RequestParam(required = false) Integer usuarioId) {
+        return proposicaoService.listarPorVereador(vereadorId, usuarioId);
+    }
+
+    @Operation(summary = "Buscar proposições por nome do vereador", description = "Retorna proposições cujo nome do vereador contenha o termo buscado")
+    @GetMapping("/busca/vereador")
+    public ResponseEntity<List<ProposicaoListaResponseDTO>> buscarPorNomeVereador(
+            @RequestParam String q,
+            @RequestParam(required = false) Integer usuarioId) {
+        return proposicaoService.buscarPorNomeVereador(q, usuarioId);
+    }
+
     @Operation(summary = "Buscar proposições por similaridade", description = "Retorna proposições semanticamente similares ao texto informado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de proposições similares retornada com sucesso"),

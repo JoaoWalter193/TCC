@@ -1,6 +1,6 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent, IonPopover } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent, IonPopover, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
@@ -35,15 +35,22 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     MenuPanelComponent,
     VereadorTableComponent,
     IonPopover,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
   ],
 })
 export class Tab2Page {
+  @ViewChild(IonInfiniteScroll) infiniteScroll!: IonInfiniteScroll;
   auth = inject(AuthService);
   private reacaoEvent = inject(ReacaoEventService);
   private destroyRef = inject(DestroyRef);
 
   posts: ProposicaoDTO[] = [];
   postsFiltrados: ProposicaoDTO[] = [];
+  paginaAtual = 0;
+  totalElementos = 0;
+  carregando = false;
+  vereadoresCache: VereadorDTO[] = [];
 
   categoriasDisponiveis: string[] = [];
   temasDisponiveis: string[] = [];
@@ -77,61 +84,90 @@ export class Tab2Page {
   }
 
   carregarPosts() {
-    forkJoin([
-      this.proposicaoService.listar(this.usuarioId).pipe(
-        catchError(() => of([] as ProposicaoDTO[]))
-      ),
-      this.vereadorService.listar().pipe(
-        catchError(() => of([] as VereadorDTO[]))
-      )
-    ]).subscribe({
-      next: ([proposicoes, vereadores]: [ProposicaoDTO[], VereadorDTO[]]) => {
-        const vereadorMap = new Map(
-          vereadores.map(v => [v.nome.toLowerCase(), v.id])
-        );
+    this.paginaAtual = 0;
+    this.posts = [];
+    this.postsFiltrados = [];
+    this.categoriasSelecionadas = [];
+    this.temasSelecionados = [];
 
-        this.posts = proposicoes.map(p => ({
-          ...p,
-          vereador: {
-            ...p.vereador,
-            id: vereadorMap.get(p.vereador.nome.toLowerCase()) ?? p.vereador.id
-          }
-        }));
+    if (this.infiniteScroll) {
+      this.infiniteScroll.disabled = false;
+    }
 
-        this.extrairFiltros();
-        this.postsFiltrados = [...this.posts];
-      },
-      error: (err) => {
-        console.error('Erro ao carregar dados', err);
-      },
+    this.vereadorService.listar().pipe(
+      catchError(() => of([] as VereadorDTO[])),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(vs => {
+      this.vereadoresCache = vs;
+      this.carregarPagina();
     });
   }
 
-  recarregarDados(event: any) {
+  private mapearVereador(p: ProposicaoDTO): ProposicaoDTO {
+    const vereadorMap = new Map(this.vereadoresCache.map(v => [v.nome.toLowerCase(), v.id]));
+    return { ...p, vereador: { ...p.vereador, id: vereadorMap.get(p.vereador.nome.toLowerCase()) ?? p.vereador.id } };
+  }
+
+  private carregarPagina() {
+    if (this.carregando) return;
+    this.carregando = true;
+
     const uid = this.usuarioId;
+
+    this.proposicaoService.listarPaginado(uid, this.paginaAtual, 20).pipe(
+      catchError(() => of({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 20 })),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(res => {
+      const novos = res.content.map(p => this.mapearVereador(p));
+      this.posts.push(...novos);
+      this.totalElementos = res.totalElements;
+      this.paginaAtual++;
+      this.carregando = false;
+
+      if (this.paginaAtual === 1) {
+        this.extrairFiltros();
+      }
+      this.postsFiltrados = [...this.posts];
+
+      if (this.infiniteScroll) {
+        this.infiniteScroll.complete();
+        if (this.posts.length >= this.totalElementos) {
+          this.infiniteScroll.disabled = true;
+        }
+      }
+    });
+  }
+
+  carregarMais() {
+    this.carregarPagina();
+  }
+
+  recarregarDados(event: any) {
+    this.paginaAtual = 0;
+    this.posts = [];
+    this.categoriasSelecionadas = [];
+    this.temasSelecionados = [];
+
+    if (this.infiniteScroll) {
+      this.infiniteScroll.disabled = false;
+    }
+
+    const uid = this.usuarioId;
+
     forkJoin([
-      this.proposicaoService.listar(uid).pipe(
-        catchError(() => of([] as ProposicaoDTO[]))
+      this.proposicaoService.listarPaginado(uid, 0, 20).pipe(
+        catchError(() => of({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 20 }))
       ),
       this.vereadorService.listar().pipe(
         catchError(() => of([] as VereadorDTO[]))
       )
     ]).subscribe({
-      next: ([proposicoes, vereadores]: [ProposicaoDTO[], VereadorDTO[]]) => {
-        const vereadorMap = new Map(
-          vereadores.map(v => [v.nome.toLowerCase(), v.id])
-        );
+      next: ([page, vereadores]) => {
+        this.vereadoresCache = vereadores;
+        this.posts = page.content.map(p => this.mapearVereador(p));
+        this.totalElementos = page.totalElements;
+        this.paginaAtual = 1;
 
-        this.posts = proposicoes.map(p => ({
-          ...p,
-          vereador: {
-            ...p.vereador,
-            id: vereadorMap.get(p.vereador.nome.toLowerCase()) ?? p.vereador.id
-          }
-        }));
-
-        this.categoriasSelecionadas = [];
-        this.temasSelecionados = [];
         this.extrairFiltros();
         this.postsFiltrados = [...this.posts];
       },

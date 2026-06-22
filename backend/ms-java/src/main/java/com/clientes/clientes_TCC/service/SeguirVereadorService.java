@@ -87,7 +87,8 @@ public class SeguirVereadorService {
                         v.getPartido().getNomePartido(),
                         v.getAtivo().name(),
                         v.getEmail(),
-                        v.getSite()
+                        v.getSite(),
+                        v.getAvatarUrl()
                 ))
                 .toList();
 

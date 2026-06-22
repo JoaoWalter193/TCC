@@ -19,6 +19,7 @@ interface VereadorBackend {
   ocupacao: string;
   vereador_escolaridade: string;
   seguidores?: number;
+  avatarUrl: string;
 }
 
 function mapToDTO(v: VereadorBackend): VereadorDTO {
@@ -31,6 +32,13 @@ function mapToDTO(v: VereadorBackend): VereadorDTO {
     telefone: v.telefone ?? '',
     email: v.email ?? '',
     site: v.site ?? '',
+    genero: v.genero ?? '',
+    vereador_ativo: v.vereador_ativo ?? '',
+    dataNasc: v.dataNasc ?? '',
+    vereador_cor: v.vereador_cor ?? '',
+    ocupacao: v.ocupacao ?? '',
+    vereador_escolaridade: v.vereador_escolaridade ?? '',
+    avatarUrl: v.avatarUrl ?? '',
     seguidores: v.seguidores ?? 0,
   };
 }

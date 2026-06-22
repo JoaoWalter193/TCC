@@ -13,6 +13,7 @@ import { ReacaoService } from 'src/app/services/reacao.service';
 import { ReacaoEventService } from 'src/app/services/reacao-event.service';
 import { ShareService } from 'src/app/services/share.service';
 import { FavoritosService } from 'src/app/services/favoritos.service';
+import { FormatCodigoPipe } from 'src/app/pipes/format-codigo.pipe';
 
 @Component({
   selector: 'app-card',
@@ -25,6 +26,7 @@ import { FavoritosService } from 'src/app/services/favoritos.service';
     IonCardContent,
     RouterLink,
     IonIcon,
+    FormatCodigoPipe,
   ],
 })
 export class CardComponent {

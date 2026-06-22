@@ -18,9 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +79,12 @@ public class ProposicaoService {
         )));
     }
 
+    public ResponseEntity<List<ProposicaoListaResponseDTO>> listarPorVereador(Integer vereadorId, Integer usuarioId) {
+        log.info("listarPorVereador vereadorId={} usuarioId={}", vereadorId, usuarioId);
+        List<Proposicao> proposicoes = proposicaoRepository.findByVereadorId(vereadorId);
+        return ResponseEntity.ok(mapToResponseDTO(proposicoes, usuarioId));
+    }
+
     public ResponseEntity<ProposicaoEspecificaDTO> buscarProposicao(Long codigo, Integer usuarioId) {
         log.info("buscarProposicao codigo={} usuarioId={}", codigo, usuarioId);
         Optional<Proposicao> optProposicao = proposicaoRepository.findByCodigo(codigo);
@@ -129,11 +137,30 @@ public class ProposicaoService {
     @Autowired
     private RestTemplate restTemplate;
 
+    public ResponseEntity<List<ProposicaoListaResponseDTO>> buscarPorNomeVereador(String nome, Integer usuarioId) {
+        log.info("buscarPorNomeVereador nome={} usuarioId={}", nome, usuarioId);
+        List<Proposicao> proposicoes = proposicaoRepository.buscarPorNomeVereador(nome);
+        List<ProposicaoListaResponseDTO> resultado = mapToResponseDTO(proposicoes, usuarioId);
+        return ResponseEntity.ok(resultado);
+    }
+
     public ResponseEntity<List<ProposicaoListaResponseDTO>> buscarPorSimilaridade(String query, int limit, Integer usuarioId) {
+        List<Proposicao> porVereador = proposicaoRepository.buscarPorNomeVereador(query);
+
         String embeddingStr = gerarEmbedding(query);
+        List<Proposicao> semanticas = proposicaoRepository.findBySimilarity(embeddingStr, limit);
 
-        List<Proposicao> proposicoes = proposicaoRepository.findBySimilarity(embeddingStr, limit);
+        Set<Long> idsExistentes = porVereador.stream().map(Proposicao::getCodigo).collect(Collectors.toSet());
+        for (Proposicao p : semanticas) {
+            if (idsExistentes.add(p.getCodigo())) {
+                porVereador.add(p);
+            }
+        }
 
+        return ResponseEntity.ok(mapToResponseDTO(porVereador, usuarioId));
+    }
+
+    private List<ProposicaoListaResponseDTO> mapToResponseDTO(List<Proposicao> proposicoes, Integer usuarioId) {
         Map<Long, String> reacoesMap = Collections.emptyMap();
         if (usuarioId != null && !proposicoes.isEmpty()) {
             List<Long> codigos = proposicoes.stream().map(Proposicao::getCodigo).toList();
@@ -143,7 +170,7 @@ public class ProposicaoService {
         }
 
         Map<Long, String> finalReacoesMap = reacoesMap;
-        List<ProposicaoListaResponseDTO> resultado = proposicoes.stream()
+        return proposicoes.stream()
                 .map(p -> new ProposicaoListaResponseDTO(
                         p.getCodigo(),
                         p.getTipo().getTipo(),
@@ -159,8 +186,6 @@ public class ProposicaoService {
                         finalReacoesMap.get(p.getCodigo())
                 ))
                 .toList();
-
-        return ResponseEntity.ok(resultado);
     }
 
     private String gerarEmbedding(String texto) {
