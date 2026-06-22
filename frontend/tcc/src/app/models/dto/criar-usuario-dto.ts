@@ -7,4 +7,6 @@ export interface CriarUsuarioDTO {
   cep?: string;
   escolaridade?: string;
   profissao?: string;
+  genero?: string;
+  dataNascimento?: string;
 }

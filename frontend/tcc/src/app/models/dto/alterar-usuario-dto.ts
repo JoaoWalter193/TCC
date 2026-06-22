@@ -7,4 +7,6 @@ export interface AlterarUsuarioDTO {
   cep?: string | null;
   escolaridade?: string | null;
   profissao?: string | null;
+  genero?: string;
+  dataNascimento?: string;
 }

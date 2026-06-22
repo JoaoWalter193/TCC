@@ -85,7 +85,11 @@ export class CadastroComponent implements OnInit {
 
       stepTwoGroup: this.fb.group(
         {
-          senha: ['', [Validators.required, Validators.minLength(6)]],
+          senha: ['', [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(/^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
+          ]],
           senhaNovamente: ['', [Validators.required]],
         },
         { validators: PasswordsMatchValidator }
@@ -95,6 +99,8 @@ export class CadastroComponent implements OnInit {
         cep: ['', [Validators.pattern(/^\d{5}-\d{3}$/)]],
         escolaridade: [''],
         profissao: [''],
+        genero: [''],
+        dataNascimento: [''],
       }),
     });
   }
@@ -174,6 +180,8 @@ export class CadastroComponent implements OnInit {
       cep: stepThreeValue.cep ? stepThreeValue.cep.replace(/\D/g, '') : undefined,
       escolaridade: stepThreeValue.escolaridade || undefined,
       profissao: stepThreeValue.profissao || undefined,
+      genero: stepThreeValue.genero || undefined,
+      dataNascimento: stepThreeValue.dataNascimento || undefined,
     };
 
     this.usuarioService

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +95,10 @@ public class UsuarioService {
                     usuarioTemp.setCep(data.cep());
                     usuarioTemp.setEscolaridade(data.escolaridade());
                     usuarioTemp.setProfissao(data.profissao());
+                    usuarioTemp.setGenero(data.genero());
+                    if (data.dataNascimento() != null) {
+                        usuarioTemp.setDataNascimento(LocalDate.parse(data.dataNascimento()));
+                    }
 
                     usuarioRepository.save(usuarioTemp);
                     try {
@@ -164,6 +169,10 @@ public class UsuarioService {
         if (data.cep() != null) usuarioTemp.setCep(data.cep());
         if (data.escolaridade() != null) usuarioTemp.setEscolaridade(data.escolaridade());
         if (data.profissao() != null) usuarioTemp.setProfissao(data.profissao());
+        if (data.genero() != null) usuarioTemp.setGenero(data.genero());
+        if (data.dataNascimento() != null) {
+            usuarioTemp.setDataNascimento(LocalDate.parse(data.dataNascimento()));
+        }
         usuarioRepository.save(usuarioTemp);
 
         return ResponseEntity.ok(toDTO(usuarioTemp));
@@ -238,7 +247,9 @@ public class UsuarioService {
                 u.getEmail(),
                 u.getCep(),
                 u.getEscolaridade(),
-                u.getProfissao()
+                u.getProfissao(),
+                u.getGenero(),
+                u.getDataNascimento()
         );
     }
 
@@ -251,6 +262,8 @@ public class UsuarioService {
                 u.getCep(),
                 u.getEscolaridade(),
                 u.getProfissao(),
+                u.getGenero(),
+                u.getDataNascimento(),
                 totalVereadores,
                 proposicoes
         );

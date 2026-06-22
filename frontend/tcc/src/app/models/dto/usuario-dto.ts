@@ -6,4 +6,6 @@ export interface UsuarioDTO {
   cep: string | null;
   escolaridade: string | null;
   profissao: string | null;
+  genero: string | null;
+  dataNascimento: string | null;
 }

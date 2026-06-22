@@ -8,6 +8,8 @@ public record UsuarioAtualizarDTO(
         String senhaNovaNovamente,
         String cep,
         String escolaridade,
-        String profissao
+        String profissao,
+        String genero,
+        String dataNascimento
 ) {
 }

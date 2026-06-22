@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,6 +48,12 @@ public class Usuario {
 
     @Column(length = 100)
     private String profissao;
+
+    @Column(length = 30)
+    private String genero;
+
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));

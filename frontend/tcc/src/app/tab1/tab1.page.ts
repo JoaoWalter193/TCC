@@ -11,6 +11,8 @@ import { IonButtons, IonBackButton, IonButton, IonIcon, IonSpinner, IonHeader, I
 
 interface FormularioPerfil extends AlterarUsuarioDTO {
   senhaNovaNovamente: string;
+  genero?: string;
+  dataNascimento?: string;
 }
 
 @Component({
@@ -21,7 +23,7 @@ interface FormularioPerfil extends AlterarUsuarioDTO {
   standalone: true,
 })
 export class Tab1Page implements OnInit {
-  perfilAtual: UsuarioDTO = { id: 0, cpf: '', nome: '', email: '', cep: null, escolaridade: null, profissao: null };
+  perfilAtual: UsuarioDTO = { id: 0, cpf: '', nome: '', email: '', cep: null, escolaridade: null, profissao: null, genero: null, dataNascimento: null };
 
   dadosFormulario: FormularioPerfil = {
     nome: '',
@@ -32,6 +34,8 @@ export class Tab1Page implements OnInit {
     cep: '',
     escolaridade: '',
     profissao: '',
+    genero: '',
+    dataNascimento: '',
   };
 
   mensagemSucesso: string = '';
@@ -69,6 +73,8 @@ export class Tab1Page implements OnInit {
           this.dadosFormulario.cep = data.cep || '';
           this.dadosFormulario.escolaridade = data.escolaridade || '';
           this.dadosFormulario.profissao = data.profissao || '';
+          this.dadosFormulario.genero = data.genero || '';
+          this.dadosFormulario.dataNascimento = data.dataNascimento || '';
           this.carregando = false;
         },
         error: (error) => {
@@ -128,6 +134,8 @@ export class Tab1Page implements OnInit {
       cep: this.dadosFormulario.cep || null,
       escolaridade: this.dadosFormulario.escolaridade || null,
       profissao: this.dadosFormulario.profissao || null,
+      genero: this.dadosFormulario.genero || undefined,
+      dataNascimento: this.dadosFormulario.dataNascimento || undefined,
     };
 
 

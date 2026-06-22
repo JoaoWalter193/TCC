@@ -70,6 +70,8 @@
           }
         </div>
 
+
+
         <ion-button type="button" fill="solid" color="primary" mode="ios" expand="block"
           (click)="goToStepTwo()" [disabled]="carregando || stepOneGroup.invalid">
           Prosseguir
@@ -93,8 +95,8 @@
                   <span>A senha é obrigatória.</span>
                 }
 
-                @if (stepTwoGroup.get('senha')?.hasError('minlength')) {
-                  <span>A senha deve ter no mínimo 6 caracteres.</span>
+                @if (stepTwoGroup.get('senha')?.hasError('minlength') || stepTwoGroup.get('senha')?.hasError('pattern')) {
+                  <span>A senha deve ter no mínimo 8 caracteres e incluir pelo menos 1 caractere especial.</span>
                 }
               </div>
             }
@@ -162,6 +164,22 @@
           <div class="form-group">
             <label for="profissao">Profissão (opcional)</label>
             <input type="text" id="profissao" formControlName="profissao" placeholder="Ex: Engenheiro Civil" />
+          </div>
+
+          <div class="form-group">
+            <label for="genero">Gênero (opcional)</label>
+            <select id="genero" formControlName="genero" class="custom-select">
+              <option value="">Selecione...</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
+              <option value="Outro">Outro</option>
+              <option value="Prefiro não informar">Prefiro não informar</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="dataNascimento">Data de Nascimento (opcional)</label>
+            <input type="date" id="dataNascimento" formControlName="dataNascimento" />
           </div>
 
           <ion-button type="button" fill="outline" color="medium" mode="ios" expand="block"

@@ -8,6 +8,8 @@ export interface UsuarioPerfilDTO {
   cep: string | null;
   escolaridade: string | null;
   profissao: string | null;
+  genero: string | null;
+  dataNascimento: string | null;
   totalVereadoresSeguidos: number;
   proposicoesFavoritas: ProposicaoResumoDTO[];
 }
