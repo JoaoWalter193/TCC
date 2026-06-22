@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import {
 import { AgChartsModule } from 'ag-charts-angular';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { ThemeService } from 'src/app/services/theme.service';
 import { Dashboard } from 'src/app/services/dashboard';
 import { DashboardItem } from 'src/app/models/dto/dashboard-item';
 import { DashboardMetadata } from 'src/app/models/dto/dashboard-metadata';
@@ -40,6 +41,7 @@ export class MyDashboardViewComponent implements OnInit {
   dashboard = inject(Dashboard);
   datePipe = inject(DatePipe);
   shareService = inject(ShareService);
+  themeService = inject(ThemeService);
 
   // ── Modo ──
   modo: 'list' | 'editor' = 'list';
@@ -63,6 +65,7 @@ export class MyDashboardViewComponent implements OnInit {
 
   previewResult: any = null;
   chartOptions: any = null;
+  private lastChartResponse: any = null;
   loading = false;
   error = '';
   salvando = false;
@@ -70,10 +73,20 @@ export class MyDashboardViewComponent implements OnInit {
   constructor(
     private router: Router,
     private alertCtrl: AlertController,
-  ) {}
+  ) {
+    effect(() => {
+      this.themeService.isDarkMode();
+      this.rebuildChartTheme();
+    });
+  }
 
   ngOnInit() {
     this.carregarLista();
+  }
+
+  private rebuildChartTheme(): void {
+    if (!this.lastChartResponse) return;
+    this.buildChart(this.lastChartResponse);
   }
 
   // ═════════════════════════════════════════════════════════════════════
@@ -280,6 +293,7 @@ export class MyDashboardViewComponent implements OnInit {
     this.dashboard.previewChart(config).subscribe({
       next: (res) => {
         this.previewResult = res;
+        this.lastChartResponse = res;
         this.buildChart(res);
         this.loading = false;
       },
@@ -291,11 +305,13 @@ export class MyDashboardViewComponent implements OnInit {
   }
 
   private buildChart(res: any) {
+    const isDark = this.themeService.isDarkMode();
     const data = res.chart_data;
 
     if (data.type === 'hierarchy' && data.tree) {
       if (this.chartType === 'sunburst') {
         this.chartOptions = {
+          theme: isDark ? 'ag-default-dark' : 'ag-default',
           data: [{ name: ' ', children: data.tree }],
           series: [{
             type: 'sunburst',
@@ -315,6 +331,7 @@ export class MyDashboardViewComponent implements OnInit {
 
       if (this.chartType === 'pie') {
         this.chartOptions = {
+          theme: isDark ? 'ag-default-dark' : 'ag-default',
           data: flat,
           series: [{
             type: 'pie',
@@ -329,6 +346,7 @@ export class MyDashboardViewComponent implements OnInit {
         };
       } else {
         this.chartOptions = {
+          theme: isDark ? 'ag-default-dark' : 'ag-default',
           data: flat,
           axes: [
             {
@@ -356,6 +374,7 @@ export class MyDashboardViewComponent implements OnInit {
       const flat = data.data;
       if (this.chartType === 'pie') {
         this.chartOptions = {
+          theme: isDark ? 'ag-default-dark' : 'ag-default',
           data: flat,
           series: [{
             type: 'pie',
@@ -369,6 +388,7 @@ export class MyDashboardViewComponent implements OnInit {
         };
       } else {
         this.chartOptions = {
+          theme: isDark ? 'ag-default-dark' : 'ag-default',
           data: flat,
           axes: [
             {

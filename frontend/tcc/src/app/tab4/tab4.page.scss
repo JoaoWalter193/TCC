@@ -90,6 +90,21 @@
 
 .search-results-container {
   padding: 0;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .search-results-container {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-results-container {
+    max-width: 720px;
+  }
 }
 
 .result-section {

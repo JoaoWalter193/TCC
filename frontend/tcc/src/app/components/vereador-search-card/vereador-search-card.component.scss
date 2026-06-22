@@ -52,14 +52,26 @@ ion-card-content {
 
 .vereador-nome {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--ion-text-color);
   font-weight: 600;
 }
 
+@media (min-width: 768px) {
+  .vereador-nome {
+    font-size: 15px;
+  }
+}
+
 .vereador-partido {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--ion-color-step-600);
+}
+
+@media (min-width: 768px) {
+  .vereador-partido {
+    font-size: 13px;
+  }
 }
 
 .vereador-seguidores {

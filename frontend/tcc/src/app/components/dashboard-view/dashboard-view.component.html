@@ -29,7 +29,8 @@
 
       <div class="table-container">
         <ag-grid-angular 
-          class="ag-theme-alpine custom-grid"
+          class="custom-grid"
+          [theme]="gridTheme"
           [rowData]="rowData"
           [columnDefs]="columnDefs">
         </ag-grid-angular>

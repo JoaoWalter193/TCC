@@ -44,8 +44,6 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       height: 100%;
       padding: 20px 0;
       overflow-x: hidden;
-      overflow-x: hidden;
-      align-items: flex-end
     }
     .table-title {
       font-size: 0.82rem;
@@ -57,6 +55,13 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+
+    @media (min-width: 1024px) {
+      .table-title {
+        font-size: 0.88rem;
+        margin: 0 18px 14px 18px;
+      }
+    }
     .table-list {
       display: flex;
       flex-direction: column;
@@ -64,10 +69,15 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
     .table-item {
       display: flex;
       align-items: center;
-      padding: 4px 12px 4px 16px;
-      gap: 2px;
-      height: 6rem;
-      min-width: 400px;
+      padding: 10px 12px 10px 16px;
+      gap: 10px;
+    }
+
+    @media (min-width: 1024px) {
+      .table-item {
+        padding: 14px 18px 14px 18px;
+        gap: 12px;
+      }
     }
     .table-item:hover {
       background: var(--ion-color-step-50);
@@ -79,21 +89,28 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       text-decoration: none;
       flex: 1;
       min-width: 0;
-
     }
     .avatar {
-      width: 4rem;
-      height: 4rem;
+      width: 2.5rem;
+      height: 2.5rem;
       border-radius: 50%;
       background: var(--ion-color-primary);
       color: var(--ion-color-primary-contrast);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 700;
       flex-shrink: 0;
       overflow: hidden;
+    }
+
+    @media (min-width: 1024px) {
+      .avatar {
+        width: 3.2rem;
+        height: 3.2rem;
+        font-size: 0.85rem;
+      }
     }
     .avatar-img {
       width: 100%;
@@ -106,16 +123,29 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       min-width: 0;
     }
     .nome {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       font-weight: 500;
       color: var(--ion-text-color);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    @media (min-width: 1024px) {
+      .nome {
+        font-size: 0.92rem;
+      }
+    }
+
     .partido {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--ion-color-step-500);
+    }
+
+    @media (min-width: 1024px) {
+      .partido {
+        font-size: 0.78rem;
+      }
     }
     .btn-seguir {
       flex-shrink: 0;
@@ -130,6 +160,13 @@ import { VereadorDTO } from 'src/app/models/dto/vereador-dto';
       transition: all 0.15s;
       white-space: nowrap;
       line-height: 1.4;
+    }
+
+    @media (min-width: 1024px) {
+      .btn-seguir {
+        padding: 6px 14px;
+        font-size: 0.78rem;
+      }
     }
     .btn-seguir:hover {
       background: rgba(var(--ion-color-primary-rgb), 0.08);
