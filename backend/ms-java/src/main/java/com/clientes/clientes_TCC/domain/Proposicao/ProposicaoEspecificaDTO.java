@@ -8,6 +8,7 @@ public record ProposicaoEspecificaDTO(
         Integer vereadorId,
         String vereadorNome,
         String vereadorPartido,
+        String vereadorAvatarUrl,
         LocalDateTime dataEnvio,
         LocalDateTime dataEfetivo,
         String estadoNome,

@@ -23,6 +23,7 @@ export function mapListaToListaDTO(item: ProposicaoListaDTO): ProposicaoDTO {
       id: item.vereadorId,
       nome: item.vereadorNome,
       partido: '',
+      avatarUrl: item.vereadorAvatarUrl
     },
     likes: item.likes ?? 0,
     dislikes: item.dislikes ?? 0,
@@ -51,6 +52,7 @@ export function mapDetalheToDTO(item: ProposicaoDetalheDTO): ProposicaoDTO {
       id: item.vereadorId,
       nome: item.vereadorNome,
       partido: item.vereadorPartido,
+      avatarUrl: item.vereadorAvatarUrl
     },
     likes: item.likes ?? 0,
     dislikes: item.dislikes ?? 0,

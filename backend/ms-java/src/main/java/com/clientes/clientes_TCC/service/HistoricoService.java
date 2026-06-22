@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -115,6 +116,7 @@ public class HistoricoService {
                         p.getTipo().getTipo(),
                         p.getVereador().getId(),
                         p.getVereador().getNome(),
+                        p.getVereador().getAvatarUrl(),
                         p.getDataEnvio(),
                         p.getRazao(),
                         p.getEmenta(),
@@ -160,5 +162,12 @@ public class HistoricoService {
         resultado.sort((a, b) -> b.dataAcesso().compareTo(a.dataAcesso()));
 
         return ResponseEntity.ok(resultado);
+    }
+
+    @Transactional
+    public ResponseEntity<Void> excluirTudo(Integer usuarioId) {
+        historicoProposicaoRepository.deleteByUsuarioId(usuarioId);
+        historicoVereadorRepository.deleteByUsuarioId(usuarioId);
+        return ResponseEntity.noContent().build();
     }
 }

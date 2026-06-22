@@ -704,4 +704,14 @@ ion-modal.login-prompt-modal {
   --height: auto;
 }
 
+// ── Toast ──────────────────────────────────────────────────────────────
+
+ion-toast.toast-success {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+  --border-radius: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
 // ── FIM ───────────────────────────────────────────────────────────────

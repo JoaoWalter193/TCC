@@ -4,13 +4,14 @@
       <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
     </ion-buttons>
 
-      @if (auth.isLoggedIn()) {
-      <ion-buttons slot="end">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      } @else {
-      <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end" (click)="navigateToLogin()">Entrar</ion-button>
-      }
+    @if (auth.isLoggedIn()) {
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    } @else {
+    <ion-button class="btn-entrar" fill="solid" color="primary" mode="ios" slot="end"
+      (click)="navigateToLogin()">Entrar</ion-button>
+    }
   </ion-toolbar>
 </ion-header>
 
@@ -22,8 +23,14 @@
 
     <!-- ── Author Header ── -->
     <div class="author-header">
-      <div class="author-avatar" (click)="verVereador(post.vereador.id)">
-        <span>{{ post.vereador.nome.charAt(0) }}</span>
+      <div class="avatar-wrapper">
+        <ion-avatar class="vereador-avatar">
+          @if (post.vereador.avatarUrl) {
+          <img [src]="post.vereador.avatarUrl" [alt]="post.vereador.nome" class="avatar-img" />
+          } @else {
+          <span class="avatar-iniciais">{{ iniciais }}</span>
+          }
+        </ion-avatar>
       </div>
       <div class="author-info" (click)="verVereador(post.vereador.id)">
         <span class="author-name">{{ post.vereador.nome }}</span>
@@ -31,17 +38,11 @@
       </div>
 
       @if (post.vereador) {
-        <ion-button
-          fill="outline"
-          [color]="seguindo ? 'medium' : 'primary'"
-          size="small"
-          mode="ios"
-          class="follow-btn"
-          (click)="toggleSeguir()"
-        >
-          <ion-icon slot="start" [name]="seguindo ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
-          {{ seguindo ? 'Seguindo' : 'Seguir' }}
-        </ion-button>
+      <ion-button fill="outline" [color]="seguindo ? 'medium' : 'primary'" size="small" mode="ios" class="follow-btn"
+        (click)="toggleSeguir()">
+        <ion-icon slot="start" [name]="seguindo ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
+        {{ seguindo ? 'Seguindo' : 'Seguir' }}
+      </ion-button>
       }
     </div>
 
@@ -51,41 +52,44 @@
         <span class="tipo-tag">{{ post.tipoProposicao }}</span>
         <span class="codigo-tag">{{ post.id | formatCodigo }}</span>
         @if (post.tag) {
-          <span class="tag-tag">#{{ post.tag }}</span>
+        <span class="tag-tag">#{{ post.tag }}</span>
         }
       </div>
 
       <p class="post-ementa">{{ post.ementa }}</p>
 
       @if (post.texto) {
-        <details class="post-section">
-          <summary>Texto completo</summary>
-          <p class="post-text">{{ post.texto }}</p>
-        </details>
+      <details class="post-section">
+        <summary>Texto completo</summary>
+        <p class="post-text">{{ post.texto }}</p>
+      </details>
       }
 
       @if (post.justificativa) {
-        <details class="post-section">
-          <summary>Justificativa</summary>
-          <p class="post-text">{{ post.justificativa }}</p>
-        </details>
+      <details class="post-section">
+        <summary>Justificativa</summary>
+        <p class="post-text">{{ post.justificativa }}</p>
+      </details>
       }
     </div>
 
     <!-- ── Engagement Bar ── -->
     <div class="engagement-bar">
       <div class="engagement-action" (click)="reagir('LIKE')">
-        <ion-icon [name]="likeIconName()" [class.active]="auth.isLoggedIn() && post.currentUserReaction === 'LIKE'"></ion-icon>
+        <ion-icon [name]="likeIconName()"
+          [class.active]="auth.isLoggedIn() && post.currentUserReaction === 'LIKE'"></ion-icon>
         <span>{{ post.likes }}</span>
       </div>
 
       <div class="engagement-action" (click)="reagir('DISLIKE')">
-        <ion-icon [name]="dislikeIconName()" [class.active]="auth.isLoggedIn() && post.currentUserReaction === 'DISLIKE'"></ion-icon>
+        <ion-icon [name]="dislikeIconName()"
+          [class.active]="auth.isLoggedIn() && post.currentUserReaction === 'DISLIKE'"></ion-icon>
         <span>{{ post.dislikes }}</span>
       </div>
 
       <div class="engagement-action" (click)="toggleFavorito()">
-        <ion-icon [name]="auth.isLoggedIn() && post.isFavorito ? 'star' : 'star-outline'" [class.active]="auth.isLoggedIn() && post.isFavorito"></ion-icon>
+        <ion-icon [name]="auth.isLoggedIn() && post.isFavorito ? 'star' : 'star-outline'"
+          [class.active]="auth.isLoggedIn() && post.isFavorito"></ion-icon>
       </div>
 
       <div class="engagement-action" (click)="compartilhar()">

@@ -4,6 +4,14 @@
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>Histórico</ion-title>
+    @if (historico.length > 0) {
+      <ion-buttons slot="end">
+        <ion-button fill="clear" color="danger" (click)="excluirTudo()">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
+          Limpar
+        </ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 

@@ -3,6 +3,7 @@ export interface ProposicaoListaDTO {
   tipo: string;
   vereadorId: number;
   vereadorNome: string;
+  vereadorAvatarUrl?: string;
   dataEnvio: string;
   razao: string;
   ementa: string;
@@ -19,6 +20,7 @@ export interface ProposicaoDetalheDTO {
   vereadorId: number;
   vereadorNome: string;
   vereadorPartido: string;
+  vereadorAvatarUrl?: string;
   dataEnvio: string;
   dataEfetivo: string;
   estadoNome: string;
@@ -64,6 +66,7 @@ export interface ProposicaoDTO {
     id: number;
     nome: string;
     partido: string;
+    avatarUrl?: string;
   };
   likes: number;
   dislikes: number;

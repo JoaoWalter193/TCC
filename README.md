@@ -8,7 +8,7 @@ Sistema web e mobile para cidadãos acompanharem proposições legislativas, ver
 
 ## Sumário
 
-- [Guia Rápido](#guia-rápido)
+- [Tutorial](#tutorial)
 - [Arquitetura](#arquitetura)
 - [Funcionalidades](#funcionalidades)
 - [Stack](#stack)
@@ -31,30 +31,263 @@ Sistema web e mobile para cidadãos acompanharem proposições legislativas, ver
 
 ---
 
-## Guia Rápido
+## Tutorial
+
+### 1. Pré-requisitos
+
+| Ferramenta | Versão Mínima | Motivo |
+|---|---|---|
+| Docker + Docker Compose | Docker 24+ / Compose 2.20+ | Orquestração dos 5 serviços (frontend, backend Java, backend Python, gateway, banco) |
+| Node.js | 20 LTS | Execução local do frontend (alternativa ao contêiner) |
+| npm | 10+ | Gerenciamento de pacotes do frontend |
+| Git | — | Clonar o repositório |
+| Java (opcional) | 17 | Compilar o backend localmente (alternativa ao contêiner) |
+| Maven (opcional) | 3.8+ | Build do backend local (wrapper incluído — `./mvnw`) |
+| Android Studio (opcional) | — | Build do APK para dispositivo físico |
+
+### 2. Clonar o repositório
 
 ```bash
-# 1. Clone e acesse
+git clone <url-do-repositorio> TCC
 cd TCC
+```
 
-# 2. Configure a chave da Groq (IA)
+### 3. Obter chaves de API
+
+#### 3.1 Groq Cloud (LLM — classificação e sumarização de proposições)
+
+O sistema usa a API da Groq (Llama 3.3 70B) para classificar proposições em categorias e gerar resumos em linguagem cidadã.
+
+1. Acesse [https://console.groq.com/keys](https://console.groq.com/keys)
+2. Crie uma conta ou faça login com sua conta do Google/GitHub
+3. Clique em **Create API Key**
+4. Copie a chave gerada (começa com `gsk_...`)
+5. Cole no arquivo `.env` conforme o [passo 4.1](#41-arquivo-env)
+
+> O plano gratuito da Groq oferece 30 requisições por minuto (RPM) e 14.400 por dia — suficiente para desenvolvimento.
+
+#### 3.2 Firebase (notificações push — opcional para desenvolvimento)
+
+O sistema utiliza **Firebase Cloud Messaging (FCM)** para enviar notificações push para Android/iOS. Para testar push notifications, é necessário configurar:
+
+##### 3.2.1 Criar um projeto Firebase
+
+1. Acesse [https://console.firebase.google.com](https://console.firebase.google.com)
+2. Clique em **Criar um projeto**
+3. Dê um nome (ex.: "CuritibAtiva")
+4. Desative o Google Analytics (opcional)
+5. Aguarde a criação
+
+##### 3.2.2 Configurar conta de serviço (backend)
+
+1. No console Firebase, vá em **Configurações do projeto** > **Contas de serviço**
+2. Clique em **Gerar nova chave privada**
+3. Um arquivo JSON será baixado — renomeie para `firebase-service-account.json`
+4. Coloque o arquivo em:
+   ```
+   backend/ms-java/src/main/resources/firebase-service-account.json
+   ```
+5. Este arquivo está no `.gitignore` — **não o commite**
+
+##### 3.2.3 Configurar app Android (mobile)
+
+1. No console Firebase, vá em **Configurações do projeto** > **Geral** > **Seus apps**
+2. Clique em **Adicionar app** > **Android**
+3. Nome do pacote: `io.ionic.starter` (definido em `capacitor.config.ts`)
+4. Apelido (opcional): "CuritibAtiva Android"
+5. Clique em **Registrar app**
+6. Baixe o arquivo `google-services.json`
+7. Coloque em:
+   ```
+   frontend/tcc/android/app/google-services.json
+   ```
+8. Este arquivo está no `.gitignore` — **não o commite**
+9. Ignore as instruções de instalação do SDK (o projeto já inclui as dependências)
+
+> **Se você não for testar push notifications**, pode pular esta etapa. As notificações locais (LocalNotifications do Capacitor) funcionam sem Firebase, e o SSE (Server-Sent Events) funciona no navegador web sem configuração adicional.
+
+#### 3.3 ngrok (túnel para testar em dispositivo físico — opcional)
+
+Para testar o aplicativo em um **dispositivo físico** durante o desenvolvimento, você precisa expor a API Gateway para a internet. O ngrok cria um túnel HTTPS para seu localhost.
+
+##### 3.3.1 Obter um token do ngrok
+
+1. Acesse [https://ngrok.com](https://ngrok.com)
+2. Crie uma conta gratuita (ou faça login com GitHub/Google)
+3. No dashboard, vá em **Your Authtoken**
+4. Copie o token (começa com `2h...`)
+
+##### 3.3.2 Instalar e configurar
+
+```bash
+# Instalar (Linux)
+curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
+echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+sudo apt update && sudo apt install ngrok
+
+# Instalar (macOS)
+brew install ngrok/ngrok/ngrok
+
+# Autenticar
+ngrok config add-authtoken <seu-token>
+```
+
+##### 3.3.3 Expor a API Gateway
+
+```bash
+# Em um terminal separado
+ngrok http 3000
+```
+
+Isso gerará uma URL como `https://abc123.ngrok-free.app`. Todos os requests para essa URL serão redirecionados para `http://localhost:3000`.
+
+##### 3.3.4 Atualizar o environment de device
+
+Edite `frontend/tcc/src/environments/environment.device.ts`:
+
+```typescript
+export const environment = {
+  production: false,
+  gatewayUrl: 'https://abc123.ngrok-free.app',  // ← sua URL do ngrok
+  mockApiUrl: 'assets/mock-api'
+};
+```
+
+> No plano gratuito do ngrok, a URL muda a cada reinicialização. Você precisará atualizar o environment e rebuildar o frontend sempre que reiniciar o ngrok.
+
+### 4. Configurar ambiente
+
+#### 4.1 Arquivo `.env`
+
+```bash
 cp .env.example .env
-# Edite .env e preencha GROQ_API_KEY
-# Obtenha em: https://console.groq.com/keys
+```
 
-# 3. Suba todos os serviços
+Edite `.env` e preencha:
+
+```
+GROQ_API_KEY=gsk_sua_chave_aqui
+```
+
+> A chave da Groq é a única variável **obrigatória** para o funcionamento do sistema. Sem ela, as funcionalidades de classificação por IA e sumarização ficarão indisponíveis, mas o restante da plataforma (feed, vereadores, dashboards, notificações) funcionará normalmente.
+
+#### 4.2 Firebase (se for usar push)
+
+Conforme o [passo 3.2](#32-firebase-notificações-push--opcional-para-desenvolvimento), coloque os arquivos:
+- `backend/ms-java/src/main/resources/firebase-service-account.json`
+- `frontend/tcc/android/app/google-services.json`
+
+#### 4.3 Environment do dispositivo mobile (se for testar em dispositivo físico)
+
+Conforme o [passo 3.3.4](#333-expor-a-api-gateway), edite `frontend/tcc/src/environments/environment.device.ts` com a URL do ngrok.
+
+### 5. Executar com Docker Compose (desenvolvimento)
+
+```bash
 docker compose up --build
 ```
 
-Após a inicialização completa:
+Esse comando constrói e sobe simultaneamente os **5 serviços**:
 
-| Serviço | URL |
-|---|---|
-| Frontend Web (Angular) | [http://localhost:80](http://localhost:80) |
-| Frontend Mobile (Ionic) | [http://localhost:8100](http://localhost:8100) |
-| API Gateway | [http://localhost:3000](http://localhost:3000) |
-| Swagger UI | [http://localhost:3000/api/v1/swagger-ui.html](http://localhost:3000/api/v1/swagger-ui.html) |
-| Health Check | [http://localhost:3000/health](http://localhost:3000/health) |
+| Serviço | Imagem | Porta | O que faz |
+|---|---|---|---|
+| `frontend` | Ubuntu + Node 20 + Ionic CLI (custom) | 80, 8100 | Serve Angular (porta 80) e Ionic (porta 8100) com hot-reload |
+| `ms-java` | `maven:3.8.4-openjdk-17-slim` | 8080 | API de negócios (Spring Boot) com devtools (restart automático) |
+| `ms-python` | Python 3.11 (Dockerfile custom) | 8085 | API de BI/IA (FastAPI) com hot-reload (uvicorn --reload) |
+| `api-gateway` | `node:22-alpine` | 3000 | Proxy reverso (Express) com `tsx watch` (hot-reload) |
+| `postgres` | `pgvector/pgvector:pg15` | 5432 | Banco PostgreSQL 15 com extensão vetorial |
+
+> **Primeira execução:** O download das imagens e a instalação das dependências (npm install, maven dependencies) podem levar de 5 a 15 minutos dependendo da sua conexão.
+
+#### 5.1 Verificar se tudo está rodando
+
+Após a inicialização completa (todos os logs estabilizarem), acesse:
+
+| Serviço | URL | Finalidade |
+|---|---|---|
+| Frontend Web (Angular) | [http://localhost:80](http://localhost:80) | Versão desktop responsiva |
+| Frontend Mobile (Ionic) | [http://localhost:8100](http://localhost:8100) | Versão mobile com layout de app |
+| API Gateway | [http://localhost:3000](http://localhost:3000) | Proxy — redireciona para os microserviços |
+| Swagger UI | [http://localhost:3000/api/v1/swagger-ui.html](http://localhost:3000/api/v1/swagger-ui.html) | Documentação interativa de todas as APIs REST |
+| Health Check | [http://localhost:3000/health](http://localhost:3000/health) | Status da API Gateway |
+
+> Se o Swagger retornar 404, aguarde o `ms-java` terminar de compilar. Você pode acompanhar o progresso com `docker compose logs -f ms-java`.
+
+### 6. Executar sem Docker (modo desenvolvimento rápido)
+
+Caso queira rodar apenas o frontend localmente (sem Docker) para desenvolvimento mais rápido:
+
+```bash
+# Terminal 1 — Frontend (Angular + Ionic)
+cd frontend/tcc
+npm install
+ng serve --host=0.0.0.0 --port=4200
+ionic serve --host=0.0.0.0 --port=8100
+```
+
+Nesse modo, o frontend espera a API Gateway em `http://localhost:3000` (definido em `environment.ts`). Certifique-se de que o backend está rodando (via Docker ou localmente) antes de acessar o frontend.
+
+### 7. Build para dispositivo mobile (APK)
+
+#### 7.1 Build com ambiente de desenvolvimento (ngrok)
+
+```bash
+cd frontend/tcc
+ng build --configuration=device
+ionic cap copy
+ionic cap sync
+```
+
+Depois, abra o projeto no Android Studio:
+
+```bash
+ionic cap open android
+```
+
+No Android Studio, clique em **Run** (ícone de play) para instalar o APK no dispositivo conectado.
+
+#### 7.2 Build com ambiente de produção
+
+```bash
+ng build --configuration=production
+ionic cap copy
+ionic cap sync
+ionic cap open android
+```
+
+> Para publicar na Play Store, é necessário gerar um APK assinado no Android Studio (Build > Generate Signed Bundle / APK).
+
+### 8. Executar em produção
+
+```bash
+docker compose -f compose.yaml -f compose.prod.yaml up --build -d
+```
+
+Diferenças do `compose.prod.yaml` em relação ao dev:
+
+- **Frontend**: servido via Nginx (multi-stage build, sem hot-reload)
+- **Gateway**: sem `--watch`, CORS restrito ao domínio de produção
+- **ms-java**: profile `prod` ativado
+
+### 9. CI/CD
+
+O pipeline de CI/CD (`.github/workflows/main.yml`) é acionado automaticamente ao fazer **push na branch `main`**:
+1. Um runner self-hosted executa `docker compose down && up -d --build`
+2. Os arquivos de ambiente (`.env`, `firebase-service-account.json`) devem estar presentes no servidor de produção
+
+---
+
+### Resumo visual do fluxo de setup
+
+```
+1. git clone
+2. Obter GROQ_API_KEY em console.groq.com
+3. (opcional) Criar projeto Firebase → baixar service account + google-services.json
+4. (opcional) ngrok authtoken + ngrok http 3000
+5. cp .env.example .env  →  colar GROQ_API_KEY
+6. docker compose up --build
+7. Acessar http://localhost:80
+```
 
 ---
 
@@ -562,13 +795,15 @@ O Angular possui três arquivos de ambiente em `frontend/tcc/src/environments/`:
 | `environment.prod.ts` | `''` (mesma origem) | Produção (Nginx faz proxy) |
 | `environment.device.ts` | `https://app.curitibativa.online` | Build para dispositivo mobile |
 
-Para build mobile com ambiente de device:
+Para build mobile com ambiente de device (ex.: apontando para um túnel ngrok):
 ```bash
 cd frontend/tcc
 ng build --configuration=device
 ionic cap copy
 ionic cap sync
 ```
+
+> **Importante:** antes de buildar com `--configuration=device`, edite `environment.device.ts` com a URL desejada (ex.: a URL do ngrok ou o domínio de produção).
 
 ---
 
@@ -611,6 +846,11 @@ Ambos os arquivos estão no `.gitignore` e não devem ser commitados.
 | CORS bloqueando requisições | `CORS_ORIGINS` não configurado | Adicione a origem no `.env` ou `compose.yaml` |
 | Push notification não chega | `firebase-service-account.json` ausente | Siga o [Firebase Setup](#firebase-setup) |
 | Página não encontrada (404) | Rota SPA sem fallback | NGINX deve redirecionar tudo exceto `/api/` para `index.html` |
+| ngrok não conecta | Authtoken não configurado | `ngrok config add-authtoken <token>` |
+| ngrok URL muda e app para de funcionar | Plano gratuito gera nova URL a cada execução | Atualizar `environment.device.ts` e rebuildar o frontend |
+| Push notification não chega no mobile | `google-services.json` ausente ou FCM não configurado | Siga o [passo 3.2](#32-firebase-notificações-push--opcional-para-desenvolvimento) |
+| `ms-java` reinicia em loop | Erro de compilação no código Java | `docker compose logs -f ms-java` para identificar o erro |
+| Porta 80 já está em uso | Outro serviço (Apache, Nginx) ocupando a porta | Pare o serviço ou altere a porta no `compose.yaml` |
 
 ---
 

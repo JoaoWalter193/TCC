@@ -18,6 +18,9 @@ public record ProposicaoListaResponseDTO(
         @Schema(description = "Nome do vereador autor", example = "João Silva")
         String vereadorNome,
 
+        @Schema(description = "URL do avatar do vereador autor", example = "https://www.cmc.pr.gov.br/fotos/vereador.jpg")
+        String vereadorAvatarUrl,
+
         @Schema(description = "Data de envio da proposição", example = "2024-03-15T10:30:00")
         LocalDateTime dataEnvio,
 

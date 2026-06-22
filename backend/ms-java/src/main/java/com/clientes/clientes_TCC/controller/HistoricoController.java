@@ -19,4 +19,9 @@ public class HistoricoController {
     public ResponseEntity<List<HistoricoResponseDTO>> listarHistorico() {
         return historicoService.listarHistorico();
     }
+
+    @DeleteMapping("/{usuarioId}")
+    public ResponseEntity<Void> excluirTudo(@PathVariable Integer usuarioId) {
+        return historicoService.excluirTudo(usuarioId);
+    }
 }

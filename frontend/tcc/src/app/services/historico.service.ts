@@ -59,4 +59,8 @@ export class HistoricoService {
       ),
     );
   }
+
+  excluirTudo(usuarioId: number): Observable<void> {
+    return this.api.v1.delete<void>(`/historico/${usuarioId}`);
+  }
 }
