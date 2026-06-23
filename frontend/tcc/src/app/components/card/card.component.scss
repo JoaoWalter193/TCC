@@ -114,12 +114,20 @@ ion-icon {
   gap: 18px;
   margin-top: 14px;
   padding-top: 10px;
+
+}
+
+.acao:hover {
+  background: rgba(var(--ion-color-primary-rgb), 0.08);
+  padding: 6px 2px 6px 2px;
+  border-radius: 32px;
 }
 
 .acao {
   display: flex;
   align-items: center;
   gap: 4px;
+  padding: 6px 2px 6px 2px;
   font-size: 0.85rem;
   color: var(--ion-color-step-600);
 }

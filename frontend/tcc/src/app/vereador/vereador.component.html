@@ -45,8 +45,13 @@
         {{ seguindo ? 'Seguindo' : 'Seguir' }}
       </ion-button>
 
-      <ion-button fill="clear" size="small" class="btn-compartilhar" (click)="compartilhar()">
-        <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+      <ion-button
+        fill="outline"
+        class="btn-seguir"
+        (click)="compartilhar()"
+      >
+        <ion-icon name="send-outline"></ion-icon>
+        Compartilhar
       </ion-button>
     </div>
   </div>
@@ -76,7 +81,7 @@
       <ion-icon name="mail-outline"></ion-icon>
       <div>
         <span class="info-label">E-mail</span>
-        <span class="info-value"><a [href]="'mailto:' + vereador.email">{{ vereador.email }}</a></span>
+        <span class="info-value"><a [href]="'mailto:' + vereador.email">{{ vereador.email ? vereador.email : 'N/A' }}</a></span>
       </div>
     </div>
 
@@ -105,7 +110,7 @@
         <ion-icon name="call-outline"></ion-icon>
         <div>
           <span class="info-label">Telefone</span>
-          <span class="info-value">{{ vereador.telefone | formatTelefone }}</span>
+          <span class="info-value">{{ vereador.telefone ? (vereador.telefone | formatTelefone) : 'N/A' }}</span>
         </div>
       </div>
 

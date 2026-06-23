@@ -34,7 +34,7 @@ import { AuthService } from 'src/app/services/auth.service';
     .menu-panel {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: 100vh;
       padding: 20px 12px;
     }
     .panel-header {
@@ -74,7 +74,7 @@ import { AuthService } from 'src/app/services/auth.service';
       transition: background 0.15s;
     }
     .panel-item:hover {
-      background: var(--ion-color-step-50);
+      background: rgba(var(--ion-color-primary-rgb), 0.08);
     }
     .panel-item:active {
       background: rgba(var(--ion-color-primary-rgb), 0.08);
