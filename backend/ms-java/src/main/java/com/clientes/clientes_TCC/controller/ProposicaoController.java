@@ -48,6 +48,12 @@ public class ProposicaoController {
 
         return proposicaoService.listarProposicoes(tag, pageable, usuarioId);
     }
+
+    @GetMapping("/tipos")
+    public ResponseEntity<List<String>> listarTipos() {
+        return proposicaoService.listarTipos();
+    }
+
     @Operation(summary = "Buscar proposição por ID", description = "Retorna os detalhes de uma proposição específica")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Proposição encontrada"),

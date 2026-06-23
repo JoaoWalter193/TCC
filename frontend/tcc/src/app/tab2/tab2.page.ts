@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent, IonPopover, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonMenuButton, IonIcon, IonRefresher, IonRefresherContent, IonPopover, IonInfiniteScroll, IonInfiniteScrollContent, IonSearchbar } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
 import { CardComponent } from '../components/card/card.component';
@@ -11,6 +12,7 @@ import { ProposicaoDTO } from '../models/dto/proposicao-dto';
 import { VereadorDTO } from '../models/dto/vereador-dto';
 import { ProposicaoService } from '../services/proposicao';
 import { VereadorService } from '../services/vereador';
+import { ApiGatewayService } from '../services/api-gateway.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -22,6 +24,7 @@ import { ReacaoEventService } from '../services/reacao-event.service';
   styleUrls: ['tab2.page.scss'],
   imports: [
     RouterLink,
+    FormsModule,
     IonHeader,
     IonToolbar,
     IonContent,
@@ -37,6 +40,7 @@ import { ReacaoEventService } from '../services/reacao-event.service';
     IonPopover,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
+    IonSearchbar,
   ],
 })
 export class Tab2Page {
@@ -57,18 +61,26 @@ export class Tab2Page {
   categoriasSelecionadas: string[] = [];
   temasSelecionados: string[] = [];
 
+  searchCategoria = '';
+  searchTag = '';
+
   get categoriasNaoSelecionadas(): string[] {
-    return this.categoriasDisponiveis.filter(c => !this.categoriasSelecionadas.includes(c));
+    return this.categoriasDisponiveis
+      .filter(c => !this.categoriasSelecionadas.includes(c))
+      .filter(c => !this.searchCategoria || c.toLowerCase().includes(this.searchCategoria.toLowerCase()));
   }
 
   get temasNaoSelecionados(): string[] {
-    return this.temasDisponiveis.filter(t => !this.temasSelecionados.includes(t));
+    return this.temasDisponiveis
+      .filter(t => !this.temasSelecionados.includes(t))
+      .filter(t => !this.searchTag || t.toLowerCase().includes(this.searchTag.toLowerCase()));
   }
 
   constructor(
     private router: Router,
     private proposicaoService: ProposicaoService,
     private vereadorService: VereadorService,
+    private api: ApiGatewayService,
   ) {
     this.reacaoEvent.reacaoAlterada$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -94,6 +106,9 @@ export class Tab2Page {
       this.infiniteScroll.disabled = false;
     }
 
+    this.carregarCategorias();
+    this.carregarTags();
+
     this.vereadorService.listar().pipe(
       catchError(() => of([] as VereadorDTO[])),
       takeUntilDestroyed(this.destroyRef),
@@ -106,6 +121,20 @@ export class Tab2Page {
   private mapearVereador(p: ProposicaoDTO): ProposicaoDTO {
     const vereadorMap = new Map(this.vereadoresCache.map(v => [v.nome.toLowerCase(), v.id]));
     return { ...p, vereador: { ...p.vereador, id: vereadorMap.get(p.vereador.nome.toLowerCase()) ?? p.vereador.id } };
+  }
+
+  private carregarCategorias() {
+    this.api.v1.get<string[]>('/prop/tipos').subscribe({
+      next: (tipos) => { this.categoriasDisponiveis = tipos.sort(); },
+      error: () => { this.categoriasDisponiveis = []; },
+    });
+  }
+
+  private carregarTags() {
+    this.api.bi.get<string[]>('/tags').subscribe({
+      next: (tags) => { this.temasDisponiveis = tags.sort(); },
+      error: () => { this.temasDisponiveis = []; },
+    });
   }
 
   private carregarPagina() {
@@ -124,7 +153,6 @@ export class Tab2Page {
       this.paginaAtual++;
       this.carregando = false;
 
-      this.extrairFiltros();
       this.aplicarFiltros();
 
       if (this.infiniteScroll) {
@@ -150,6 +178,9 @@ export class Tab2Page {
       this.infiniteScroll.disabled = false;
     }
 
+    this.carregarCategorias();
+    this.carregarTags();
+
     const uid = this.usuarioId;
 
     forkJoin([
@@ -166,8 +197,7 @@ export class Tab2Page {
         this.totalElementos = page.totalElements;
         this.paginaAtual = 1;
 
-        this.extrairFiltros();
-        this.postsFiltrados = [...this.posts];
+        this.aplicarFiltros();
       },
       error: (err) => {
         console.error('Erro ao carregar dados', err);
@@ -176,11 +206,6 @@ export class Tab2Page {
         event.target.complete();
       },
     });
-  }
-
-  private extrairFiltros() {
-    this.categoriasDisponiveis = [...new Set(this.posts.map(p => p.tipoProposicao))].sort();
-    this.temasDisponiveis = [...new Set(this.posts.map(p => p.tag).filter(Boolean))].sort();
   }
 
   aplicarFiltros() {

@@ -39,17 +39,18 @@
   <ion-popover #catPopover trigger="cat-trigger" triggerAction="click" side="bottom" alignment="start" [dismissOnSelect]="false">
     <ng-template>
       <div class="filter-dropdown">
+        <ion-searchbar placeholder="Filtrar categorias..." [(ngModel)]="searchCategoria" (ionInput)="searchCategoria = $event.detail.value!"></ion-searchbar>
         @if (categoriasNaoSelecionadas.length > 0) {
           @for (cat of categoriasNaoSelecionadas; track cat) {
-            <div class="dropdown-item" (click)="toggleCategoria(cat); catPopover.dismiss()">
+            <div class="dropdown-item" (click)="toggleCategoria(cat); searchCategoria = ''; catPopover.dismiss()">
               {{ cat }}
             </div>
           }
         } @else {
-          <div class="dropdown-empty">Todas selecionadas</div>
+          <div class="dropdown-empty">Nenhuma categoria encontrada</div>
         }
         <div class="dropdown-divider"></div>
-        <div class="dropdown-clear" (click)="categoriasSelecionadas = []; aplicarFiltros(); catPopover.dismiss()">
+        <div class="dropdown-clear" (click)="categoriasSelecionadas = []; searchCategoria = ''; aplicarFiltros(); catPopover.dismiss()">
           Limpar categoria
         </div>
       </div>
@@ -59,17 +60,18 @@
   <ion-popover #temaPopover trigger="tema-trigger" triggerAction="click" side="bottom" alignment="start" [dismissOnSelect]="false">
     <ng-template>
       <div class="filter-dropdown">
+        <ion-searchbar placeholder="Filtrar temas..." [(ngModel)]="searchTag" (ionInput)="searchTag = $event.detail.value!"></ion-searchbar>
         @if (temasNaoSelecionados.length > 0) {
           @for (tema of temasNaoSelecionados; track tema) {
-            <div class="dropdown-item" (click)="toggleTema(tema); temaPopover.dismiss()">
+            <div class="dropdown-item" (click)="toggleTema(tema); searchTag = ''; temaPopover.dismiss()">
               {{ formatarTag(tema) }}
             </div>
           }
         } @else {
-          <div class="dropdown-empty">Todas selecionadas</div>
+          <div class="dropdown-empty">Nenhum tema encontrado</div>
         }
         <div class="dropdown-divider"></div>
-        <div class="dropdown-clear" (click)="temasSelecionados = []; aplicarFiltros(); temaPopover.dismiss()">
+        <div class="dropdown-clear" (click)="temasSelecionados = []; searchTag = ''; aplicarFiltros(); temaPopover.dismiss()">
           Limpar tema
         </div>
       </div>

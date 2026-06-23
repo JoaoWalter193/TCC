@@ -17,6 +17,10 @@ class TagRequest(BaseModel):
     ementa: str
     justificativa: str
 
+@router.get("/tags")
+def listar_tags():
+    return TAGS_POSSIVEIS
+
 @router.post("/tag")
 def gerar_tag(request: TagRequest):
     prompt = f"""
