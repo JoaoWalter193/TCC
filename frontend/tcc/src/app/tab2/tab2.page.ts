@@ -124,10 +124,8 @@ export class Tab2Page {
       this.paginaAtual++;
       this.carregando = false;
 
-      if (this.paginaAtual === 1) {
-        this.extrairFiltros();
-      }
-      this.postsFiltrados = [...this.posts];
+      this.extrairFiltros();
+      this.aplicarFiltros();
 
       if (this.infiniteScroll) {
         this.infiniteScroll.complete();
