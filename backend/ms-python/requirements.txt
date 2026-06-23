@@ -13,3 +13,4 @@ lxml
 tabula-py
 python-dotenv
 opencv-python-headless
+pillow
