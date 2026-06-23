@@ -7,6 +7,7 @@ import com.clientes.clientes_TCC.domain.Proposicao.ProposicaoListaResponseDTO;
 import com.clientes.clientes_TCC.exceptions.ProposicaoInexistenteException;
 import com.clientes.clientes_TCC.repositories.ProposicaoRepository;
 import com.clientes.clientes_TCC.repositories.ReacaoRepository;
+import com.clientes.clientes_TCC.repositories.TipoProposicaoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,13 @@ public class ProposicaoService {
 
     @Autowired
     private ReacaoRepository reacaoRepository;
+
+    @Autowired
+    private TipoProposicaoRepository tipoProposicaoRepository;
+
+    public ResponseEntity<List<String>> listarTipos() {
+        return ResponseEntity.ok(tipoProposicaoRepository.findAllTipos());
+    }
 
     public ResponseEntity<Page<ProposicaoListaResponseDTO>> listarProposicoes(String tag, Pageable pageable, Integer usuarioId) {
         log.info("listarProposicoes tag={} page={} size={} usuarioId={}", tag, pageable.getPageNumber(), pageable.getPageSize(), usuarioId);
