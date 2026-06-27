@@ -157,6 +157,18 @@ public class ProposicaoService {
     public ResponseEntity<List<ProposicaoListaResponseDTO>> buscarPorSimilaridade(String query, int limit, Integer usuarioId) {
         List<Proposicao> porVereador = proposicaoRepository.buscarPorNomeVereador(query);
 
+        String digitos = query.replaceAll("\\D+", "");
+        if (!digitos.isEmpty()) {
+            try {
+                Long codigo = Long.parseLong(digitos);
+                proposicaoRepository.findByCodigo(codigo).ifPresent(p -> {
+                    if (porVereador.stream().noneMatch(prop -> prop.getCodigo().equals(codigo))) {
+                        porVereador.add(p);
+                    }
+                });
+            } catch (NumberFormatException ignored) {}
+        }
+
         String embeddingStr = gerarEmbedding(query);
         List<Proposicao> semanticas = proposicaoRepository.findBySimilarity(embeddingStr, limit);
 
