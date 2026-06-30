@@ -49,7 +49,7 @@ export class LocalNotificationService {
           if (extra['proposicaoCodigo'] && extra['proposicaoCodigo'] !== -1) {
             this.router.navigate(['/proposicao', extra['proposicaoCodigo']]);
           } else {
-            this.router.navigate(['/tabs/tab3']);
+            this.router.navigate(['/tabs/notificacoes']);
           }
         });
       });

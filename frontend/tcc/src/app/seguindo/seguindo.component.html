@@ -34,10 +34,14 @@
         <div class="vereador-card" (click)="irParaVereador(item.id)">
           <div class="vereador-info">
             <div class="avatar">
-              <ion-icon name="person-outline"></ion-icon>
+              @if (item.avatarUrl) {
+                <img [src]="item.avatarUrl" [alt]="item.nome" class="avatar-img" />
+              } @else {
+                <ion-icon name="person-outline"></ion-icon>
+              }
             </div>
             <div class="dados">
-              <span class="nome">{{ item.nome }}</span>
+              <span class="nome" [title]="item.nome">{{ item.nome | truncateNome }}</span>
               <span class="partido">{{ item.partido }}</span>
             </div>
           </div>

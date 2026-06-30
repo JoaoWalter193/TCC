@@ -10,6 +10,6 @@ export const authGuard = () => {
     return true;
   }
 
-  router.navigate(['/tabs/tab2']);
+  router.navigate(['/tabs/home']);
   return false;
 };

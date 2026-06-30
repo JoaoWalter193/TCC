@@ -30,6 +30,6 @@ export class MenuComponent {
 
   navMeusDashboards() {
     this.modoService.setModo('my-dashboard');
-    this.router.navigate(['tabs/tab6']);
+    this.router.navigate(['tabs/dashboard']);
   }
 }

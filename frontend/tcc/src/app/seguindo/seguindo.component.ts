@@ -14,6 +14,7 @@ import {
 import { AuthService } from '../services/auth.service';
 import { VereadorService } from '../services/vereador';
 import { VereadorDTO } from '../models/dto/vereador-dto';
+import { TruncateNomePipe } from '../pipes/truncate-nome.pipe';
 
 @Component({
   selector: 'app-seguindo',
@@ -29,6 +30,7 @@ import { VereadorDTO } from '../models/dto/vereador-dto';
     IonBackButton,
     IonIcon,
     IonButton,
+    TruncateNomePipe,
   ],
 })
 export class SeguindoComponent {

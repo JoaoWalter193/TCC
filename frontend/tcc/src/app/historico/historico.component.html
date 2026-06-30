@@ -35,9 +35,15 @@
           ? ['/proposicao', item.componente.id]
           : ['/vereador', item.componente.id]">
 
+          @if (item.tipo === 'VEREADOR' && item.componente.avatarUrl) {
+          <div class="timeline-dot timeline-dot-avatar">
+            <img [src]="item.componente.avatarUrl" [alt]="item.componente.nome" class="avatar-img" />
+          </div>
+          } @else {
           <div class="timeline-dot">
             <ion-icon [name]="item.tipo === 'PROPOSICAO' ? 'document-text-outline' : 'person-outline'"></ion-icon>
           </div>
+          }
 
           <div class="timeline-content">
             <div class="timeline-meta">

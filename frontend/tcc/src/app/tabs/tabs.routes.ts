@@ -4,7 +4,7 @@ import { TabsPage } from './tabs.page';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/tabs/tab2',
+    redirectTo: '/tabs/home',
     pathMatch: 'full',
   },
   {
@@ -13,34 +13,59 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/tabs/tab2',
+        redirectTo: '/tabs/home',
         pathMatch: 'full',
       },
       {
-        path: 'tab2',
+        path: 'home',
         loadComponent: () =>
           import('../tab2/tab2.page').then((m) => m.Tab2Page),
       },
       {
-        path: 'tab3',
+        path: 'notificacoes',
         loadComponent: () =>
           import('../tab3/tab3.page').then((m) => m.Tab3Page),
       },
       {
-        path: 'tab4',
+        path: 'pesquisa',
         loadComponent: () =>
           import('../tab4/tab4.page').then((m) => m.Tab4Page),
       },
       {
-        path: 'tab5',
+        path: 'acompanhamento',
         loadComponent: () =>
           import('../tab5/tab5.page').then((m) => m.Tab5Page),
       },
       {
-        path: 'tab6',
+        path: 'dashboard',
         loadComponent: () =>
           import('../tab6/tab6.page').then((m) => m.Tab6Page),
-      }
+      },
+      {
+        path: 'tab2',
+        redirectTo: '/tabs/home',
+        pathMatch: 'full',
+      },
+      {
+        path: 'tab3',
+        redirectTo: '/tabs/notificacoes',
+        pathMatch: 'full',
+      },
+      {
+        path: 'tab4',
+        redirectTo: '/tabs/pesquisa',
+        pathMatch: 'full',
+      },
+      {
+        path: 'tab5',
+        redirectTo: '/tabs/acompanhamento',
+        pathMatch: 'full',
+      },
+      {
+        path: 'tab6',
+        redirectTo: '/tabs/dashboard',
+        pathMatch: 'full',
+      },
     ],
   },
 ];

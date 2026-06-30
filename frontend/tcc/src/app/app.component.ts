@@ -32,13 +32,13 @@ export class AppComponent implements OnDestroy {
           const protectedPrefixes = ['/perfil', '/historico', '/configuracoes', '/editar-perfil'];
           const rotaAtual = router.url.split('?')[0];
           if (protectedPrefixes.some(p => rotaAtual.startsWith(p))) {
-            router.navigate(['/tabs/tab2'], { replaceUrl: true });
+            router.navigate(['/tabs/home'], { replaceUrl: true });
           }
         }
       });
 
     platform.backButton.subscribeWithPriority(0, () => {
-      router.navigate(['/tabs/tab2']);
+      router.navigate(['/tabs/home']);
     });
 
     platform.ready().then(() => {

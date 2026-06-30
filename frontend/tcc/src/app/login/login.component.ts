@@ -156,7 +156,7 @@ export class LoginComponent implements OnInit {
             this.pushService.tentarRegistrarBackend();
           }
 
-          this.router.navigate(['/tabs/tab2'], { replaceUrl: true });
+          this.router.navigate(['/tabs/home'], { replaceUrl: true });
         } else if (response) {
           this.mensagemErro = 'Resposta de login inválida ou incompleta.';
         }

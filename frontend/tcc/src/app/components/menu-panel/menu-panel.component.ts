@@ -107,7 +107,7 @@ export class MenuPanelComponent {
 
     if (!route) {
       this.modoService.setModo('my-dashboard');
-      this.router.navigate(['tabs/tab6']);
+      this.router.navigate(['tabs/dashboard']);
       return;
     }
 

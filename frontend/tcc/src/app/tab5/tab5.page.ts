@@ -22,6 +22,7 @@ import { CardComponent } from '../components/card/card.component';
 import { MenuPanelComponent } from '../components/menu-panel/menu-panel.component';
 import { VereadorTableComponent } from '../components/vereador-table/vereador-table.component';
 import { Tab5ModoService } from '../services/tab5-modo.service';
+import { TruncateNomePipe } from '../pipes/truncate-nome.pipe';
 
 @Component({
   selector: 'app-tab5',
@@ -41,6 +42,7 @@ import { Tab5ModoService } from '../services/tab5-modo.service';
     CardComponent,
     MenuPanelComponent,
     VereadorTableComponent,
+    TruncateNomePipe,
   ],
 })
 export class Tab5Page implements OnInit, OnDestroy {

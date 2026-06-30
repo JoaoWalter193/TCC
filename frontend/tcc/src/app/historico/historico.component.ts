@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import {
   IonBackButton, IonButtons, IonHeader, IonToolbar, IonTitle, IonContent,
   IonIcon, IonSpinner, IonButton, AlertController,
 } from "@ionic/angular/standalone";
 import { HistoricoItem } from '../models/historico.model';
 import { HistoricoService } from '../services/historico.service';
+import { VereadorService } from '../services/vereador';
+import { VereadorDTO } from '../models/dto/vereador-dto';
 
 @Component({
   selector: 'app-historico',
@@ -23,6 +27,7 @@ export class HistoricoComponent implements OnInit {
 
   constructor(
     private historicoService: HistoricoService,
+    private vereadorService: VereadorService,
     private alertCtrl: AlertController,
   ) {}
 
@@ -75,11 +80,35 @@ export class HistoricoComponent implements OnInit {
   }
 
   private carregar(): void {
-    this.historicoService.listar().subscribe({
-      next: (items) => {
-        this.historico = items.sort(
-          (a, b) => new Date(b.dataAcesso).getTime() - new Date(a.dataAcesso).getTime(),
-        );
+    const vereadores$ = this.vereadorService.listar().pipe(
+      catchError(() => of([] as VereadorDTO[])),
+    );
+    const historico$ = this.historicoService.listar().pipe(
+      catchError(() => of([] as HistoricoItem[])),
+    );
+
+    forkJoin([vereadores$, historico$]).subscribe({
+      next: ([vereadores, items]) => {
+        const mapa = new Map<number, string>();
+        vereadores.forEach(v => {
+          if (v.avatarUrl) {
+            mapa.set(v.id, v.avatarUrl);
+          }
+        });
+
+        this.historico = items
+          .map(item => {
+            if (item.tipo === 'VEREADOR' && !item.componente.avatarUrl) {
+              const url = mapa.get(item.componente.id);
+              if (url) {
+                return { ...item, componente: { ...item.componente, avatarUrl: url } };
+              }
+            }
+            return item;
+          })
+          .sort(
+            (a, b) => new Date(b.dataAcesso).getTime() - new Date(a.dataAcesso).getTime(),
+          );
         this.carregando = false;
       },
       error: () => {

@@ -41,6 +41,7 @@ export class Tab3Page implements OnInit, OnDestroy {
   private alertCtrl = inject(AlertController);
 
   private vereadorMap = new Map<string, number>();
+  private nomeParaAvatar = new Map<string, string>();
   carregando = true;
 
   ngOnInit(): void {
@@ -57,7 +58,10 @@ export class Tab3Page implements OnInit, OnDestroy {
   }
 
   get notificacoes(): NotificacaoViewModel[] {
-    return this.notificacaoService.notificacoesSig();
+    return this.notificacaoService.notificacoesSig().map(n => ({
+      ...n,
+      avatarUrl: n.vereadorNome ? this.nomeParaAvatar.get(n.vereadorNome.toLowerCase()) : undefined,
+    }));
   }
 
   get naoLidas(): number {
@@ -112,9 +116,12 @@ export class Tab3Page implements OnInit, OnDestroy {
     this.vereadorService.listar().pipe(
       catchError(() => of([])),
     ).subscribe(vereadores => {
-      vereadores.forEach(v =>
-        this.vereadorMap.set(v.nome.toLowerCase(), v.id),
-      );
+    vereadores.forEach(v => {
+      this.vereadorMap.set(v.nome.toLowerCase(), v.id);
+      if (v.avatarUrl) {
+        this.nomeParaAvatar.set(v.nome.toLowerCase(), v.avatarUrl);
+      }
+    });
 
       const userInfo = localStorage.getItem('user_info');
       if (userInfo) {

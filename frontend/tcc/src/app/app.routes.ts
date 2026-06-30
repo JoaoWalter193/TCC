@@ -28,16 +28,31 @@ export const routes: Routes = [
     path: 'tabs',
     children: [
       {
-        path: 'tab4',
+        path: 'pesquisa',
         loadComponent: () => import('./tab4/tab4.page').then((m) => m.Tab4Page),
       },
       {
-        path: 'tab5',
+        path: 'acompanhamento',
         loadComponent: () => import('./tab5/tab5.page').then((m) => m.Tab5Page),
       },
       {
-        path: 'tab6',
+        path: 'dashboard',
         loadComponent: () => import('./tab6/tab6.page').then((m) => m.Tab6Page),
+      },
+      {
+        path: 'tab4',
+        redirectTo: '/tabs/pesquisa',
+        pathMatch: 'full',
+      },
+      {
+        path: 'tab5',
+        redirectTo: '/tabs/acompanhamento',
+        pathMatch: 'full',
+      },
+      {
+        path: 'tab6',
+        redirectTo: '/tabs/dashboard',
+        pathMatch: 'full',
       },
     ],
   },
@@ -49,7 +64,7 @@ export const routes: Routes = [
   },
   {
     path: 'seguindo',
-    redirectTo: '/tabs/tab5',
+    redirectTo: '/tabs/acompanhamento',
     pathMatch: 'full',
   },
   {

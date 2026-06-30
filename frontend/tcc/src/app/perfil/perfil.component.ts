@@ -62,7 +62,7 @@ export class PerfilComponent implements OnInit {
 
   navMeusDashboards() {
     this.modoService.setModo('my-dashboard');
-    this.router.navigate(['tabs/tab6']);
+    this.router.navigate(['tabs/dashboard']);
   }
 
   navEditarPerfil() {
@@ -71,11 +71,11 @@ export class PerfilComponent implements OnInit {
 
   navFavoritos() {
     this.tab5Modo.setModo('favoritos');
-    this.router.navigate(['/tabs/tab5']);
+    this.router.navigate(['/tabs/acompanhamento']);
   }
 
   navSeguindo() {
     this.tab5Modo.setModo('seguindo');
-    this.router.navigate(['/tabs/tab5']);
+    this.router.navigate(['/tabs/acompanhamento']);
   }
 }

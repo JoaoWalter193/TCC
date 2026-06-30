@@ -16,4 +16,5 @@ export interface NotificacaoViewModel extends NotificacaoDTO {
   proposicaoTitulo?: string;
   proposicaoTag?: string;
   tempoRelativo: string;
+  avatarUrl?: string;
 }
